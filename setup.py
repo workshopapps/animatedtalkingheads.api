@@ -15,7 +15,9 @@ PROJECT_URLS = {
     "Source Code": "https://github.com/nwizugbesamson/podcast_animator",
 }
 INSTALL_REQUIRES = [
-    "Pillow==9.0.0",
+    "Pillow==9.1.1",
+    "opencv-contrib-python==4.6.0.66",
+    "click==8.1.3"
 ]
 EXTRAS_REQUIRE = {
     "dev": [
