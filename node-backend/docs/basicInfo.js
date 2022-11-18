@@ -9,5 +9,11 @@ module.exports = {
       email: '',
       url: '',
     },
+    servers:
+        [
+            {
+                url:"http://localhost:4000"
+            }
+        ],
   },
 };
