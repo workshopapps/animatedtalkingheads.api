@@ -55,9 +55,7 @@ def generate_parsed_data():
 
 def extrate_seconds():
 	for key, speaker in parsed_data.items():
-		print(speaker)
 		phrase_map = [speaker_tuple[1] for speaker_tuple in speaker]
-		print(phrase_map)
 		# flat_list = list(itertools.chain.from_iterable(phrase_map))
 		flat_list = list()
 		for i in phrase_map:
@@ -66,7 +64,6 @@ def extrate_seconds():
 				flat_list.append(jame)
 				jame += 1
 		seconds = []
-		print(variable['audio_duration'])
 		for i in range(int(variable['audio_duration']) + 1):
 			if i in flat_list:
 				seconds.append("speech")
