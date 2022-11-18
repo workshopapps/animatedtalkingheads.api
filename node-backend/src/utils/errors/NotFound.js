@@ -1,5 +1,6 @@
 class NotFound extends Error {
   constructor() {
+    super()
     Error.captureStackTrace(this, this.constructor);
     this.message = 'This document/route doesnt exist';
     this.name = this.constructor.name;
