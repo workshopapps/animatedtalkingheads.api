@@ -1,4 +1,8 @@
+orbs:
+ docker: circleci/docker@1.5.0
 version: 2  
+executors:
+ docker-publisher:
 jobs:
   build-and-publish-image:
     docker:
@@ -14,19 +18,20 @@ jobs:
 # Creates a remote Docker environment configured to execute Docker commands.
       - setup_remote_docker 
        
-      - run:
-        # installs a docker client that will be used to run the docker commands
-          name: Install Docker client
-          command: |
-            set -x
-            VER="17.03.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
+      # - run:
+      #   # installs a docker client that will be used to run the docker commands
+      #     name: Install Docker client
+      #     command: |
+      #       set -x
+      #       VER="17.03.0-ce"
+      #       curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+      #       tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+      #       mv /tmp/docker/* /usr/bin
       - run:
 # Builds a docker image to push to Docker Hub
 
           name: Build Docker image
+          executors: docker-publisher
           command: docker build -t $IMAGE .
 
       - run:
