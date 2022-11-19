@@ -5,6 +5,7 @@ const {addAvatar, addCloth, addSkin, addHair}=require('../../controllers/avatars
 const avatarRouter = express.Router();
 
 avatarRouter.get('/', (req, res) => {
+<<<<<<< HEAD
   res.json({data:'all avatars'});
 });
 
@@ -12,6 +13,14 @@ avatarRouter.post('/', schemaMiddleware(avaterSchema), addAvatar);
 avatarRouter.post('/cloth', addCloth);
 avatarRouter.post('/hair', addHair);
 avatarRouter.post('/skin', addSkin);
+=======
+  res.json({data:"all avatars"});
+});
+
+avatarRouter.post('/', schemaMiddleware(avaterSchema), (req, res) => {
+  res.json({data:req.body});
+});
+>>>>>>> 5232e3366b3a109dedd2c8d833670b74cdff1d68
 
 // avatarRouter.post('/',)
 module.exports = avatarRouter;
