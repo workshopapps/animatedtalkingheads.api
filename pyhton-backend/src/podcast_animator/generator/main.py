@@ -13,6 +13,7 @@ import time
 from components.parser import load_data
 from components.animator import generate_animation
 from moviepy.editor import VideoFileClip, AudioFileClip
+from generator.components.parser import getting
 ## APPLICATION ROOT DIRECTOR
 ROOT_DIR = Path(__file__).parent.resolve()
 DATA_DIR = Path(ROOT_DIR) / "data"
@@ -39,7 +40,9 @@ if __name__=='__main__':
     # cli.add_command(animate)
     # cli()
     start = time.time()
-    metadata_path = str(argv[1])
-    animate(metadata_path)
+    #metadata_path = str(argv[1])
+    audiohere = str(argv[1])
+    getting(audiohere)
+    #animate(metadata_path)
     # animate("data/Audio/Recording.m4a", 'timestamp.json')
     print(f'RUNTIME: [{time.time() - start}]')
