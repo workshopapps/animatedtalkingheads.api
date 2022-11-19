@@ -20,7 +20,7 @@ def imageParse():
     result_sequence = []
     for timing in range(iter(speech_duration)):
         if timing in speaking_list:
-            result_sequence.append("speech"
+            result_sequence.append("speech")
         else:
             result_sequence.append("silence")
     speaking_moments[timing] = result_sequence
