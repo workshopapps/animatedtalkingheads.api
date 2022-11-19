@@ -1,31 +1,35 @@
-from SpeakerDiarization import *
+
 import numpy as np
 from itertools import islice
 import collections
-from sys import argv
+from ...analysis.assembly_analyser import diarize_audio
 
-dataneed = SpeakerDiarization(audio="") #this is where speaker diarization is called
+
+
+
+dataneed = diarize_audio()
 
 transcription = dataneed["text"]
 diarization = dataneed["utterances"]
-audiolength = int(dataneed["audio_duration"]/1000)
+audiolength = int(dataneed["audio_duration"]/1000)  
 
-#time start and end in millieseconds -> convert to seconds
+
 audiotexts = []
 speakersvale = []
 count = 0
 for a in diarization:
     data = a
     speaker = data["speaker"]
-    starttime = int(data["start"]/1000) #convert to seconds
-    endtime = int(data["end"]/1000) #convert to seconds
+    starttime = int(data["start"]/1000) 
+    endtime = int(data["end"]/1000) 
     speech = data["text"]
+    if starttime == endtime:
+        duraction = list(starttime)
     duraction = list(range(starttime,endtime))
     
+
     text = {
         "speaker" : speaker,
-        # "start" : starttime, 
-        # "end" : endtime,
         "duration" : duraction,
         "speech" : speech,
         "index" : count,
@@ -33,12 +37,14 @@ for a in diarization:
     count += 1
     audiotexts.append(text)
     speakersvale.append(speaker)
+        
 
-def listdupes(seq):
-    seen = set()
-    seen_add = seen.add
-    seen_twice = set(x for x in seq if x in seen or seen_add(x))
-    return list(seen_twice)
+
+# def listdupes(seq):
+#     seen = set()
+#     seen_add = seen.add
+#     seen_twice = set(x for x in seq if x in seen or seen_add(x))
+#     return list(seen_twice)
 
 
 def chunkgeneratory2(iterable, chunk_size):
@@ -92,9 +98,3 @@ def convertdict(): #returns speaker sequence
     return isIT
 
 
-    
-
-# if __name__ == "__main__":
-#     start = time.time()
-#     metadata_path = str(argv[1])
-#     print(convertdict())
