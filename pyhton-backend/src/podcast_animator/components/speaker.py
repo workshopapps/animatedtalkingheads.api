@@ -8,13 +8,13 @@ import sys
 import json
 
 # If the argument is a file
-# with open(sys.argv[1], 'r') as file:
-# 	if not file:
-# 		exit()
-# 	variable = json.load(file)
+with open(sys.argv[1], 'r') as file:
+	if not file:
+		exit()
+	variable = json.load(file)
 audio_texts, parsed_data = [], {}
 flat_dict = {}
-variable = sys.argv[1]
+# variable = sys.argv[1]
 
 
 class Text:
@@ -59,16 +59,15 @@ def extrate_seconds():
 		# flat_list = list(itertools.chain.from_iterable(phrase_map))
 		flat_list = list()
 		for i in phrase_map:
-			jame = i[0]
-			while jame <= i[1]:
-				flat_list.append(jame)
-				jame += 1
-		seconds = []
-		for i in range(int(variable['audio_duration']) + 1):
-			if i in flat_list:
-				seconds.append("speech")
-			else:
-				seconds.append("silence")
+			mini_list = [i for i in range(i[0], i[1])]
+			flat_list += mini_list
+		fin = int(variable['audio_duration']) + 1
+		seconds = ["speech" if i in flat_list else "silence" for i in range(fin)]
+		# for i in range(int(variable['audio_duration']) + 1):
+		# 	if i in flat_list:
+		# 		seconds.append("speech")
+		# 	else:
+		# 		seconds.append("silence")
 		flat_dict[key] = seconds
 
 if __name__ == "__main__":
@@ -78,4 +77,4 @@ if __name__ == "__main__":
 	generate_parsed_data()
 	print(f"\nParsed Data\n{parsed_data}\n\n")
 	extrate_seconds()
-	print(f"\nFlat Dict\n{flat_dict}\n\n")
+	print(f"\nFlat Dict\n{flat_dict.get('B')[8625:8640]}\n\n")
