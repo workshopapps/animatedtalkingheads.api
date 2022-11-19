@@ -5,11 +5,11 @@ const { avaterSchema } = require('./avatar.schema');
 const avatarRouter = express.Router();
 
 avatarRouter.get('/', (req, res) => {
-  res.send('birds');
+  res.json({data:"all avatars"});
 });
 
 avatarRouter.post('/', schemaMiddleware(avaterSchema), (req, res) => {
-  res.send(req.body);
+  res.json({data:req.body});
 });
 
 module.exports = avatarRouter;
