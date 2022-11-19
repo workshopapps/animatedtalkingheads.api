@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 from uuid import uuid4
 from .image_generator import generate_image
-from .speaker import Speaker
 import itertools
 
 
@@ -46,7 +45,18 @@ def generate_animation(
             images.append(
                 generate_image(temp_images, bg_path)
             )
-            break
+    elif num_speakers ==3:
+        for img_1, img_2, img_3 in zip(*img_paths):
+            temp_images = [img_1, img_2, img_3]
+            images.append(
+                generate_image(temp_images, bg_path)
+            )
+    elif num_speakers ==4:
+        for img_1, img_2, img_3, img_4 in zip(*img_paths):
+            temp_images = [img_1, img_2, img_3, img_4]
+            images.append(
+                generate_image(temp_images, bg_path)
+            )
    
     frame_one = images[0]
     height, width, _ = frame_one.shape
