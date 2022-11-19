@@ -1,6 +1,6 @@
 version: 2  
 jobs:
-  build:
+  build-and-publish-image:
     docker:
       - image:  circleci/node:latest
     steps:
@@ -10,4 +10,40 @@ jobs:
           command: |
            git checkout staging
            git branch
+
 # Creates a remote Docker environment configured to execute Docker commands.
+      - setup_remote_docker 
+       
+      - run:
+        # installs a docker client that will be used to run the docker commands
+          name: Install Docker client
+          command: |
+            set -x
+            VER="17.03.0-ce"
+            curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
+            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+            mv /tmp/docker/* /usr/bin
+      - run:
+# Builds a docker image to push to Docker Hub
+
+          name: Build Docker image
+          command: docker build -t $IMAGE .
+
+      - run:
+# Pushes the Docker image you created to the Docker Hub.
+# Replace khabdrick/circleci-tutorial:v1 with the 
+# <docker_hub_username/docker-hub-password:version> you used to build the image above
+          name: Push to Docker Hub
+          command: |
+            docker login -u $USERNAME -p $PASSWORD
+            docker push $IMAGE:latest
+
+workflows:
+  version: 2
+  build-project:
+    jobs:
+      - build-and-publish-image:
+          filters:
+            branches:
+              only:
+               - staging
