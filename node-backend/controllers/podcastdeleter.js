@@ -2,6 +2,7 @@ const Podcast = require('../models/Podcast')
 const path = require('path')
 const fs = require('fs');
 
+//deletes directory of podcast and deletes podcast data from the database aswell
 exports.getpodcast = async (req, res,next) => {
     try{
       let podcast = await Podcast.findById(req.podcastId)
