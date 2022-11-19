@@ -11,15 +11,30 @@ module.exports = {
         'The file_path can point the dir containing a cloth, hair, skin png. It can also point to where a podcast or animated video is stored',
       example: './avatars/skin_black.png',
     },
-    style: {
+    cloth_style: {
       type: 'string',
-      description: 'how that particular avatar might look like might look like',
+      description: 'avatar cloth',
       example: 'shirt',
     },
-    color: {
+    hair_style:{
+      type: 'string',
+      description: 'avatar hairstyle',
+      example: 'afro',
+    },
+    hair_color:{
+      type: 'string',
+      description: 'avatar hair color',
+      example: 'blonde',
+    },
+    cloth_color: {
       type: 'string',
       description: 'how the cloth might look like',
       example: 'red',
+    },
+    skin_color: {
+      type: 'string',
+      description: 'skin color',
+      example: 'brown',
     },
     schemas: {
       User: {
@@ -60,6 +75,9 @@ module.exports = {
       AvatarInput: {
         type: 'object',
         properties: {
+          file_path:{
+            $ref:'#/components/file_path'
+          },
           id: {
             $ref: '#/components/id',
           },
@@ -69,58 +87,55 @@ module.exports = {
           accessories: {
             type: 'object',
             properties: {
-              cloth_type: { $ref: '#/components/id' },
-              skin_type: { $ref: '#/components/id' },
-              hair_type: { $ref: '#/components/id' },
-            },
+              cloth_type: {
+        type: 'object',
+        properties: {
+          style: {
+            $ref: '#/components/cloth_style',
           },
-          gender: {
+          color: {
+            $ref: '#/components/cloth_color',
+          },
+          file_path: {
+            $ref: '#/components/file_path',
+          },
+        },
+      },
+      skin_type: {
+        type: 'object',
+        properties: {
+          color: {
+            $ref: '#/components/skin_color',
+          },
+          file_path: {
+            $ref: '#/components/file_path',
+          },
+        },
+      },
+      hair_type: {
+        type: 'object',
+        properties: {
+          style: {
+            $ref: '#/components/hair_style',
+          },
+          color: {
+            $ref: '#/components/hair_color',
+          },
+          file_path: {
+            $ref: '#/components/file_path',
+          },
+        },
+      },},
+          },
+      gender: {
             type: 'string',
             required: true,
             enum: ['male', 'female', 'neutral'],
           },
-          user_id: { $ref: '#/components/id' },
+      user_id: { $ref: '#/components/id' },
         },
       },
-      ClothType: {
-        type: 'object',
-        properties: {
-          style: {
-            $ref: '#/components/style',
-          },
-          color: {
-            $ref: '#/components/color',
-          },
-          file_path: {
-            $ref: '#/components/id',
-          },
-        },
-      },
-      SkinType: {
-        type: 'object',
-        properties: {
-          color: {
-            $ref: '#/components/color',
-          },
-          file_path: {
-            $ref: '#/components/id',
-          },
-        },
-      },
-      HairType: {
-        type: 'object',
-        properties: {
-          style: {
-            $ref: '#/components/style',
-          },
-          color: {
-            $ref: '#/components/color',
-          },
-          file_path: {
-            $ref: '#/components/id',
-          },
-        },
-      },
+      
     },
     // Error_Types: {
     //   type: 'object',
