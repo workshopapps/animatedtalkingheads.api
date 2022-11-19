@@ -1,64 +1,94 @@
-import os
-from pathlib import Path
-import requests
-import time
-from dotenv import load_dotenv
+from analysis.assembly_analyser import *
+import numpy as np
+from itertools import islice
+import collections
+from sys import argv
 
+def getting(audio):
+   global dataneed 
+   dataneed = diarize_audio(audio) #this is where speaker diarization is called
 
-DOTENV_PATH = "abee7903c31046f1a8f50ccb320f65ed" #Path() / "env/.env"
-# print(DOTENV_PATH.exists())
-# if DOTENV_PATH.exists():
-#     load_dotenv(DOTENV_PATH)
+transcription = dataneed["text"]
+diarization = dataneed["utterances"]
+audiolength = int(dataneed["audio_duration"]/1000)
 
-
-API_KEY = "abee7903c31046f1a8f50ccb320f65ed" #os.getenv("ASSEMBLY_AI_KEY")
-
-def diarize_audio(audio: str) -> dict[str, list | int | str]:
-    """return speaker diarization data from provided audio url
-
-    Args:
-        audio (str): downloadable url of audio file
-
-    Returns:
-        dict[str, list | int | str]: metadata from audio
-    """
-
-    endpoint1 = "https://api.assemblyai.com/v2/transcript"
-
-    json1 = {
-    "audio_url": audio,
-    "speaker_labels": True,
-    "disfluencies": True #transcribe filler words
+#time start and end in millieseconds -> convert to seconds
+audiotexts = []
+speakersvale = []
+count = 0
+for a in diarization:
+    data = a
+    speaker = data["speaker"]
+    starttime = int(data["start"]/1000) #convert to seconds
+    endtime = int(data["end"]/1000) #convert to seconds
+    speech = data["text"]
+    duraction = list(range(starttime,endtime))
+    
+    text = {
+        "speaker" : speaker,
+        # "start" : starttime, 
+        # "end" : endtime,
+        "duration" : duraction,
+        "speech" : speech,
+        "index" : count,
     }
-    headers1 = {
-        "authorization": API_KEY,
-        "content-type": "application/json",
-    }
-    response1 = requests.post(endpoint1, json=json1, headers=headers1)
-    first = response1.json()
-    second = first["id"]
+    count += 1
+    audiotexts.append(text)
+    speakersvale.append(speaker)
 
-    time.sleep(20) #waiting for response
-    "rx44sn32o3-25dd-4d21-a286-a04f58ba0f43"
-    endpoint_result = "https://api.assemblyai.com/v2/transcript/" + second
+def listdupes(seq):
+    seen = set()
+    seen_add = seen.add
+    seen_twice = set(x for x in seq if x in seen or seen_add(x))
+    return list(seen_twice)
 
 
-    #maps words to timestamp only
-    #endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
+def chunkgeneratory2(iterable, chunk_size):
+    return [iterable[x:x + chunk_size] for x in range(0, len(iterable), chunk_size)]
 
-    headers2 = {
-        "authorization": API_KEY,
-    }
+def chunkgeneratory1(iterable, chunk_size):
+    imagesList = iter(iterable)
+    chunk = list(islice(imagesList, chunk_size)) #n is steps iterable is sliced
+    while chunk:
+        yield chunk
+        chunk = list(islice(imagesList, chunk_size))
 
-    # time.sleep(400) #wait for transcription 
-    response2= requests.get(endpoint_result, headers=headers2)
-    a = response2.json()
-    listout = {
-        "text":a["text"], 
-        "utterances": a["utterances"],
-        "audio_duration": int(a["audio_duration"])
-        }
+timetotal = list(range(0,audiolength+1))
 
-    # ress = requests.get(endpointVTT, headers=headers2)
-    # b = ress.text #just time and speech
-    return listout
+
+def whoistalking():
+    it = chunkgeneratory2(timetotal, 5)
+    for dict_item in audiotexts:
+            newdur = dict_item["duration"]
+            it2 = chunkgeneratory1(newdur, 5)
+            
+            # while True:
+            for yawn in it:
+                try:
+                    dur = yawn
+                    dur2 = next(it2)
+                except StopIteration:
+                    break
+                if collections.Counter(dur) == collections.Counter(dur2):
+                    valt = "speaking"
+                else:
+                    valt = "silence"
+                
+                yield dict_item["speaker"],valt
+
+
+
+
+def convertdict(): #returns speaker sequence
+    isIT ={}
+    speechsequeen = []
+    donemaybe = whoistalking()        
+    while True:
+        try:
+            letter = next(donemaybe)
+        except StopIteration:
+            break
+        speechsequeen.append(letter)
+    for x,y in speechsequeen:
+        isIT.setdefault(x,[]).append(y)
+    return isIT
