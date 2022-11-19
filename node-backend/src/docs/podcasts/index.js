@@ -1,6 +1,6 @@
 module.exports = {
   paths: {
-    '/podcasts/upload': {
+    '/todos': {
       get: {
         tags: ['Podcasts'],
         description: 'Get todos',
@@ -20,22 +20,22 @@ module.exports = {
         },
       },
       post: {
-        tags: ['Podcast'],
-        description: 'Upload a podcast',
-        operationId: 'uploadPodcast',
-        parameters: [
-          {
-            in: 'formData',
-            name: 'avatar',
-            type: 'file',
-            description: 'The file to upload.',
+        tags: ['Avatars'],
+        description: 'Create todo',
+        operationId: 'createTodo',
+        parameters: [],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/TodoInput',
+              },
+            },
           },
-        ],
-        consumes: ['multipart/form-data'],
-
+        },
         responses: {
           201: {
-            description: 'Podcast created successfully',
+            description: 'Todo created successfully',
           },
           500: {
             description: 'Server error',
@@ -49,15 +49,15 @@ module.exports = {
         description: 'Get a todo',
         operationId: 'getTodo',
         parameters: [
-          // {
-          //   name: 'id',
-          //   in: 'path',
-          //   schema: {
-          //     $ref: '#/components/schemas/id',
-          //   },
-          //   required: true,
-          //   description: 'A single todo id',
-          // },
+          {
+            name: 'id',
+            in: 'path',
+            schema: {
+              $ref: '#/components/schemas/id',
+            },
+            required: true,
+            description: 'A single todo id',
+          },
         ],
         responses: {
           200: {
