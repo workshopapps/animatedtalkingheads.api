@@ -15,7 +15,7 @@ def imageParse():
     for each_speaker in speaker_sequence:
         for speech_details in each_speaker:
             speech_duration = speech_details[1]
-            speaking_list = list(chain.from_iterable(speech_duration))
+            speaking_list = list(chain.from_iterable(speech_duration)
 
     result_sequence = []
     for timing in range(iter(speech_duration)):
