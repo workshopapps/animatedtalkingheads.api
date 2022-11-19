@@ -8,5 +8,6 @@ jobs:
       - run:
           name: Checkout staging branch
           command: |
+           git checkout staging
            git branch
 # Creates a remote Docker environment configured to execute Docker commands.
