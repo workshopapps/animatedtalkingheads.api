@@ -9,15 +9,9 @@ const { podcastuploader } = require('../../controllers/podcast.controller');
 
 const podcastRouter = express.Router();
 
+podcastRouter.get('/:userid',require('../../middlewares/idstore'),require('../../controllers/podcastgetter'));
 
-//store user id
-const getId = (req,res,next)=>{
-  req.userId = req.params.userid;
-  next()
-}
-
-
-podcastRouter.get('/:userid',getId,require('../../controllers/podcastgetter'));
+podcastRouter.delete('/:podcastid',require('../../middlewares/podcastidstore'),require('../../controllers/podcastdeleter'))
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('audio')) {
