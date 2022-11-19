@@ -1,0 +1,2 @@
+ffmpeg == 2.8.21
+git+https://github.com/openai/whisper.git 
