@@ -10,10 +10,10 @@ exports.podcastuploader = async (req, res) => {
   });
 
   const user_file_path = './uploads/podcasts/' + req.headers.user_id + '/';
-
+  const path_to_directory = './podcasts/' + req.headers.user_id + '/';
   const podcast_file_path =
-    user_file_path + '-' + podcast.id + '-' + req.file.originalname;
-
+    path_to_directory + '-' + podcast.id + '-' + req.file.originalname;
+const save_file_directory = user_file_path + '-' + podcast.id + '-' + req.file.originalname;
   if (!fs.existsSync(user_file_path)) {
     fs.mkdirSync(user_file_path);
   }
@@ -25,6 +25,6 @@ exports.podcastuploader = async (req, res) => {
     }
   );
 
-  await writeFile(podcast_file_path, req.file.buffer);
+  await writeFile(save_file_directory, req.file.buffer);
   res.send(podcast);
 };
