@@ -19,7 +19,7 @@ def generate_sequence(url: str):
 
     transcription = dataneed["text"]
     diarization = dataneed["utterances"]
-    audiolength = int(dataneed["audio_duration"]/1000)  
+    audiolength = int(dataneed["audio_duration"])  
     audio_data = []
     for data in diarization:
         phrase = Speech(
@@ -30,6 +30,7 @@ def generate_sequence(url: str):
             index = diarization.index(data)
         )
         audio_data.append(phrase)
+   
     sequence = speakers_sequence(audio_data, audiolength)
     return sequence
     
@@ -50,24 +51,21 @@ def speakers_sequence(
     speaker_sequence = {}
     for data in audio_data:
         if data.speaker not in speaker_sequence:
-            speaker_sequence[data.speaker]=[(data.index,data.duration, data.text)]
+            speaker_sequence[data.speaker]=[data.duration]
         else:
-            speaker_sequence[data.speaker].append((data.index,data.duration,data.text))
+            speaker_sequence[data.speaker].append(data.duration)
     
 
     speaking_moments={}
     for each_speaker in speaker_sequence:
-        print(each_speaker[0])
-        phrase_map = [speaker_tuple[1] for speaker_tuple in each_speaker]
-        flattened_list = list(chain.from_iterable(phrase_map))
+        # phrase_map = [speaker_tuple[1] for speaker_tuple in each_speaker]
+        flattened_list = list(chain.from_iterable(speaker_sequence[each_speaker]))
         result = []
-        for i in range(audiolength + 1, step=1):
+        for i in range(0, audiolength + 1):
             if i in flattened_list:
                 result.append("speech")
             else:
                 result.append("silence")
         speaking_moments[each_speaker] = result
-        
-
     return speaking_moments
     

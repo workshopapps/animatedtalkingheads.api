@@ -14,13 +14,14 @@ from uuid import uuid4
 import time
 from components.parser_two import generate_sequence
 from components.animator import generate_animation
+# from podcast_animator.analysis.assembly_analyser import checking, convertdict
 from moviepy.editor import VideoFileClip, AudioFileClip
 
 
 
 ## APPLICATION ROOT DIRECTOR
 ROOT_DIR = Path(__file__).parent.parent.parent.parent.resolve()
-DATA_DIR = Path(ROOT_DIR) / "pyhton-backend/data"
+DATA_DIR = ROOT_DIR / "data"
 AVATAR_DIR = DATA_DIR / "Image/avatars"
 BG_DIR = DATA_DIR / "Image/backgrounds"
 
@@ -33,8 +34,7 @@ def animate( metadata_path :str) -> None:
         metadata_path (str): path to json file containing all information
                              required for animation
     """
-    output_path = DATA_DIR / f"/Result/{str(uuid4())}.mp4"  
-
+    output_path = DATA_DIR / f"Result/{str(uuid4())}.mp4"  
     with open(metadata_path) as data_file:
         metadata_obj = json.load(data_file)
 
@@ -46,31 +46,43 @@ def animate( metadata_path :str) -> None:
     
     num_speakers = len(avatar_map)
     animation_sequence = generate_sequence(audio_url)
+    # aud_texts, audio_length = checking(audio_url)
+    # animation_sequence = convertdict(aud_texts, audio_length)
+
+    def get_path(directory, _id, is_folder=False):
+        for file in os.scandir(directory): 
+            if is_folder:
+                if file.is_dir() and str(file.name).endswith(_id):
+                    return directory / f"{file.name}"
+            else:
+                name, ext = str(file.name).split('.')
+                if file.is_file() and str(name).endswith(_id):
+                    return directory / f"{name}.{ext}"
 
 
-    for file in os.scandir(BG_DIR):
-        if file.is_file() and str(file.name).endswith(bg_id):
-            bg_path = BG_DIR / f"{file.name}"
+    bg_path = get_path(BG_DIR, bg_id, is_folder=False)
+
+   
     
     avatar_paths = {}
     for avatar in avatar_map:
-        for file in os.scandir(AVATAR_DIR):
-            if file.is_dir() and str(file.name).endswith(avatar_map[avatar]):
-                avatar_paths[avatar] = AVATAR_DIR / f"{file.name}"
+        avatar_paths[avatar] = get_path(AVATAR_DIR, avatar_map[avatar], is_folder=True)
+        
 
     
 
     animation_path = generate_animation(
         animation_sequence, 
         bg_path, 
-        num_speakers, avatar_paths)
+        num_speakers, avatar_paths, DATA_DIR)
     videoclip = VideoFileClip(str(animation_path))
     audioclip = AudioFileClip(str(audio_path))
     print("About to set audio clip")
     video = videoclip.set_audio(audioclip)
     print("Audio clip set")
-    video.write_videofile(output_path)
+    video.write_videofile(str(output_path))
     print(f'YOUR VIDEO HAS BEEN SAVED TO: [{output_path}]')
+    os.remove(animation_path)
    
 
 if __name__=='__main__':
