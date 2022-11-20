@@ -60,15 +60,15 @@ To run your code
    - Format :
    ~~~
    {
-    "audio_url": "",
-    "audio_path": "",
+    "audio_url": "https://files.realpython.com/podcasts/RPP_E133_03_Dan_Moore.72ea7b2eed77.mp3",
+    "audio_path": "test_data\\sample.mp3",
     "avatar_map": {
         "A": "01",
         "B": "02"
     },
     "bg_path": "01"
-    }
-    ~~~
+   }
+   ~~~
 
 ## output: 
 - video file
