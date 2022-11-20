@@ -15,7 +15,7 @@ https://user-images.githubusercontent.com/99333786/202913471-c8fea8f6-40f7-4852-
 Clone and Navigate to repository
 >`git clone https://github.com/nwizugbesamson/podcast_animator`
 
-Or Download
+Or Download Zipfile
 
 
 >`cd podcast_animator`
@@ -33,7 +33,7 @@ Or Download
 **Install in development**
 > `pip install -e .[dev]`
 
-- *pre-commit hook(rejects commits if error found with format, commit is then formatted with black.) save directory and commit formatted changes
+>>*pre-commit hook(rejects commits if error found with format, commit is then formatted with black.) save directory and commit formatted changes
 `pre-commit install`*
 
 # Prerequisites
