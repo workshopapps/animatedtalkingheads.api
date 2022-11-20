@@ -21,14 +21,17 @@ Or Download Zipfile
 
 >`cd podcast_animator`
 
+To setup your virtual environment
 >`python -m venv venv`
 
+To activate your environment
 ***For Windows:-***
 >`. venv\Scripts\activate`
 
 ***Linux / Posix/ Mac:-***
 >`source venv/bin/activate`
 
+In your virtual environment install pip
 >`pip install -U pip`
 
 **Install in development**
