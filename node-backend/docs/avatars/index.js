@@ -1,6 +1,6 @@
 module.exports = {
-  paths: {
-    '/podcasts/upload': {
+  paths: {    '/podcasts/upload': {
+     
       post: {
         tags: ['Podcast'],
         description: 'Upload a podcast',
@@ -8,7 +8,7 @@ module.exports = {
         parameters: [
           {
             in: 'formData',
-            name: 'podcast',
+            name: 'avatar',
             type: 'file',
             description: 'The file to upload.',
           },

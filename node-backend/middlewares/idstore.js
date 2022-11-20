@@ -1,5 +1,8 @@
 //store user id
-export const getId = (req,res,next)=>{
+const getId = (req,res,next)=>{
     req.userId = req.params.userid;
     next()
   }
+
+
+module.exports = getId;

@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs');
 
 //deletes directory of podcast and deletes podcast data from the database aswell
-exports.getpodcast = async (req, res,next) => {
+const delpodcast = async (req, res,next) => {
     try{
       let podcast = await Podcast.findById(req.podcastId)
       const poddirectory = path.join(__dirname,'..', `/${podcast.file_path}`)
@@ -22,3 +22,4 @@ exports.getpodcast = async (req, res,next) => {
     }
     }
     
+    module.exports = delpodcast

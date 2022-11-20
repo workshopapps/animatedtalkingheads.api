@@ -1,16 +1,19 @@
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image #, ImageDraw, ImageFont
 import cv2 as cv
 import numpy as np
 
 
-FONT = ImageFont.truetype('data/Fonts/arial.ttf', 30)
+def generate_image(images: list, bg_path: Path) -> np.ndarray:
+    """_summary_
 
+    Args:
+        images (list): _description_
+        bg_path (Path): _description_
 
-
-
-
-def generate_image(images: list, bg_path: Path):
+    Returns:
+        _type_: _description_
+    """
     background_image = Image.open(bg_path)
     background_image = background_image.convert(mode='RGBA')
     width, length = background_image.size
