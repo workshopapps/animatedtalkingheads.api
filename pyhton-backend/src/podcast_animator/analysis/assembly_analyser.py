@@ -31,7 +31,7 @@ def diarize_audio(audio):
     print(first)
 
     time.sleep(20) #waiting for response
-    #second = "rx44sn32o3-25dd-4d21-a286-a04f58ba0f43"
+    #second = "rx44sn32o3-25dd-4d21-a286-a04f58ba0f43
     endpoint_result = "https://api.assemblyai.com/v2/transcript/" + second
 
 
