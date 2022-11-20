@@ -40,11 +40,11 @@ for a in diarization:
         
 
 
-# def listdupes(seq):
-#     seen = set()
-#     seen_add = seen.add
-#     seen_twice = set(x for x in seq if x in seen or seen_add(x))
-#     return list(seen_twice)
+def listdupes(seq):
+    seen = set()
+    seen_add = seen.add
+    seen_twice = set(x for x in seq if x in seen or seen_add(x))
+    return list(seen_twice)
 
 
 def chunkgeneratory2(iterable, chunk_size):

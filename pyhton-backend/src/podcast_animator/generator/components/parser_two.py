@@ -7,13 +7,15 @@ from podcast_animator.analysis.assembly_analyser import diarize_audio
 
 
 def generate_sequence(url: str):
-    """_summary_
+    """ 
+    using assembly ai we send an audio url and obtain json data for the audio file
+    @author : cchimdindu
 
     Args:
-        url (str): _description_
+        audio (string): url of video
 
     Returns:
-        dict[str, str]: _description_
+        lis: json file is sorted out and returned in list format
     """
     dataneed = diarize_audio(url)
 
@@ -39,14 +41,15 @@ def generate_sequence(url: str):
 def speakers_sequence(
     audio_data: list[Speech], audiolength: int
 ) -> dict[str, list]:
-    """_summary_
-
+    """taking data from audio transcript and turns into dictionary
+    puts all utterances into a list for easy adapataion
+    @author: justin
     Args:
-        audio_data (list[Speech]): _description_
-        audiolength (int): _description_
+        list: diarized data
+        audiolegth: length of audio
 
     Returns:
-        dict[str, list]: _description_
+        List: dict of speaking moments
     """
     speaker_sequence = {}
     for data in audio_data:

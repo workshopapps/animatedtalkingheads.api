@@ -29,6 +29,19 @@ def generate_animation(
     bg_path: Path, num_speakers: int, 
     avatar_dict: dict[str, str],
     data_dir: Path) -> Path:
+    """generating the animation for the video with the use of speaker sequence
+       speech sequeen and images sequence
+    @author: samson6398
+    Args:
+        data (dict[str, list[str]]): _description_
+        bg_path (Path): _description_
+        num_speakers (int): _description_
+        avatar_dict (dict[str, str]): _description_
+        data_dir (Path): _description_
+
+    Returns:
+        Path: _description_
+    """
     images = []
     img_paths = []
     output = data_dir / f'temp/{str(uuid4())}.mp4'
