@@ -20,7 +20,6 @@ Or Download Zipfile
 
 
 >`cd podcast_animator`
->`pip install -r requirements.txt`
 
 To setup your virtual environment
 >`python -m venv venv`
@@ -35,6 +34,11 @@ To activate your environment
 
 In your virtual environment install pip
 >`pip install -U pip`
+>`pip install -r requirements.txt`
+To run your code with python
+>`python main.py timestamp_json`
+To run your code with python3
+>`python3 main.py timestamp_json`
 
 **Install in development**
 > `pip install -e .[dev]`
@@ -43,6 +47,7 @@ In your virtual environment install pip
 `pre-commit install`*
 
 ## Prerequisites
+**25 seconds average runtime for a 10 seconds long video**
 
 ## Authors
 ***HNG Interns***
