@@ -37,10 +37,11 @@ In your virtual environment install pip
 >`pip install -r requirements.txt`
 
 To run your code
-***with python***
+
+*with python*
 >`python main.py meta.json`
 
-***with python3***
+*with python3*
 >`python3 main.py meta.json`
 
 **Install in development**
