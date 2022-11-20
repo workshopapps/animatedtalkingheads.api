@@ -47,11 +47,13 @@ To run your code
 **Install in development**
 > `pip install -e .[dev]`
 
-*pre-commit hook(rejects commits if error found with format, commit is then formatted with black.) save directory and commit formatted changes
-`pre-commit install`*
+>**Note**
+>*pre-commit hook(rejects commits if error found with format, commit is then formatted with black.) save directory and commit formatted changes*
+>`pre-commit install`
 
 ## Prerequisites
 **25 seconds average runtime for a 10 seconds long video**
+contents 
 
 ## Authors
 ***HNG Interns***
