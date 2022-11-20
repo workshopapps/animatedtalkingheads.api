@@ -27,14 +27,18 @@ animation_functions = {
 def generate_animation(
     data: dict[str, list[str]], 
     bg_path: Path, num_speakers: int, 
-    avatar_dict: dict[str, str]) -> Path:
+    avatar_dict: dict[str, str],
+    data_dir: Path) -> Path:
     images = []
     img_paths = []
-    output = f'data/compiled_videos/{str(uuid4())}.mp4'
+    output = data_dir / f'temp/{str(uuid4())}.mp4'
+    print("anim started")
 
     for speaker in data:
         avatar_path = avatar_dict[speaker]
-        anm_seq = [animation_functions[state](avatar_path) for state in data[speaker]]
+        print("start spek")
+        anm_seq = [animation_functions[state](avatar_path) for state in data[speaker][:60]]
+        print("end spek")
         img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
         
         
@@ -59,9 +63,10 @@ def generate_animation(
             )
    
     frame_one = images[0]
+    print(len(images))
     height, width, _ = frame_one.shape
     fourcc = cv2.VideoWriter_fourcc(*'mp4v') # Be sure to use lower case
-    out = cv2.VideoWriter(output, fourcc, 24.0, (width, height))
+    out = cv2.VideoWriter(str(output.absolute()), fourcc, 24.0, (width, height))
 
     for image in images:
         out.write(image) # Write out frame to video

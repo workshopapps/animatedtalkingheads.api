@@ -3,7 +3,7 @@ const fs = require('fs');
 const Podcast = require('./../models/Podcast');
 
 exports.podcastuploader = async (req, res) => {
-  console.log(req.file);
+  console.log(req.headers.user_id);
   let podcast = await Podcast.create({
     user_id: req.headers.user_id,
     file_path: '///',

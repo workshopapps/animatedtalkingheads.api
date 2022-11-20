@@ -1,9 +1,9 @@
-import os
-from pathlib import Path
+# import os
+# from pathlib import Path
 import requests
 import time
-from dotenv import load_dotenv
-import numpy as np
+# from dotenv import load_dotenv
+# import numpy as np
 from itertools import islice
 import collections
 from sys import argv
@@ -28,37 +28,48 @@ def diarize_audio(audio):
     first = response1.json()
     second = first["id"]
 
-    print(first)
 
-    time.sleep(20) #waiting for response
-    #second = "rx44sn32o3-25dd-4d21-a286-a04f58ba0f43"
-    endpoint_result = "https://api.assemblyai.com/v2/transcript/" + second
-
-
-    #maps words to timestamp only
-    endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
-
+    endpoint_result = "https://api.assemblyai.com/v2/transcript/" +  second
     headers2 = {
         "authorization": API_KEY,
     }
+    # print(first)
+    process_done = False
+    while not process_done:
+        response2= requests.get(endpoint_result, headers=headers2)
+        a = response2.json()
+        status = a["status"]
+        if status != "completed":
+            time.sleep(20) 
+        else:
+            process_done = True           
+    # time.sleep(20) #waiting for response
+    #second = "rx44sn32o3-25dd-4d21-a286-a04f58ba0f43"
+    
 
-    time.sleep(400) #wait for transcription 
-    response2= requests.get(endpoint_result, headers=headers2)
-    a = response2.json()
+
+    #maps words to timestamp only
+    # endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
+
+    
+
+    # time.sleep(400) #wait for transcription 
+    
     listout = {
         "text":a["text"], 
         "utterances": a["utterances"],
         "audio_duration": int(a["audio_duration"])
         }
 
-    ress = requests.get(endpointVTT, headers=headers2)
-    b = ress.text #just time and speech
+    # ress = requests.get(endpointVTT, headers=headers2)
+    # b = ress.text #just time and speech
     return listout
 
 #insta = diarize_audio("https://bit.ly/3rBnQ8i") #
 
-audiotexts = []
+
 def checking(audio1):
+    audiotexts = []
     dataneed = diarize_audio(audio1)
     transcription = dataneed["text"]
     diarization = dataneed["utterances"]
@@ -73,7 +84,10 @@ def checking(audio1):
         starttime = int(data["start"]/1000) #convert to seconds
         endtime = int(data["end"]/1000) #convert to seconds
         speech = data["text"]
-        duraction = list(range(starttime,endtime))
+        if starttime == endtime:
+            duraction = [starttime]
+        else:
+            duraction = list(range(starttime,endtime+1))
         
         text = {
             "speaker" : speaker,
@@ -83,16 +97,17 @@ def checking(audio1):
             "speech" : speech,
             "index" : count,
         }
+        print(speaker, duraction)
         count += 1
         audiotexts.append(text)
         speakersvale.append(speaker)
-    return audiolength
+    return audiotexts, audiolength
 
-def listdupes(seq):
-    seen = set()
-    seen_add = seen.add
-    seen_twice = set(x for x in seq if x in seen or seen_add(x))
-    return list(seen_twice)
+# def listdupes(seq):
+#     seen = set()
+#     seen_add = seen.add
+#     seen_twice = set(x for x in seq if x in seen or seen_add(x))
+#     return list(seen_twice)
 
 
 def chunkgeneratory2(iterable, chunk_size):
@@ -105,25 +120,25 @@ def chunkgeneratory1(iterable, chunk_size):
         yield chunk
         chunk = list(islice(imagesList, chunk_size))
 
-timetotal = list(range(0,checking()+1))
 
 
 
-def whoistalking():
-    it = chunkgeneratory2(timetotal, 5)
+
+def whoistalking(audiotexts, timetotal):
+    # it = chunkgeneratory1(timetotal, 1)
     for dict_item in audiotexts:
             newdur = dict_item["duration"]
-            it2 = chunkgeneratory1(newdur, 5)
-            
-            # while True:
-            for yawn in it:
+            it = chunkgeneratory1(timetotal, 1)
+            it2 = chunkgeneratory1(newdur, 1)
+            # for yawn, noyawn in zip(it, it2):
+            while it:
                 try:
-                    dur = yawn
+                    dur = next(it)
                     dur2 = next(it2)
                 except StopIteration:
                     break
-                if collections.Counter(dur) == collections.Counter(dur2):
-                    valt = "speaking"
+                if collections.Counter(dur2) == collections.Counter(dur):
+                    valt = "speech"
                 else:
                     valt = "silence"
                 
@@ -132,10 +147,11 @@ def whoistalking():
 
 
 
-def convertdict(): #returns speaker sequence
+def convertdict(audiotexts, audiolength): #returns speaker sequence
     isIT ={}
     speechsequeen = []
-    donemaybe = whoistalking()        
+    timetotal = list(range(0,audiolength+1))
+    donemaybe = whoistalking(audiotexts, timetotal)        
     while True:
         try:
             letter = next(donemaybe)

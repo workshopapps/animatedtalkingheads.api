@@ -9,9 +9,17 @@ const { podcastuploader } = require('../../controllers/podcast.controller');
 
 const podcastRouter = express.Router();
 
-podcastRouter.get('/:userid',require('../../middlewares/idstore'),require('../../controllers/podcastgetter'));
+// podcastRouter.get(
+//   '/:userid',
+//   require('../../middlewares/idstore'),
+//   require('../../controllers/podcastgetter')
+// );
 
-podcastRouter.delete('/:podcastid',require('../../middlewares/podcastidstore'),require('../../controllers/podcastdeleter'))
+// podcastRouter.delete(
+//   '/:podcastid',
+//   require('../../middlewares/podcastidstore'),
+//   require('../../controllers/podcastdeleter')
+// );
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('audio')) {
@@ -32,9 +40,9 @@ podcastRouter.post(
   podcastuploader
 );
 
-podcastRouter.get('/download',(req,res)=> {
-  const {filename} = req.body
-  res.download(filename)
+podcastRouter.get('/download', (req, res) => {
+  const { filename } = req.body;
+  res.download(filename);
 });
 
 module.exports = podcastRouter;
