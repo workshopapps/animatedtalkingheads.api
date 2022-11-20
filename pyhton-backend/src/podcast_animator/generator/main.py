@@ -82,6 +82,7 @@ def animate( metadata_path :str) -> None:
     print("Audio clip set")
     video.write_videofile(str(output_path))
     print(f'YOUR VIDEO HAS BEEN SAVED TO: [{output_path}]')
+    os.remove(animation_path)
    
 
 if __name__=='__main__':

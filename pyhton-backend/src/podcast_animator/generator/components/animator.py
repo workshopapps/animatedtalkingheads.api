@@ -32,10 +32,13 @@ def generate_animation(
     images = []
     img_paths = []
     output = data_dir / f'temp/{str(uuid4())}.mp4'
+    print("anim started")
 
     for speaker in data:
         avatar_path = avatar_dict[speaker]
-        anm_seq = [animation_functions[state](avatar_path) for state in data[speaker]]
+        print("start spek")
+        anm_seq = [animation_functions[state](avatar_path) for state in data[speaker][:60]]
+        print("end spek")
         img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
         
         
