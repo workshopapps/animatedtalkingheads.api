@@ -57,7 +57,16 @@ To run your code
 ## inputs:
 - json file
    - containing : **time stamps for when speakers talk**
-   - Format : 
+   - Format :
+   {
+    "audio_url": "",
+    "audio_path": "",
+    "avatar_map": {
+        "A": "01",
+        "B": "02"
+    },
+    "bg_path": "01"
+    }
 
 ## output: 
 - video file
