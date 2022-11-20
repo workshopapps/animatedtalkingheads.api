@@ -1,20 +1,27 @@
 module.exports = {
-  paths: {    '/podcasts/upload': {
-     
+  paths: {
+    '/podcasts/upload': {
       post: {
         tags: ['Podcast'],
         description: 'Upload a podcast',
         operationId: 'uploadPodcast',
-        parameters: [
-          {
-            in: 'formData',
-            name: 'avatar',
-            type: 'file',
-            description: 'The file to upload.',
-          },
-        ],
-        consumes: ['multipart/form-data'],
 
+        consumes: ['multipart/form-data'],
+        requestBody: {
+          content: {
+            'multipart/form-data': {
+              schema: {
+                type: 'object',
+                properties: {
+                  podcast: {
+                    type: 'string',
+                    format: 'binary',
+                  },
+                },
+              },
+            },
+          },
+        },
         responses: {
           201: {
             description: 'Podcast created successfully',
