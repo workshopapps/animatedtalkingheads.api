@@ -49,12 +49,19 @@ To run your code
 
 >**Note**
 >*pre-commit hook(rejects commits if error found with format, commit is then formatted with black.) save directory and commit formatted changes*
+>
 >`pre-commit install`
 
 ## Prerequisites
 **25 seconds average runtime for a 10 seconds long video**
-contents 
+## inputs:
+- json file
+   - containing : **time stamps for when speakers talk**
+   - Format : 
 
+## output: 
+- video file
+   - containing : **Animated talking heads**
 ## Authors
 ***HNG Interns***
 - Team clutch
