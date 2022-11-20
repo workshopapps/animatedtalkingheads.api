@@ -33,12 +33,15 @@ To activate your environment
 >`source venv/bin/activate`
 
 In your virtual environment install pip
->`pip install -U pip`
+>`pip install -U pip`\
 >`pip install -r requirements.txt`
-To run your code with python
->`python main.py timestamp_json`
-To run your code with python3
->`python3 main.py timestamp_json`
+
+To run your code
+***with python***
+>`python main.py meta.json`
+
+***with python3***
+>`python3 main.py meta.json`
 
 **Install in development**
 > `pip install -e .[dev]`
