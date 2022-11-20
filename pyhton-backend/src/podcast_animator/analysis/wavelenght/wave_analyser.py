@@ -8,12 +8,14 @@ from pathlib import Path
 
 ABS_PATH = os.path.abspath(__file__)
 BASE_DIR = os.path.dirname(ABS_PATH)
-DATA_DIR = os.path.join(BASE_DIR, "data")
+DATA_DIR = os.path.join(BASE_DIR, "temp")
 SAMPLE_INPUTS = os.path.join(DATA_DIR, "inputs")
 SAMPLE_OUTPUTS = os.path.join(DATA_DIR, 'outputs')
 
 
 file_path = os.path.join(SAMPLE_INPUTS, 'vocals2.wav')
+os.makedirs(SAMPLE_INPUTS, exist_ok=True)
+
 y, sr = librosa.load(file_path)
 S_full, phase = librosa.magphase(librosa.stft(y))
 
