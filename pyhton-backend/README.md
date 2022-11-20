@@ -16,7 +16,7 @@ Clone and Navigate to repository
 >`https://github.com/workshopapps/animatedtalkingheads.api.git`
 
 Or Download Zipfile
->>Click on the green button `<>code`,at the bottom of the popup click Download ZIP 
+   - Click on the green button `<>code`,at the bottom of the popup click Download ZIP 
 
 
 >`cd podcast_animator`
