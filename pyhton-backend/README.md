@@ -57,17 +57,17 @@ To run your code
 ## inputs:
 - json file
    - containing : **time stamps for when speakers talk**
-   - Format :
+   - Format : Dictionary
    ~~~
-   {
-    "audio_url": "https://files.realpython.com/podcasts/RPP_E133_03_Dan_Moore.72ea7b2eed77.mp3",
-    "audio_path": "test_data\\sample.mp3",
-    "avatar_map": {
-        "A": "01",
-        "B": "02"
-    },
-    "bg_path": "01"
-   }
+      {
+       "audio_url": "https://files.realpython.com/podcasts/RPP_E133_03_Dan_Moore.72ea7b2eed77.mp3",
+       "audio_path": "test_data\\sample.mp3",
+       "avatar_map": {
+           "A": "01",
+           "B": "02"
+       },
+       "bg_path": "01"
+      }
    ~~~
 
 ## output: 
