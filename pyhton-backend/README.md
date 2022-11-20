@@ -2,6 +2,9 @@
 ![Tests](https://github.com/nwizugbesamson/podcast_animator/actions/workflows/tests.yaml/badge.svg)
 ### Development guide
 
+
+https://user-images.githubusercontent.com/99333786/202913471-c8fea8f6-40f7-4852-b3d9-02054f1d91e9.mp4
+
 - Clone and Navigate to repository
 `git clone https://github.com/nwizugbesamson/podcast_animator`
 
