@@ -53,11 +53,12 @@ To run your code
 >`pre-commit install`
 
 ## Prerequisites
-**25 seconds average runtime for a 10 seconds long video**
+25 seconds average runtime for a 10 seconds long video
 ## inputs:
 - json file
    - containing : **time stamps for when speakers talk**
    - Format :
+   ~~~
    {
     "audio_url": "",
     "audio_path": "",
@@ -67,6 +68,7 @@ To run your code
     },
     "bg_path": "01"
     }
+    ~~~
 
 ## output: 
 - video file
