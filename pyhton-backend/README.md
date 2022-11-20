@@ -14,6 +14,7 @@ https://user-images.githubusercontent.com/99333786/202913471-c8fea8f6-40f7-4852-
 # Installation
 Clone and Navigate to repository
 >`git clone https://github.com/nwizugbesamson/podcast_animator`
+
 Or Download
 
 
