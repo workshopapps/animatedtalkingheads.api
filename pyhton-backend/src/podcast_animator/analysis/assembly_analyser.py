@@ -1,9 +1,5 @@
-# import os
-# from pathlib import Path
 import requests
 import time
-# from dotenv import load_dotenv
-# import numpy as np
 from itertools import islice
 import collections
 from sys import argv
@@ -12,6 +8,16 @@ from sys import argv
 API_KEY = "abee7903c31046f1a8f50ccb320f65ed" 
 
 def diarize_audio(audio):
+    """ 
+    using assembly ai we send an audio url and obtain json data for the audio file
+    @author : cchimdindu
+
+    Args:
+        audio (string): url of video
+
+    Returns:
+        lis: json file is sorted out and returned in list format
+    """
 
     endpoint1 = "https://api.assemblyai.com/v2/transcript"
 
@@ -40,20 +46,17 @@ def diarize_audio(audio):
         a = response2.json()
         status = a["status"]
         if status != "completed":
-            time.sleep(20) 
+            time.sleep(120) 
         else:
             process_done = True           
-    # time.sleep(20) #waiting for response
-    #second = "rx44sn32o3-25dd-4d21-a286-a04f58ba0f43"
+    
     
 
 
     #maps words to timestamp only
-    # endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
+    endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
 
-    
-
-    # time.sleep(400) #wait for transcription 
+    time.sleep(400) #wait for transcription 
     
     listout = {
         "text":a["text"], 
@@ -61,14 +64,22 @@ def diarize_audio(audio):
         "audio_duration": int(a["audio_duration"])
         }
 
-    # ress = requests.get(endpointVTT, headers=headers2)
-    # b = ress.text #just time and speech
+    ress = requests.get(endpointVTT, headers=headers2)
+    b = ress.text #just time and speech
     return listout
 
-#insta = diarize_audio("https://bit.ly/3rBnQ8i") #
 
 
 def checking(audio1):
+    """taking data from audio transcript and turns into dictionary
+    puts all utterances into a list for easy adapataion
+    @author: cchimdindu
+    Args:
+        audio1 (string): url used to call diariza_audio function
+
+    Returns:
+        List, int: list of utterances formatted each time person speaks, length of video
+    """
     audiotexts = []
     dataneed = diarize_audio(audio1)
     transcription = dataneed["text"]
@@ -91,8 +102,6 @@ def checking(audio1):
         
         text = {
             "speaker" : speaker,
-            # "start" : starttime, 
-            # "end" : endtime,
             "duration" : duraction,
             "speech" : speech,
             "index" : count,
@@ -103,17 +112,30 @@ def checking(audio1):
         speakersvale.append(speaker)
     return audiotexts, audiolength
 
-# def listdupes(seq):
-#     seen = set()
-#     seen_add = seen.add
-#     seen_twice = set(x for x in seq if x in seen or seen_add(x))
-#     return list(seen_twice)
-
 
 def chunkgeneratory2(iterable, chunk_size):
+    """takes an iterable and makes it a nested list of size needed
+    @author: cchimdindu
+    Args:
+        iterable (list,dict,tuple,set): anything that can be looped
+        chunk_size (int): size you want iterable split into
+
+    Returns:
+        nested list: [[..],...,[..]]
+    """
     return [iterable[x:x + chunk_size] for x in range(0, len(iterable), chunk_size)]
 
+
 def chunkgeneratory1(iterable, chunk_size):
+    """takes an iterable and makes it a nested list of size needed
+    @author: cchimdindu
+    Args:
+        iterable (list,tuple,sets,dict): anything that can be looped
+        chunk_size (int): size you want iterable split into
+
+    Yields:
+        list: [..] multiple yields for each time yeild is called
+    """
     imagesList = iter(iterable)
     chunk = list(islice(imagesList, chunk_size)) #n is steps iterable is sliced
     while chunk:
@@ -121,10 +143,16 @@ def chunkgeneratory1(iterable, chunk_size):
         chunk = list(islice(imagesList, chunk_size))
 
 
-
-
-
 def whoistalking(audiotexts, timetotal):
+    """checks who is speaking when
+    @author: cchimdindu
+    Args:
+        audiotexts (list): contains each instance a person talks, in turns
+        timetotal (int): length of audio
+
+    Yields:
+        string,string: person speaking name, true or false for person speaking
+    """
     # it = chunkgeneratory1(timetotal, 1)
     for dict_item in audiotexts:
             newdur = dict_item["duration"]
@@ -145,9 +173,19 @@ def whoistalking(audiotexts, timetotal):
                 yield dict_item["speaker"],valt
 
 
-
-
 def convertdict(audiotexts, audiolength): #returns speaker sequence
+    """converts tuple to dict
+    @author: cchimdindu
+    Args:
+        audiotexts (list): list of each persons turn in speaking
+        audiolength (int): length of audio file
+
+    Returns:
+        dict: [
+            {'A':'speech','silent'},
+            {'B':'silent','speech'}
+        ]
+    """
     isIT ={}
     speechsequeen = []
     timetotal = list(range(0,audiolength+1))
@@ -160,5 +198,5 @@ def convertdict(audiotexts, audiolength): #returns speaker sequence
         speechsequeen.append(letter)
     for x,y in speechsequeen:
         isIT.setdefault(x,[]).append(y)
-    print(isIT)
+    print(isIT) #for cchimdindu testing
     return isIT
