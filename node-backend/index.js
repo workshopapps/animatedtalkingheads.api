@@ -55,7 +55,7 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
 
-app.use('/uploads', express.static('uploads'))
+app.use('/uploads', express.static('./uploads'))
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
