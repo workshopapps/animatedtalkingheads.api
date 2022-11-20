@@ -5,6 +5,7 @@ const hairTypeSchema = new Schema({
   style: {
     type: String,
     required: true,
+    default:"black"
   },
   color: {
     type: String,
