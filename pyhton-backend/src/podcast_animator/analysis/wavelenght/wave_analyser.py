@@ -6,6 +6,8 @@ import soundfile as sf
 import numpy as np
 from pathlib import Path
 
+
+#this script returns the time intervals of non silent part of the wave after analysisng the wave
 ABS_PATH = os.path.abspath(__file__)
 BASE_DIR = os.path.dirname(ABS_PATH)
 DATA_DIR = os.path.join(BASE_DIR, "temp")
@@ -70,4 +72,6 @@ nonMuteSections = librosa.effects.split(x)  # split audio with any audio signal 
 
 for i in nonMuteSections:    
     displayTime(i[0],i[1])
+
+
 
