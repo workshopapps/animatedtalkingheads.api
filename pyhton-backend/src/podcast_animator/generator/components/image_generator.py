@@ -5,14 +5,14 @@ import numpy as np
 
 
 def generate_image(images: list, bg_path: Path) -> np.ndarray:
-    """_summary_
-
+    """uses images in a list and background provided to generate a video sequence with help of pillow
+    @author : samson6398
     Args:
-        images (list): _description_
-        bg_path (Path): _description_
+        images (list): avatar images
+        bg_path (Path): background image
 
     Returns:
-        _type_: _description_
+        array: sequence of images in an array
     """
     background_image = Image.open(bg_path)
     background_image = background_image.convert(mode='RGBA')
