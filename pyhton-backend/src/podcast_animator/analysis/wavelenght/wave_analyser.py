@@ -6,22 +6,18 @@ import soundfile as sf
 import numpy as np
 from pathlib import Path
 
-'''
+
+#this script returns the time intervals of non silent part of the wave after analysisng the wave
 ABS_PATH = os.path.abspath(__file__)
 BASE_DIR = os.path.dirname(ABS_PATH)
-DATA_DIR = os.path.join(BASE_DIR, "data")
-SAMPLE_DIR = os.path.join(DATA_DIR, "samples")
-SAMPLE_INPUTS = os.path.join(SAMPLE_DIR, "inputs")
-SAMPLE_OUTPUTS = os.path.join(SAMPLE_DIR, 'outputs')
+DATA_DIR = os.path.join(BASE_DIR, "temp")
+SAMPLE_INPUTS = os.path.join(DATA_DIR, "inputs")
+SAMPLE_OUTPUTS = os.path.join(DATA_DIR, 'outputs')
 
 
 file_path = os.path.join(SAMPLE_INPUTS, 'vocals2.wav')
-aug_input = os.path.join(SAMPLE_INPUTS, "aug-audio")
-os.makedirs(aug_input, exist_ok=True)
-os.makedirs(SAMPLE_OUTPUTS, exist_ok=True)
-'''
+os.makedirs(SAMPLE_INPUTS, exist_ok=True)
 
-file_path = os.path.join(SAMPLE_INPUTS, 'vocals2.wav')
 y, sr = librosa.load(file_path)
 S_full, phase = librosa.magphase(librosa.stft(y))
 
@@ -49,12 +45,15 @@ S_background = mask_i * S_full
 
 new_aud = librosa.istft(S_foreground*phase)
 
-sf.write("new-audio.wav", new_aud, sr)
+sf.write(os.path.join(SAMPLE_INPUTS, 'new-audio.wav'), new_aud, sr)
 
 
-nfile_path = 'new-audio.wav'
+nfile_path = os.path.join(SAMPLE_INPUTS, 'new-audio.wav')
 x,sr = librosa.load(nfile_path)
-print(x.shape, sr)
+#print(x.shape, sr)
+
+y=librosa.amplitude_to_db(abs(x))
+refDBVal = np.max(y)
 
 
 n_fft = 2048
@@ -73,4 +72,6 @@ nonMuteSections = librosa.effects.split(x)  # split audio with any audio signal 
 
 for i in nonMuteSections:    
     displayTime(i[0],i[1])
+
+
 
