@@ -8,34 +8,26 @@ module.exports = {
     file_path: {
       type: 'string',
       description:
-        'The file_path can point the dir containing a cloth, hair, skin png. It can also point to where a podcast or animated video is stored',
+      'The file_path can point the dir containing a cloth, hair, skin png. It can also point to where a podcast or animated video is stored',
       example: './avatars/skin_black.png',
     },
-    cloth_style: {
+    cloth_type: {
       type: 'string',
-      description: 'avatar cloth',
-      example: 'shirt',
+      description: 'objectID that references the cloth collection',
+      example: '507f191e810c19729de860ea',
     },
-    hair_style:{
+    hair_type:{
       type: 'string',
-      description: 'avatar hairstyle',
-      example: 'afro',
+      description: 'objectID that references the hair collection',
+      example: '507f191e810c19729de860ea',
     },
-    hair_color:{
+    skin_type:{
       type: 'string',
-      description: 'avatar hair color',
-      example: 'blonde',
-    },
-    cloth_color: {
-      type: 'string',
-      description: 'how the cloth might look like',
-      example: 'red',
-    },
-    skin_color: {
-      type: 'string',
-      description: 'skin color',
-      example: 'brown',
-    },
+      description: 'objectID that references the skin collection',
+      example: '507f191e810c19729de860ea',
+    }
+  ,
+    
     schemas: {
       User: {
         type: 'object',
@@ -88,44 +80,20 @@ module.exports = {
             type: 'object',
             properties: {
               cloth_type: {
-        type: 'object',
-        properties: {
-          style: {
-            $ref: '#/components/cloth_style',
-          },
-          color: {
-            $ref: '#/components/cloth_color',
-          },
-          file_path: {
-            $ref: '#/components/file_path',
-          },
-        },
-      },
-      skin_type: {
-        type: 'object',
-        properties: {
-          color: {
-            $ref: '#/components/skin_color',
-          },
-          file_path: {
-            $ref: '#/components/file_path',
-          },
-        },
-      },
-      hair_type: {
-        type: 'object',
-        properties: {
-          style: {
-            $ref: '#/components/hair_style',
-          },
-          color: {
-            $ref: '#/components/hair_color',
-          },
-          file_path: {
-            $ref: '#/components/file_path',
-          },
-        },
-      },},
+                type: 'string',
+                description: 'objectID that references the cloth collection',
+                example: '507f191e810c19729de860ea'},
+              hair_type:{
+                type: 'string',
+                description: 'objectID that references the hair collection',
+                example: '507f191e810c19729de860ea',
+            },
+              skin_type:{
+                type: 'string',
+                description: 'objectID that references the skin collection',
+                example: '507f191e810c19729de860ea',
+           }
+            },
           },
       gender: {
             type: 'string',

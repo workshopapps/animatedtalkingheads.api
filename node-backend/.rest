@@ -1,3 +1,18 @@
-POST http://localhost:4000/avatars
+POST http://localhost:4000/avatars/
 Content-Type: application/json
+
+{
+    "user_id":"637747b42342eb4566c90133",
+    "id":"1",
+    "file_path":"/hair/white",
+    "podcast_id":"637747b42342eb4566c90133",
+    "accessories":{
+        "cloth_type":"6378bb8283ec500745ce0726",
+        "hair_type":"6378be35407f207a44561b47",
+        "skin_type":"6378be85407f207a44561b4d"
+
+    }
+    
+
+}
 
