@@ -1,8 +1,7 @@
 
 # ## test_data
 # test_data/
-pyhton-backend/data/Result/
-pyhton-backend/data/temp/
+Result/*
 
 
 ## vscode settings
