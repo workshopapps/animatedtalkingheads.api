@@ -11,9 +11,9 @@ jobs:
         with:
           node-version: '19.1.0'
       - name: install packages
-        run: yarn install
+        run: cd node-backend &&  yarn install
       - name: build application
-        run: yarn build
+        run: cd node-backend && yarn build
         
 
   build:
