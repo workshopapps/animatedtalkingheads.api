@@ -23,10 +23,10 @@ ROOT_DIR = Path(__file__).parent.parent.parent.parent.resolve()
 DATA_DIR = ROOT_DIR / "data"
 AVATAR_DIR = DATA_DIR / "Image/avatars"
 BG_DIR = DATA_DIR / "Image/backgrounds"
-
+DOTENV_PATH = ROOT_DIR / "src/podcast_animator/env/.env" 
 
 ## load environment variable
-DOTENV_PATH = Path("..") / "env/.env" 
+
 print(DOTENV_PATH.exists())
 if DOTENV_PATH.exists():
     load_dotenv(DOTENV_PATH)
