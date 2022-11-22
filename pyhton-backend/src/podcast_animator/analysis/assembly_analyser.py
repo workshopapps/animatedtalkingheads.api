@@ -1,11 +1,14 @@
+import os
 import requests
 import time
 from itertools import islice
 import collections
-from sys import argv
 
 
-API_KEY = "abee7903c31046f1a8f50ccb320f65ed" 
+
+
+API_KEY = str(os.getenv("ASSEMBLYAI"))
+print(API_KEY)
 
 def diarize_audio(audio):
     """ 
@@ -21,32 +24,41 @@ def diarize_audio(audio):
 
     endpoint1 = "https://api.assemblyai.com/v2/transcript"
 
-    json1 = {
-    "audio_url": audio,
-    "speaker_labels": True,
-    "disfluencies": True #transcribe filler words
-    }
-    headers1 = {
-        "authorization": API_KEY,
-        "content-type": "application/json",
-    }
-    response1 = requests.post(endpoint1, json=json1, headers=headers1)
-    first = response1.json()
-    second = first["id"]
+    # json1 = {
+    # "audio_url": audio,
+    # "speaker_labels": True,
+    # "disfluencies": True #transcribe filler words
+    # }
+    # headers1 = {
+    #     "authorization": API_KEY,
+    #     "content-type": "application/json",
+    # }
+    # response1 = requests.post(endpoint1, json=json1, headers=headers1)
+    # first = response1.json()
+    # print(first["id"])
+    # second = first["id"]
+    # rxym41rlo2-2606-4354-ae8f-095ccdf58181
 
 
-    endpoint_result = "https://api.assemblyai.com/v2/transcript/" +  second
+    # endpoint_result = "https://api.assemblyai.com/v2/transcript/" +  second
+    endpoint_result = "https://api.assemblyai.com/v2/transcript/" +  "rxym41rlo2-2606-4354-ae8f-095ccdf58181"
     headers2 = {
         "authorization": API_KEY,
     }
     # print(first)
+   
+    # response2= requests.get(endpoint_result, headers=headers2)
+    # a = response2.json()
+  
+             
     process_done = False
     while not process_done:
         response2= requests.get(endpoint_result, headers=headers2)
         a = response2.json()
         status = a["status"]
         if status != "completed":
-            time.sleep(120) 
+            print(f"Processing Audio, Status: [{status}]")
+            time.sleep(20) 
         else:
             process_done = True           
     
@@ -54,9 +66,8 @@ def diarize_audio(audio):
 
 
     #maps words to timestamp only
-    endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
+    # endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
 
-    time.sleep(400) #wait for transcription 
     
     listout = {
         "text":a["text"], 
@@ -64,8 +75,8 @@ def diarize_audio(audio):
         "audio_duration": int(a["audio_duration"])
         }
 
-    ress = requests.get(endpointVTT, headers=headers2)
-    b = ress.text #just time and speech
+    # ress = requests.get(endpointVTT, headers=headers2)
+    # b = ress.text #just time and speech
     return listout
 
 
