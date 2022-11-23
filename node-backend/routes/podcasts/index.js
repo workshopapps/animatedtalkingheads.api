@@ -6,20 +6,23 @@ const schemaMiddleware = require('../../middlewares/schemaMiddleware');
 const ApiError = require('../../utils/errors/ApiError');
 const { podcastSchema } = require('./podcast.schema');
 const { podcastuploader } = require('../../controllers/podcast.controller');
-
+const userIdMiddleware = require('../../middlewares/idstore');
+const getPodcast = require('../../controllers/podcastgetter');
+const podcastIdMiddleware = require('../../middlewares/podcastidstore');
+const deletePodcast = require('../../controllers/podcastdeleter');
 const podcastRouter = express.Router();
 
-// podcastRouter.get(
-//   '/:userid',
-//   require('../../middlewares/idstore'),
-//   require('../../controllers/podcastgetter')
-// );
+ podcastRouter.get(
+   '/:userid',
+   userIdMiddleware,
+   getPodcast
+ );
 
-// podcastRouter.delete(
-//   '/:podcastid',
-//   require('../../middlewares/podcastidstore'),
-//   require('../../controllers/podcastdeleter')
-// );
+ podcastRouter.delete(
+   '/:podcastid',
+   podcastIdMiddleware,
+   deletePodcast
+ );
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('audio')) {
