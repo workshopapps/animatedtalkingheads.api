@@ -6,6 +6,7 @@ from uuid import uuid4
 from .image_generator import generate_image
 import itertools
 import time
+from podcast_animator.generator.components.sounds_and_emotions_sq import sound_pathfinder, eyes_pathfinder
 
 FRAMES = 24
 
@@ -32,6 +33,28 @@ def _generate_state_sequence(img_path: Path, state: str) -> list[Path]:
         return sorted(dir_files, key= lambda x: x.split('_')[1])
     elif state == "silence":
         return [img_path / "default.png" for _ in range(FRAMES)]
+    
+    
+# def _generate_state_sequence(img_path: Path, state: str, sound_list: list, eyes_list: list) -> list[Path]:
+    """load the path to images that make up the mouth posture for each sound 
+    @author: jimi
+
+    Args:
+        img_path (Path): pathlib.Path object to selected avatar directory
+        state (str): pathlib.Path object to selected avatar directory
+        sound_list (list): pathlib.Path object to selected avatar directory
+        eyes_list (list): pathlib.Path object to selected avatar directory
+
+    Returns:
+        lists[Path]: sorted list of animation or default sequence paths
+        
+    """
+    # if state == "speech":
+    #     sound_dir_files = sound_pathfinder(sound_list, Path)
+    #     eye_dir_files = eyes_pathfinder(eyes_list, Path)
+    #     return [sound_dir_files, eye_dir_files]
+    # elif state == "silence":
+    #     return [img_path / "default.png" for _ in range(FRAMES)]
     
 
 
