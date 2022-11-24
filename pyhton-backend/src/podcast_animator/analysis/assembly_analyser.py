@@ -7,8 +7,8 @@ import collections
 
 
 
-API_KEY = str(os.getenv("ASSEMBLYAI"))
-print(API_KEY)
+API_KEY = "22a6f3ca548c414f819ba4de3247feac" #str(os.getenv("ASSEMBLYAI"))
+# print(API_KEY)
 
 def diarize_audio(audio):
     """ 
@@ -27,6 +27,7 @@ def diarize_audio(audio):
     # json1 = {
     # "audio_url": audio,
     # "speaker_labels": True,
+    # "sentiment_analysis": True, "Number of labels is %d. Valid values are 2 to n_samples - 1 (inclusive)"
     # "disfluencies": True #transcribe filler words
     # }
     # headers1 = {
@@ -46,7 +47,7 @@ def diarize_audio(audio):
         "authorization": API_KEY,
     }
     # print(first)
-   
+    
     # response2= requests.get(endpoint_result, headers=headers2)
     # a = response2.json()
   
@@ -68,10 +69,10 @@ def diarize_audio(audio):
     #maps words to timestamp only
     # endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
 
-    
     listout = {
         "text":a["text"], 
         "utterances": a["utterances"],
+        "words": a["words"],
         "audio_duration": int(a["audio_duration"])
         }
 
@@ -93,8 +94,9 @@ def checking(audio1):
     """
     audiotexts = []
     dataneed = diarize_audio(audio1)
+    print(dataneed)
     transcription = dataneed["text"]
-    diarization = dataneed["utterances"]
+    diarization = dataneed["words"]
     audiolength = int(dataneed["audio_duration"]/1000)
 
     #time start and end in millieseconds -> convert to seconds

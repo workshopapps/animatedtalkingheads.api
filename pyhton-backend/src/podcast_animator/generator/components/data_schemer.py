@@ -1,0 +1,33 @@
+DATA_SCHEMA = {
+    "closed": [""],
+    "sczshch": ["JH", "Z", "ZH", "CH", "SH", "S", "T", "N", "NX", "NG"],
+    "k": ["K"],
+    "ah" : ["AE", "AW", "AX", "AXR", "AA" ],
+    "i" : ["Y", "EY", "AY"],
+    "ee" : ["IH", "IX", "IY"],
+    "enwh" : ["ER", "EH", "EN", "WH"],
+    "mbp" : ["M", "B", "P"],
+    "fv": ["F", "V"],
+    "oh" : ["UH", "OY", "H", "AH", "AO"],
+    "uoo" : ["UW", "OW", "UH", "UX"],
+    "wr" : ["W", "H", "HH"],
+    "lth" : ["TH", "DH", "L", "D", "DX", "R"]
+
+}
+
+
+STATE_MAP = {
+    "JH": "sczshch","Z": "sczshch","ZH": "sczshch","CH": "sczshch",
+    "SH": "sczshch","S": "sczshch","T": "sczshch","N": "sczshch","NX": "sczshch","NG": "sczshch",
+    "K": "k",
+    "AE": "ah", "AW": "ah", "AX": "ah", "AXR": "ah", "AA": "ah",
+    "Y": "i", "EY": "i", "AY": "i",
+    "IH": "ee", "IX": "ee", "IY": "ee",
+    "ER": "enwh", "EH": "enwh", "EN": "enwh", "WH": "enwh",
+    "M": "mbp", "B": "mbp", "P": "mbp",
+    "F": "fv", "V": "fv",
+    "UH": "oh", "OY": "oh", "H": "oh", "AH": "oh", "AO": "oh",
+    "UW": "uoo", "OW": "uoo", "UH": "uoo", "UX": "uoo",
+    "W": "wr", "H": "wr", "HH": "wr",
+    "TH": "lth", "DH": "lth", "L": "lth", "D": "lth", "DX": "lth", "R": "lth"
+}

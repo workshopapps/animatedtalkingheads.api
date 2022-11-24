@@ -27,7 +27,7 @@ DOTENV_PATH = ROOT_DIR / "src/podcast_animator/env/.env"
 
 ## load environment variable
 
-print(DOTENV_PATH.exists())
+# print(DOTENV_PATH)
 if DOTENV_PATH.exists():
     load_dotenv(DOTENV_PATH)
     
