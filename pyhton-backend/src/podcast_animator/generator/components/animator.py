@@ -12,30 +12,31 @@ FRAMES = 24
 
 
 
-# def _generate_state_sequence(img_path: Path, state: str) -> list[Path]:
-#     """load the path to 24 images that make up a one second 
-#        animation or default state for selected avatar
-#     @author: anonnoone
+def _generate_state_sequence(img_path: Path, state: str) -> list[Path]:
+    """load the path to 24 images that make up a one second 
+       animation or default state for selected avatar
+    @author: anonnoone
 
-#     Args:
-#         img_path (Path): pathlib.Path object to selected avatar directory
+    Args:
+        img_path (Path): pathlib.Path object to selected avatar directory
 
-#     Returns:
-#         list[Path]: sorted list of animation or default sequence paths
+    Returns:
+        list[Path]: sorted list of animation or default sequence paths
 
-#     >>>>: generate_speech_seqeunce(path/to/avatar_01, state="speech")
-#     >>>>: [path/to/avatar_o1/state_01, ..., path/to/avatar_o1/state_24]
-#     "em": [1, 2, 3, 4, 5, 6, 7] -> 100 msecs 
-#     "em": 500msecs -> [01,02, 3, 3, 4, 4, 5, 5 , 06, 07]
-#     """
-#     if state == "speech":
-#         dir_files = [str(file.path) for file in os.scandir(img_path / "animation")]
-#         return sorted(dir_files, key= lambda x: x.split('_')[1])
-#     elif state == "silence":
-#         return [img_path / "default.png" for _ in range(FRAMES)]
+    >>>>: generate_speech_seqeunce(path/to/avatar_01, state="speech")
+    >>>>: [path/to/avatar_o1/state_01, ..., path/to/avatar_o1/state_24]
+    "em": [1, 2, 3, 4, 5, 6, 7] -> 100 msecs 
+    "em": 500msecs -> [01,02, 3, 3, 4, 4, 5, 5 , 06, 07]
+    """
+    if state == "speech":
+        dir_files = [str(file.path) for file in os.scandir(img_path / "animation")]
+        return sorted(dir_files, key= lambda x: x.split('_')[1])
+    elif state == "silence":
+        return [img_path / "default.png" for _ in range(FRAMES)]
     
     
 # def _generate_state_sequence(img_path: Path, state: str, sound_list: list, eyes_list: list) -> list[Path]:
+
     """load the path to images that make up the mouth posture for each sound 
     @author: jimi
 
@@ -91,20 +92,11 @@ def generate_animation(
     images = []
     img_paths = []
     output = data_dir / f'temp/{str(uuid4())}.mp4'
-
-
-    ##
+    
     for speaker in data:
         avatar_path = avatar_dict[speaker]
-        anm_seq = [avatar_path / f"mouths/{state}" for state in data[speaker][:600]]
-        img_paths.append(anm_seq)
-
-    # ##
-    
-    # for speaker in data:
-    #     avatar_path = avatar_dict[speaker]
-    #     anm_seq = [_generate_state_sequence(avatar_path, state=state) for state in data[speaker][:600]]
-    #     img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
+        anm_seq = [_generate_state_sequence(avatar_path, state=state) for state in data[speaker][:600]]
+        img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
     
         
     print("Start Image Build") 
