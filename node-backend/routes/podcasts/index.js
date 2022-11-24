@@ -42,8 +42,8 @@ podcastRouter.post(
 );
 
 podcastRouter.get('/download', (req, res) => {
-  const { filename } = req.body;
-  res.download(filename);
+  const { file_path} = req.body;
+  res.download(file_path);
 });
 
 module.exports = podcastRouter;
