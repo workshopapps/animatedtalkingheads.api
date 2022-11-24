@@ -6,15 +6,13 @@ const schemaMiddleware = require('../../middlewares/schemaMiddleware');
 const ApiError = require('../../utils/errors/ApiError');
 const { podcastSchema } = require('./podcast.schema');
 const { podcastuploader } = require('../../controllers/podcast.controller');
-const userIdMiddleware = require('../../middlewares/idstore');
 const getPodcast = require('../../controllers/podcastgetter');
 const podcastIdMiddleware = require('../../middlewares/podcastidstore');
 const deletePodcast = require('../../controllers/podcastdeleter');
 const podcastRouter = express.Router();
 
  podcastRouter.get(
-   '/:userid',
-   userIdMiddleware,
+   '/getpodcasts',
    getPodcast
  );
 
