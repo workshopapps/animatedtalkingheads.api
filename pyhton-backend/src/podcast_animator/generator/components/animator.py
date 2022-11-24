@@ -12,27 +12,27 @@ FRAMES = 24
 
 
 
-def _generate_state_sequence(img_path: Path, state: str) -> list[Path]:
-    """load the path to 24 images that make up a one second 
-       animation or default state for selected avatar
-    @author: anonnoone
+# def _generate_state_sequence(img_path: Path, state: str) -> list[Path]:
+#     """load the path to 24 images that make up a one second 
+#        animation or default state for selected avatar
+#     @author: anonnoone
 
-    Args:
-        img_path (Path): pathlib.Path object to selected avatar directory
+#     Args:
+#         img_path (Path): pathlib.Path object to selected avatar directory
 
-    Returns:
-        list[Path]: sorted list of animation or default sequence paths
+#     Returns:
+#         list[Path]: sorted list of animation or default sequence paths
 
-    >>>>: generate_speech_seqeunce(path/to/avatar_01, state="speech")
-    >>>>: [path/to/avatar_o1/state_01, ..., path/to/avatar_o1/state_24]
-    "em": [1, 2, 3, 4, 5, 6, 7] -> 100 msecs 
-    "em": 500msecs -> [01,02, 3, 3, 4, 4, 5, 5 , 06, 07]
-    """
-    if state == "speech":
-        dir_files = [str(file.path) for file in os.scandir(img_path / "animation")]
-        return sorted(dir_files, key= lambda x: x.split('_')[1])
-    elif state == "silence":
-        return [img_path / "default.png" for _ in range(FRAMES)]
+#     >>>>: generate_speech_seqeunce(path/to/avatar_01, state="speech")
+#     >>>>: [path/to/avatar_o1/state_01, ..., path/to/avatar_o1/state_24]
+#     "em": [1, 2, 3, 4, 5, 6, 7] -> 100 msecs 
+#     "em": 500msecs -> [01,02, 3, 3, 4, 4, 5, 5 , 06, 07]
+#     """
+#     if state == "speech":
+#         dir_files = [str(file.path) for file in os.scandir(img_path / "animation")]
+#         return sorted(dir_files, key= lambda x: x.split('_')[1])
+#     elif state == "silence":
+#         return [img_path / "default.png" for _ in range(FRAMES)]
     
     
 # def _generate_state_sequence(img_path: Path, state: str, sound_list: list, eyes_list: list) -> list[Path]:
@@ -94,15 +94,10 @@ def generate_animation(
 
 
     ##
-    speaker_states = {}
     for speaker in data:
         avatar_path = avatar_dict[speaker]
-        speaker_states[speaker] = {
-            "speech": _generate_state_sequence(avatar_path, "speech"),
-            "silence": _generate_state_sequence(avatar_path, "silence"), }
-        anm_seq = [speaker_states[speaker][state] for state in data[speaker][:600]]
-        img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
-    
+        anm_seq = [avatar_path / f"mouths/{state}" for state in data[speaker][:600]]
+        img_paths.append(anm_seq)
 
     # ##
     
@@ -117,31 +112,33 @@ def generate_animation(
     if num_speakers == 2:
         count = 1
         for img_1, img_2 in zip(*img_paths):
-            temp_images = [img_1, img_2]
+            state_images = [img_1, img_2]
+            avatar_images = [path for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image(state_images, avatar_images, bg_path)
             )
             count += 1
     elif num_speakers ==3:
         count = 1
         for img_1, img_2, img_3 in zip(*img_paths):
-            temp_images = [img_1, img_2, img_3]
+            state_images = [img_1, img_2, img_3]
+            avatar_images = [path for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image(state_images, avatar_images, bg_path)
             )
             count += 1
     elif num_speakers ==4:
         count = 1
         for img_1, img_2, img_3, img_4 in zip(*img_paths):
-            temp_images = [img_1, img_2, img_3, img_4]
+            state_images = [img_1, img_2, img_3, img_4]
+            avatar_images = [path for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image(state_images, avatar_images, bg_path)
             )
             count += 1
 
             
     print(f"IMage Build: [{time.time()-start_path}]")
-    print(sys.getsizeof(images), sys.getsizeof(images[0]))
     frame_one = images[0]
 
     # return
@@ -165,3 +162,5 @@ def generate_animation(
     out.release()
     cv2.destroyAllWindows()
     return output
+
+    

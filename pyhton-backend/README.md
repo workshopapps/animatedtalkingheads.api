@@ -9,7 +9,10 @@
 The goal of this project is to create an effective video tool to implementing and enhancing your digital marketing strategy.
 Here is a simple sample of the output you get from this project:-
 
+https://user-images.githubusercontent.com/64972836/203857396-359c67c6-bf3e-47a5-b077-d92bbd81057d.mp4
+
 https://user-images.githubusercontent.com/99333786/202913471-c8fea8f6-40f7-4852-b3d9-02054f1d91e9.mp4
+
 
 ## Installation
 Clone and Navigate to repository
