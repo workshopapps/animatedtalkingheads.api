@@ -19,7 +19,7 @@ def generate_eyes_emotions(speaker_instance):
 	"""
 	for new_speaker in speaker_instance:
 		result = read_sentence_emotion(new_speaker.get("Sentence"))
-		append_list = [result for _ in durations]
+		append_list = [result for _ in new_speaker.get('durations')]
 		damn = {}
 		speaker = new_speaker.get("Speaker")
 		if speaker not in emotions.keys():
