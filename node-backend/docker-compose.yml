@@ -1,0 +1,8 @@
+version: '3'
+services:
+  api:
+    container_name: voxclips-backend
+    build:
+      context: .
+    ports:
+      - "4000:4000"

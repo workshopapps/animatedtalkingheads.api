@@ -17,7 +17,9 @@ PROJECT_URLS = {
 INSTALL_REQUIRES = [
     "Pillow==9.1.1",
     "opencv-contrib-python==4.6.0.66",
-    "click==8.1.3"
+    "requests",
+    "python-dotenv",
+    "moviepy"
 ]
 EXTRAS_REQUIRE = {
     "dev": [

@@ -4,11 +4,10 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   name: {
     type: String,
-    required: true,
   },
   last_time_accessed: {
     type: Date,
-    required: true,
+    default: Date.now(),
   },
 });
 

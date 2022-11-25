@@ -1,24 +1,6 @@
 module.exports = {
   paths: {
-    '/podcasts/upload': {
-      get: {
-        tags: ['Podcasts'],
-        description: 'Get todos',
-        operationId: 'getTodos',
-        parameters: [],
-        responses: {
-          200: {
-            description: 'Todos were obtained',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Todo',
-                },
-              },
-            },
-          },
-        },
-      },
+    '/podcasts': {
       post: {
         tags: ['Podcast'],
         description: 'Upload a podcast',
@@ -43,42 +25,36 @@ module.exports = {
         },
       },
     },
-    '/todos/{id}': {
+    '/download': {
       get: {
-        tags: ['Foods CRUD operations'],
-        description: 'Get a todo',
-        operationId: 'getTodo',
+        tags: ['Podcast'],
+        description: 'Downloads a podcast',
+        operationId: 'getPodcast',
         parameters: [
-          // {
-          //   name: 'id',
-          //   in: 'path',
-          //   schema: {
-          //     $ref: '#/components/schemas/id',
-          //   },
-          //   required: true,
-          //   description: 'A single todo id',
-          // },
+          {
+            filename: 'path',
+            schema: {
+              $ref: '#/components/schemas/file_path',
+            },
+            required: true,
+            description: 'file path for the podcast',
+          },
         ],
         responses: {
           200: {
-            description: 'Todo is obtained',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Todo',
-                },
-              },
+            description: 'Podcast found',
+            content: 'audio/mpeg'
             },
           },
           404: {
-            description: 'Todo is not found',
+            description: 'Podcast is not found',
             content: {
               'application/json': {
                 schema: {
                   $ref: '#/components/schemas/Error',
                   example: {
-                    message: "We can't find the todo",
-                    internal_code: 'Invalid id',
+                    message: "We can't find the podcast",
+                    internal_code: 'Invalid file path',
                   },
                 },
               },
@@ -86,60 +62,6 @@ module.exports = {
           },
         },
       },
-      put: {
-        tags: ['Todo CRUD operations'],
-        description: 'Update todo',
-        operationId: 'updateTodo',
-        parameters: [
-          {
-            name: 'id',
-            in: 'path',
-            schema: {
-              $ref: '#/components/schemas/id',
-            },
-            required: true,
-            description: 'Id of todo to be updated',
-          },
-        ],
-        responses: {
-          200: {
-            description: 'Todo updated successfully',
-          },
-          404: {
-            description: 'Todo not found',
-          },
-          500: {
-            description: 'Server error',
-          },
-        },
-      },
-      delete: {
-        tags: ['Todo CRUD operations'],
-        description: 'Deleting a todo',
-        operationId: 'deleteTodo',
-        parameters: [
-          {
-            name: 'id',
-            in: 'path',
-            schema: {
-              $ref: '#/components/schemas/id',
-            },
-            required: true,
-            description: 'Deleting a done todo',
-          },
-        ],
-        responses: {
-          200: {
-            description: 'Todo deleted successfully',
-          },
-          404: {
-            description: 'Todo not found',
-          },
-          500: {
-            description: 'Server error',
-          },
-        },
-      },
-    },
+      
   },
 };
