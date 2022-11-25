@@ -1,7 +1,6 @@
 module.exports = {
   paths: {
     '/avatars':{
-
       post: {
         tags: ['Avatars'],
         description: 'Create Avatar',
