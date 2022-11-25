@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 // i removed the extra-layer to access the contents of accessories, so you're short of one traversal when accessing accessories after population
 // added speaker model
 const Avatar = new Schema({
-  name: {
+  file_path: {
     type: String,
     required: true,
   },
@@ -14,8 +14,14 @@ const Avatar = new Schema({
   gender: {
     type: String,
     required: true,
+    default:"neutral",
     enum: ['male', 'female', 'neutral'],
   },
+  id: {
+    type: String,
+    required: true,
+  },
+  
   podcast_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Podcast',

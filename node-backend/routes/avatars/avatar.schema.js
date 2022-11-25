@@ -8,20 +8,8 @@ exports.avaterSchema = Joi.object({
   user_id:Joi.string().required(),
   id:Joi.string().required(),
   accessories: Joi.object({
-    cloth_type: {
-      style: Joi.string().min(1),
-      color: Joi.string().min(1),
-      file_path: Joi.string().min(1),
-    },
-    skin_type: {
-      style: Joi.string().min(1),
-      color: Joi.string().min(1),
-      file_path: Joi.string().min(1),
-    },
-    hair_type: {
-      style: Joi.string().min(1),
-      color: Joi.string().min(1),
-      file_path: Joi.string().min(1),
-    },    
-  }),
+    cloth_type:objectId(),
+    skin_type:objectId(),
+    hair_type:objectId(),
+      }),
 });
