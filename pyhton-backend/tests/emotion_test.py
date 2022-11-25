@@ -11,7 +11,7 @@ import nltk
 #     Solution :-----> pip install emoji==1.7
 
 #sample sentences :-----> uncomment one sentence at a time
-# sentence = 'That night was horrible'
+sentence = 'That night was horrible'
 # sentence = 'I do not like what you did'
 # sentence = 'awesome'
 # sentence = 'what is wrong with the brown fox'

@@ -1,7 +1,7 @@
 import text2emotion as te
 import re
 import nltk
-from PIL import Image
+
 
 nltk.download('omw-1.4')
 
