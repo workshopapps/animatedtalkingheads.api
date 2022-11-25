@@ -6,6 +6,7 @@ from uuid import uuid4
 from .image_generator import generate_image
 import itertools
 import time
+from podcast_animator.generator.components.sounds_and_emotions_sq import sound_pathfinder, eyes_pathfinder
 
 FRAMES = 24
 
@@ -32,6 +33,29 @@ def _generate_state_sequence(img_path: Path, state: str) -> list[Path]:
         return sorted(dir_files, key= lambda x: x.split('_')[1])
     elif state == "silence":
         return [img_path / "default.png" for _ in range(FRAMES)]
+    
+    
+# def _generate_state_sequence(img_path: Path, state: str, sound_list: list, eyes_list: list) -> list[Path]:
+
+    """load the path to images that make up the mouth posture for each sound 
+    @author: jimi
+
+    Args:
+        img_path (Path): pathlib.Path object to selected avatar directory
+        state (str): pathlib.Path object to selected avatar directory
+        sound_list (list): pathlib.Path object to selected avatar directory
+        eyes_list (list): pathlib.Path object to selected avatar directory
+
+    Returns:
+        lists[Path]: sorted list of animation or default sequence paths
+        
+    """
+    # if state == "speech":
+    #     sound_dir_files = sound_pathfinder(sound_list, Path)
+    #     eye_dir_files = eyes_pathfinder(eyes_list, Path)
+    #     return [sound_dir_files, eye_dir_files]
+    # elif state == "silence":
+    #     return [img_path / "default.png" for _ in range(FRAMES)]
     
 
 
@@ -68,25 +92,11 @@ def generate_animation(
     images = []
     img_paths = []
     output = data_dir / f'temp/{str(uuid4())}.mp4'
-
-
-    ##
-    speaker_states = {}
+    
     for speaker in data:
         avatar_path = avatar_dict[speaker]
-        speaker_states[speaker] = {
-            "speech": _generate_state_sequence(avatar_path, "speech"),
-            "silence": _generate_state_sequence(avatar_path, "silence"), }
-        anm_seq = [speaker_states[speaker][state] for state in data[speaker][:600]]
+        anm_seq = [_generate_state_sequence(avatar_path, state=state) for state in data[speaker][:600]]
         img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
-    
-
-    # ##
-    
-    # for speaker in data:
-    #     avatar_path = avatar_dict[speaker]
-    #     anm_seq = [_generate_state_sequence(avatar_path, state=state) for state in data[speaker][:600]]
-    #     img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
     
         
     print("Start Image Build") 
@@ -94,31 +104,33 @@ def generate_animation(
     if num_speakers == 2:
         count = 1
         for img_1, img_2 in zip(*img_paths):
-            temp_images = [img_1, img_2]
+            state_images = [img_1, img_2]
+            avatar_images = [path for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image(state_images, avatar_images, bg_path)
             )
             count += 1
     elif num_speakers ==3:
         count = 1
         for img_1, img_2, img_3 in zip(*img_paths):
-            temp_images = [img_1, img_2, img_3]
+            state_images = [img_1, img_2, img_3]
+            avatar_images = [path for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image(state_images, avatar_images, bg_path)
             )
             count += 1
     elif num_speakers ==4:
         count = 1
         for img_1, img_2, img_3, img_4 in zip(*img_paths):
-            temp_images = [img_1, img_2, img_3, img_4]
+            state_images = [img_1, img_2, img_3, img_4]
+            avatar_images = [path for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image(state_images, avatar_images, bg_path)
             )
             count += 1
 
             
     print(f"IMage Build: [{time.time()-start_path}]")
-    print(sys.getsizeof(images), sys.getsizeof(images[0]))
     frame_one = images[0]
 
     # return
@@ -142,3 +154,5 @@ def generate_animation(
     out.release()
     cv2.destroyAllWindows()
     return output
+
+    
