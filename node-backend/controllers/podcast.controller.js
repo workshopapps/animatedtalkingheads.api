@@ -26,7 +26,6 @@ exports.podcastuploader = async (req, res, next) => {
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,
     file_path: path.resolve(process.cwd(), '.' + save_file_directory),
   });
-
   if (!fs.existsSync('.' + user_file_path)) {
     fs.mkdirSync('.' + user_file_path);
   }
@@ -44,6 +43,21 @@ exports.podcastuploader = async (req, res, next) => {
       false
     );
   }
+
+  const user_file_path = './uploads/podcasts/' + req.headers.user_id + '/';
+
+  const podcast_file_path = user_file_path + '-' + podcast.id + '-' + req.file.originalname;
+
+  if (!fs.existsSync(user_file_path)) {
+    fs.mkdirSync(user_file_path);
+  }
+  podcast = await Podcast.findOneAndUpdate(
+    { id: podcast._id, user_id: req.headers.user_id },
+    {
+      file_path: podcast_file_path,
+    }
+  );
+n
 
   res.send(podcast);
 };

@@ -1,5 +1,6 @@
 module.exports = {
   paths: {
+
     '/podcasts/upload': {
       post: {
         tags: ['Podcast'],
@@ -51,8 +52,10 @@ module.exports = {
           },
         },
       },
+
+    '/avatars':{
       post: {
-        tags: ['Avatar post'],
+        tags: ['Avatars'],
         description: 'Create Avatar',
         operationId: 'createAvatar',
         parameters: [],
@@ -269,3 +272,6 @@ module.exports = {
     },
   },
 };
+  }
+}
+  
