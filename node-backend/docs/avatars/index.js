@@ -1,51 +1,8 @@
 module.exports = {
-  paths: {    '/podcasts/upload': {
-     
+  paths: {
+    '/avatars':{
       post: {
-        tags: ['Podcast'],
-        description: 'Upload a podcast',
-        operationId: 'uploadPodcast',
-        parameters: [
-          {
-            in: 'formData',
-            name: 'avatar',
-            type: 'file',
-            description: 'The file to upload.',
-          },
-        ],
-        consumes: ['multipart/form-data'],
-
-        responses: {
-          201: {
-            description: 'Podcast created successfully',
-          },
-          500: {
-            description: 'Server error',
-          },
-        },
-      },
-    },
-    '/avatars': {
-      get: {
         tags: ['Avatars'],
-        description: 'Get avatars',
-        operationId: 'getAvatar',
-        parameters: [],
-        responses: {
-          200: {
-            description: 'avatars were obtained',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Todo',
-                },
-              },
-            },
-          },
-        },
-      },
-      post: {
-        tags: ['Avatar post'],
         description: 'Create Avatar',
         operationId: 'createAvatar',
         parameters: [],
@@ -166,5 +123,7 @@ module.exports = {
         },
       },
     },
-  },
-};
+  }
+}
+  
+  
