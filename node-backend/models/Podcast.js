@@ -6,6 +6,10 @@ const podcastSchema = new Schema({
     type: String,
     required: true,
   },
+  file_url: {
+    type: String,
+    required: true,
+  },
   user_id: {
     required: true,
     type: mongoose.Schema.Types.ObjectId,

@@ -7,6 +7,9 @@ const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const NotFound = require('./utils/errors/NotFound');
+const path = require('path');
+
+console.log(path.basename(path.dirname(__filename)));
 
 dotenv.config({ path: './.env' });
 const app = express();
@@ -55,7 +58,7 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
 
-app.use('/uploads', express.static('./uploads'))
+app.use('/uploads', express.static('./uploads'));
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
