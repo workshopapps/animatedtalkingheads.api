@@ -5,7 +5,7 @@ const ApiError = require('../utils/errors/ApiError');
 const path = require('path');
 const runPythonScript = require('./run-python');
 
-runPythonScript();
+// runPythonScript();
 exports.podcastuploader = async (req, res, next) => {
   const user_file_path = (
     '/uploads/podcasts/' +

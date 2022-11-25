@@ -9,8 +9,6 @@ const avatarRouter = require('./routes/avatars');
 const NotFound = require('./utils/errors/NotFound');
 const path = require('path');
 
-console.log(path.basename(path.dirname(__filename)));
-
 dotenv.config({ path: './.env' });
 const app = express();
 const DB = process.env.mongo_url;
