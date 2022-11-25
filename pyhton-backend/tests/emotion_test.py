@@ -123,3 +123,35 @@ for key, val in emotion.items():
     elif val == 0.5:
         final_emotion = key
 print(final_emotion)
+
+#----FOR MEMORY MANAGEMENT HANDLED ON GENERATOR----# 		
+# def show_on_face(final_emotion):
+#     '''
+#     Picks list of emotions, displays eyes matching them
+#     Args:
+#         final_emotion - emotion to potray
+#     Returns:
+#         eyes matching emotions
+#     '''
+#     if final_emotion == 'Sad':
+#         sad_eyes_img = Image.open('data/sad_eyes.png')
+#         return sad_eyes_img.show()
+
+#     elif final_emotion == 'Happy':
+#         happy_eyes_img = Image.open('data/happy_eyes.png')   
+#         return happy_eyes_img.show()
+
+#     if final_emotion == 'Angry':
+#         angry_eyes_img = Image.open('data/angry_eyes.png')
+#         return angry_eyes_img.show()
+
+#     if final_emotion == 'Fear':
+#         fear_eyes_img = Image.open('data/fear_eyes.png')
+#         return fear_eyes_img.show()
+
+#     if final_emotion == 'Surprise':
+#         surprise_eyes_img = Image.show('data/surprise_eyes.png')
+#         return surprise_eyes_img.show()
+#     else:
+#         neutral_eyes_img = Image.open('data/neutral_eyes.png')
+#         return neutral_eyes_img.show()
