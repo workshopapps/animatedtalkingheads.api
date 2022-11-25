@@ -3,6 +3,8 @@
     Script that generate the ryrs emotions of the avatar
 """
 from emotion import read_sentence_emotion
+import random
+import itertools
 
 emotions = {}
 
