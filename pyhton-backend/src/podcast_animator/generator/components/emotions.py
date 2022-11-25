@@ -1,6 +1,7 @@
 import text2emotion as te
 import re
 import nltk
+from PIL import Image
 
 nltk.download('omw-1.4')
 
@@ -109,8 +110,7 @@ def accurate_emotions(emotion):
             final_emotion = key     
     return final_emotion
         
-# ------------------------ALREADY HANDLED--------------------------------#
-	 		
+#----FOR MEMORY MANAGEMENT HANDLED ON GENERATOR----# 		
 # def show_on_face(final_emotion):
 #     '''
 #     Picks list of emotions, displays eyes matching them
@@ -121,29 +121,23 @@ def accurate_emotions(emotion):
 #     '''
 #     if final_emotion == 'Sad':
 #         sad_eyes_img = Image.open('data/sad_eyes.png')
-#         time.sleep(duration_of_sentence)
 #         return sad_eyes_img.show()
 
 #     elif final_emotion == 'Happy':
-#         happy_eyes_img = Image.open('data/happy_eyes.png')
-#         time.sleep(duration_of_sentence)
+#         happy_eyes_img = Image.open('data/happy_eyes.png')   
 #         return happy_eyes_img.show()
 
 #     if final_emotion == 'Angry':
 #         angry_eyes_img = Image.open('data/angry_eyes.png')
-#         time.sleep(duration_of_sentence)
 #         return angry_eyes_img.show()
 
 #     if final_emotion == 'Fear':
 #         fear_eyes_img = Image.open('data/fear_eyes.png')
-#         time.sleep(duration_of_sentence)
 #         return fear_eyes_img.show()
 
 #     if final_emotion == 'Surprise':
 #         surprise_eyes_img = Image.show('data/surprise_eyes.png')
-#         time.sleep(duration_of_sentence)
 #         return surprise_eyes_img.show()
 #     else:
 #         neutral_eyes_img = Image.open('data/neutral_eyes.png')
-#         time.sleep(duration_of_sentence)
 #         return neutral_eyes_img.show()
