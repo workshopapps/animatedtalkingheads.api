@@ -44,13 +44,5 @@ exports.podcastuploader = async (req, res, next) => {
     );
   }
 
-  podcast = await Podcast.findOneAndUpdate(
-    { id: podcast._id, user_id: req.headers.user_id },
-    {
-      file_path: podcast_file_path,
-    }
-  );
-  n;
-
   res.send(podcast);
 };
