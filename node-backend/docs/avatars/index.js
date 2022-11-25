@@ -1,26 +1,9 @@
 module.exports = {
   paths: {
-    '/avatars': {
-      get: {
-        tags: ['Avatars'],
-        description: 'Get avatars',
-        operationId: 'getAvatar',
-        parameters: [],
-        responses: {
-          200: {
-            description: 'avatars were obtained',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Todo',
-                },
-              },
-            },
-          },
-        },
-      },
+    '/avatars':{
+
       post: {
-        tags: ['Avatar post'],
+        tags: ['Avatars'],
         description: 'Create Avatar',
         operationId: 'createAvatar',
         parameters: [],
@@ -141,5 +124,7 @@ module.exports = {
         },
       },
     },
-  },
-};
+  }
+}
+  
+  

@@ -1,32 +1,27 @@
 module.exports = {
   components: {
-    id: {
-      type: 'string',
-      description: 'An id of a document, if used like user_id indicates a ref',
-      example: '507f191e810c19729de860ea',
-    },
-    file_path: {
+    
+    head_file_path: {
       type: 'string',
       description:
-      'The file_path can point the dir containing a cloth, hair, skin png. It can also point to where a podcast or animated video is stored',
-      example: './avatars/skin_black.png',
+      'The file_path can point the dir containing user preffered avatar head',
+      example: '.assets/Avatars-front/Avatars-01.png',
     },
-    cloth_type: {
+    scene_file_path: {
       type: 'string',
-      description: 'objectID that references the cloth collection',
-      example: '507f191e810c19729de860ea',
+      description:
+      'The file_path can point the dir containing user preffered avatar background',
+      example: '.assets/scenery/background1.png',
     },
-    hair_type:{
+    user_id: {
       type: 'string',
-      description: 'objectID that references the hair collection',
-      example: '507f191e810c19729de860ea',
+      description:
+      'The id of the user customizing avatar',
+      example: '637747b42342eb4566c90133',
     },
-    skin_type:{
-      type: 'string',
-      description: 'objectID that references the skin collection',
-      example: '507f191e810c19729de860ea',
-    }
-  ,
+    
+    
+  
     
     schemas: {
       User: {
@@ -67,40 +62,14 @@ module.exports = {
       AvatarInput: {
         type: 'object',
         properties: {
-          file_path:{
-            $ref:'#/components/file_path'
+          head_file_path:{
+            $ref:'#/components/head_file_path'
           },
-          id: {
-            $ref: '#/components/id',
+          scene_file_path:{
+            $ref:'#/components/scene_file_path'
           },
-          podcast_id: {
-            $ref: '#/components/id',
-          },
-          accessories: {
-            type: 'object',
-            properties: {
-              cloth_type: {
-                type: 'string',
-                description: 'objectID that references the cloth collection',
-                example: '507f191e810c19729de860ea'},
-              hair_type:{
-                type: 'string',
-                description: 'objectID that references the hair collection',
-                example: '507f191e810c19729de860ea',
-            },
-              skin_type:{
-                type: 'string',
-                description: 'objectID that references the skin collection',
-                example: '507f191e810c19729de860ea',
-           }
-            },
-          },
-      gender: {
-            type: 'string',
-            required: true,
-            enum: ['male', 'female', 'neutral'],
-          },
-      user_id: { $ref: '#/components/id' },
+    
+      user_id: { $ref: '#/components/user_id' },
         },
       },
       
