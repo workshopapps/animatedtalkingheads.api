@@ -39,7 +39,7 @@ In your virtual environment install pip
 > `pip install -e .[dev]`
 
 **Install in production**
-`pip install .`
+>`pip install .`
 
 #### Linux
 >`cd animatedtalkingheads.api/pyhton-backend`
@@ -59,7 +59,7 @@ In your virtual environment install pip
 > `pip install -e .[dev]`
 
 **Install in production**
-`pip install .`
+>`pip install .`
 
 
 #### To run your code
