@@ -7,10 +7,10 @@ import collections
 
 
 
-API_KEY = "22a6f3ca548c414f819ba4de3247feac" #str(os.getenv("ASSEMBLYAI"))
+#API_KEY =  #str(os.getenv("ASSEMBLYAI"))
 # print(API_KEY)
 
-def diarize_audio(audio):
+def diarize_audio(audio, api):
     """ 
     using assembly ai we send an audio url and obtain json data for the audio file
     @author : cchimdindu
