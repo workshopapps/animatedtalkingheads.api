@@ -12,7 +12,7 @@ def split(duration, chunks):
     return (duration[i*k+min(i, m):(i+1)*k+min(i+1, m)] for i in range(chunks))
 g2p = G2p()
 
-def generate_sequence(url: str):
+def generate_sequence(url: str, api):
     """generates mapped dictionary of speaker's state
     @author: JustAkiniyi
     Args:
@@ -30,7 +30,7 @@ def generate_sequence(url: str):
             ...
         }
     """
-    dataneed = diarize_audio(url)
+    dataneed = diarize_audio(url, api)
     
 
     # transcription = dataneed["text"]
