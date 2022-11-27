@@ -18,7 +18,7 @@ module.exports = {
         },
         responses: {
           201: {
-            description: 'Avatar created successfully',
+            description: 'Avatar created ',
           },
           500: {
             description: 'Server error',
