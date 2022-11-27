@@ -1,4 +1,5 @@
 import cv2
+import subprocess
 import os
 import sys
 from pathlib import Path
@@ -12,49 +13,47 @@ FRAMES = 24
 
 
 def _generate_state_sequence(img_path: Path, state: str) -> list[Path]:
-    """load the path to 24 images that make up a one second 
-       animation or default state for selected avatar
-    @author: anonnoone
+#     """load the path to 24 images that make up a one second 
+#        animation or default state for selected avatar
+#     @author: anonnoone
 
-    Args:
-        img_path (Path): pathlib.Path object to selected avatar directory
+#     Args:
+#         img_path (Path): pathlib.Path object to selected avatar directory
 
-    Returns:
-        list[Path]: sorted list of animation or default sequence paths
+#     Returns:
+#         list[Path]: sorted list of animation or default sequence paths
 
-    >>>>: generate_speech_seqeunce(path/to/avatar_01, state="speech")
-    >>>>: [path/to/avatar_o1/state_01, ..., path/to/avatar_o1/state_24]
-    "em": [1, 2, 3, 4, 5, 6, 7] -> 100 msecs 
-    "em": 500msecs -> [01,02, 3, 3, 4, 4, 5, 5 , 06, 07]
-    """
-    if state == "speech":
-        dir_files = [str(file.path) for file in os.scandir(img_path / "animation")]
-        return sorted(dir_files, key= lambda x: x.split('_')[1])
-    elif state == "silence":
-        return [img_path / "default.png" for _ in range(FRAMES)]
+#     >>>>: generate_speech_seqeunce(path/to/avatar_01, state="speech")
+#     >>>>: [path/to/avatar_o1/state_01, ..., path/to/avatar_o1/state_24]
+#     "em": [1, 2, 3, 4, 5, 6, 7] -> 100 msecs 
+#     "em": 500msecs -> [01,02, 3, 3, 4, 4, 5, 5 , 06, 07]
+#     """
+#     if state == "speech":
+#         dir_files = [str(file.path) for file in os.scandir(img_path / "animation")]
+#         return sorted(dir_files, key= lambda x: x.split('_')[1])
+#     elif state == "silence":
+#         return [img_path / "default.png" for _ in range(FRAMES)]
+      return [img_path / f"eyes/{state}.png" for _ in range(FRAMES)]
     
 
 
 def generate_animation(
     data: dict[str, list[str]], 
+    subtitle_data: dict[str, list[str]],
     bg_path: Path, num_speakers: int, 
     avatar_dict: dict[str, str],
     data_dir: Path) -> Path:
     """
     create animation using provided avatars and background
     using sequence generated from audio file
-
     @author: anonnoone
-
     Args:
         data (dict[str, list[str]]): speakers in audio and 
         their action/state per second list
-
         bg_path (Path): pathlib.Path object path to animation background
         num_speakers (int): number of speakers in audio file
         avatar_dict (dict[str, str]): speaker to selected avatar map
         data_dir (Path): pathlib.Path object Path to application data
-
     Returns:
         Path: path to generated animation
     >>>>: generate_animation(
@@ -71,18 +70,16 @@ def generate_animation(
 
 
     ##
-    speaker_states = {}
     for speaker in data:
         avatar_path = avatar_dict[speaker]
-        speaker_states[speaker] = {
-            "speech": _generate_state_sequence(avatar_path, "speech"),
-            "silence": _generate_state_sequence(avatar_path, "silence"), }
-        anm_seq = [speaker_states[speaker][state] for state in data[speaker][:600]]
-        img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
-    
+        anm_mouth_seq = [avatar_path / f"mouths/{state}.png" for state in data[speaker][:1000]]
+        # subtitle_seq = list(itertools.chain.from_iterable([_generate_state_sequence(avatar_path, state) for state in eye_data[speaker][:60]]))
+        subtitle_seq = list(itertools.chain.from_iterable([[word for _ in range(24)] for word in subtitle_data[speaker]]))
+        anm_eye_seq = [avatar_path / "eyes/happy.png" for _ in range(0, 1000)]
+        img_paths.append(list(zip(anm_mouth_seq, anm_eye_seq, subtitle_seq))) #anm_eye_seq
+
 
     # ##
-    
     # for speaker in data:
     #     avatar_path = avatar_dict[speaker]
     #     anm_seq = [_generate_state_sequence(avatar_path, state=state) for state in data[speaker][:600]]
@@ -94,31 +91,33 @@ def generate_animation(
     if num_speakers == 2:
         count = 1
         for img_1, img_2 in zip(*img_paths):
-            temp_images = [img_1, img_2]
+            state_images = [img_1, img_2]
+            avatar_images = [path / "base.png" for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image( state_images, avatar_images, bg_path)
             )
             count += 1
     elif num_speakers ==3:
         count = 1
         for img_1, img_2, img_3 in zip(*img_paths):
-            temp_images = [img_1, img_2, img_3]
+            state_images = [img_1, img_2, img_3]
+            avatar_images = [path for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image(state_images, avatar_images, bg_path)
             )
             count += 1
     elif num_speakers ==4:
         count = 1
         for img_1, img_2, img_3, img_4 in zip(*img_paths):
-            temp_images = [img_1, img_2, img_3, img_4]
+            state_images = [img_1, img_2, img_3, img_4]
+            avatar_images = [path for path in avatar_dict.values()]
             images.append(
-                generate_image(temp_images, bg_path)
+                generate_image(state_images, avatar_images, bg_path)
             )
             count += 1
-
-            
+    
+    print(len(images))        
     print(f"IMage Build: [{time.time()-start_path}]")
-    print(sys.getsizeof(images), sys.getsizeof(images[0]))
     frame_one = images[0]
 
     # return
@@ -130,6 +129,9 @@ def generate_animation(
     print("VIDEO WRITER START")
     start_write = time.time()
     for image in images:
+        # subprocess.run(
+        # [f"ffmpeg -framerate 1 -i {image} -c:v libx264 -r 24 {str(output.absolute())}"],
+        # shell=True)
         out.write(image) # Write out frame to video
         
 

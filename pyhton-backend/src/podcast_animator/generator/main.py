@@ -12,9 +12,13 @@ from pathlib import Path
 from uuid import uuid4
 from dotenv import load_dotenv
 import time
-from components.parser_two import generate_sequence
 from components.animator import generate_animation
 from moviepy.editor import VideoFileClip, AudioFileClip
+from podcast_animator.analysis.diariazer import diarize_audio
+from podcast_animator.analysis.word_analyzer import WordAnalyzer
+from podcast_animator.analysis.utterance_analyzer import UtteranceAnalyzer
+from podcast_animator.analysis.models.analyzer import Analyzer
+from podcast_animator.utils.json_handler import JsonHandler
 
 
 ## move all paths to config.py in package root directory
@@ -27,24 +31,18 @@ DOTENV_PATH = ROOT_DIR / "src/podcast_animator/env/.env"
 
 ## load environment variable
 
-print(DOTENV_PATH.exists())
-if DOTENV_PATH.exists():
-    load_dotenv(DOTENV_PATH)
-    
 
 
 def get_path(directory: Path, _id: str, is_folder: bool=False):
     """ generate posix path object from project data directory
       of images and backgrounds
     @author: anonnoone
-
     Args:
         directory (Path): pathlib.Path object of directory to locate file 
         or directory within
         e.g: data/Image/avatars -> path 
         _id (str): id of chosen avatar
         is_folder (bool, optional): locate dir path or file path. Defaults to False.
-
     Returns:
         _type_: dir or file path
     """
@@ -68,14 +66,24 @@ def animate( metadata_path :str) -> None:
     
     Returns:
         str: path to generated animation
-
     """
+
+    # print(DOTENV_PATH)
+    if DOTENV_PATH.exists():
+        load_dotenv(DOTENV_PATH)
+    
+    
+    metadata_path = ROOT_DIR / metadata_path
+    ## instantiate json file handler
+    json_handler = JsonHandler()
+
+
+    
     ## create unique output name
     output_path = DATA_DIR / f"Result/{str(uuid4())}.mp4" 
 
     ## load metadata json provided
-    with open(metadata_path) as data_file:
-        metadata_obj = json.load(data_file)
+    metadata_obj = json_handler.load(metadata_path)
     audio_url: str = metadata_obj["audio_url"]
     audio_path: str = metadata_obj["audio_path"]
     avatar_map: dict = metadata_obj["avatar_map"]
@@ -87,13 +95,27 @@ def animate( metadata_path :str) -> None:
         ) for avatar, value in avatar_map.items()}
     
  
-    ## generate animation sequence
-    animation_sequence = generate_sequence(audio_url)
-    # print(animation_sequence)
+
+    diarized_data = diarize_audio(audio_url, os.getenv("ASSEMBLYAI"))
+    json_handler.append(metadata_path, diarized_data)
+    words = diarized_data["words"]
+    # utterances = diarized_data["utterances"]
+    audio_length = diarized_data["audio_duration"]
+
+    
+
+    
+    # word_analyzer = WordAnalyzer(audio_length, words)
+    # animation_mouth_frames = word_analyzer.write_metadata(DATA_DIR/ f"audio_metadatas/{uuid4()}.json")
+    with open(DATA_DIR / f"audio_metadatas/aa841f48-2515-45b8-84e2-0c56a4ab50f0.json") as ff:
+        animation_mouth_frames = json.load(ff)
+    utterance_analyzer = UtteranceAnalyzer(audio_length, diarized_data["utterances"])
+    subtitle_seq = utterance_analyzer.write_metadata(DATA_DIR/ f"audio_metadatas/{uuid4()}.json")
 
     ## animate to return path to animation
     animation_path = generate_animation(
-        animation_sequence, 
+        animation_mouth_frames, 
+        subtitle_seq,
         bg_path, 
         num_speakers, avatar_paths, DATA_DIR)
 
@@ -110,7 +132,7 @@ def animate( metadata_path :str) -> None:
     print(f'YOUR VIDEO HAS BEEN SAVED TO: [{output_path}]')
 
     ## delete temporary animation
-    os.remove(animation_path)
+    # os.remove(animation_path)
    
 
 if __name__=='__main__':
