@@ -2,6 +2,7 @@ const { writeFile } = require('fs/promises');
 const fs = require('fs');
 const Podcast = require('./../models/Podcast');
 const ApiError = require('../utils/errors/ApiError');
+const NotFound = require('../utils/errors/NotFound');
 const path = require('path');
 const runPythonScript = require('./run-python');
 
@@ -45,4 +46,35 @@ exports.podcastuploader = async (req, res, next) => {
   }
 
   res.send(podcast);
+};
+
+exports.getOnePodcast = async (req, res, next) => {
+  try {
+    const podcast = await Podcast.findOne({
+      _id: req.params.podcastId,
+      user_id: req.headers.user_id,
+    });
+    console.log(podcast);
+    if (!podcast) {
+      return next(new NotFound());
+    }
+    res.json(podcast);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAllUserUploadedPodcaster = async (req, res, next) => {
+  try {
+    const podcasts = await Podcast.find({
+      user_id: req.headers.user_id,
+    });
+
+    // if (podcast.length < ) {
+    //   next(new NotFound());
+    // }
+    res.json(podcasts);
+  } catch (err) {
+    next(err);
+  }
 };

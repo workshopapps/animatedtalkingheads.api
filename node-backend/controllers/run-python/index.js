@@ -35,7 +35,7 @@ const runPythonScript = async () => {
     // Do something with the return value.
     console.log('done', returnvalue);
   });
-  await runQueue(myQueue, 'text', "import os;print(os.getcwd() + ' ' + 'k')");
+  await runQueue(myQueue, 'python');
 };
 
 module.exports = runPythonScript;
