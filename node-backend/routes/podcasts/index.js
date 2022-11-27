@@ -5,22 +5,22 @@ const checkUser = require('../../middlewares/checkUser');
 const schemaMiddleware = require('../../middlewares/schemaMiddleware');
 const ApiError = require('../../utils/errors/ApiError');
 const { podcastSchema } = require('./podcast.schema');
-const { podcastuploader } = require('../../controllers/podcast.controller');
+const {
+  podcastuploader,
+  getOnePodcast,
+  getAllUserUploadedPodcaster,
+} = require('../../controllers/podcast.controller');
 const getPodcast = require('../../controllers/podcastgetter');
 const podcastIdMiddleware = require('../../middlewares/podcastidstore');
 const deletePodcast = require('../../controllers/podcastdeleter');
 const podcastRouter = express.Router();
 
- podcastRouter.get(
-   '/getpodcasts',
-   getPodcast
- );
+podcastRouter.get('/', checkUser, getAllUserUploadedPodcaster);
+podcastRouter.get('/getpodcasts', getPodcast);
 
- podcastRouter.delete(
-   '/:podcastid',
-   podcastIdMiddleware,
-   deletePodcast
- );
+podcastRouter.get('/:podcastId', checkUser, getOnePodcast);
+
+podcastRouter.delete('/:podcastid', podcastIdMiddleware, deletePodcast);
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('audio')) {
@@ -42,7 +42,7 @@ podcastRouter.post(
 );
 
 podcastRouter.get('/download', (req, res) => {
-  const { file_path} = req.body;
+  const { file_path } = req.body;
   res.download(file_path);
 });
 

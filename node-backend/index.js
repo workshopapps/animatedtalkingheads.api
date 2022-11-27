@@ -8,6 +8,7 @@ const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const NotFound = require('./utils/errors/NotFound');
 const path = require('path');
+const errorController = require('./controllers/error.controller');
 
 dotenv.config({ path: './.env' });
 const app = express();
@@ -61,6 +62,8 @@ app.use('/uploads', express.static('./uploads'));
 app.all('*', (req, res, next) => {
   next(new NotFound());
 });
+
+app.use(errorController);
 
 //initialize the app.
 async function initialize() {
