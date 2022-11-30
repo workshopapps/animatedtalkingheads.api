@@ -78,7 +78,7 @@ class AnimationFrame:
                 ## extract phonemes without weight
                 sound_no_weights =  [re.sub(r'\d+', '', sound) for sound in phonemes]
                 
-
+                
                 ## calculate length of single phoneme in word
                 phonemes_sum = sum(word_fractions)
                 time_len = sound_stamps[1] - sound_stamps[0]
@@ -89,7 +89,7 @@ class AnimationFrame:
                 start_phonemes = sound_stamps[0]
                 for wrd_index, wt in enumerate(word_fractions):
                   end_phonemes = start_phonemes + (wt * len_one)
-                  first_phoneme_frame = round((start_phonemes / self.msec_per_frame))
+                  first_phoneme_frame = round((start_phonemes / self.msec_per_frame)) 
                   last_phoneme_frame = round((end_phonemes / self.msec_per_frame))
                   for phoneme_frame_index in range(first_phoneme_frame, last_phoneme_frame +1):
                     sound = sound_no_weights[wrd_index]
@@ -100,6 +100,7 @@ class AnimationFrame:
                         mouth_shape = SHAPES[sound]
                     self.animation_frames[phoneme_frame_index][speaker].append(
                     {
+                       
                         "word": word, 
                         "mouth": str(avatar_map[speaker] / f'mouths/{mouth_shape}.png'),
                         "eye": str(avatar_map[speaker] / "eyes/happy.png")
@@ -108,3 +109,4 @@ class AnimationFrame:
                     start_phonemes = end_phonemes + 1
         
         file_handler.write(write_path, self.animation_frames)
+    

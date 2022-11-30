@@ -76,9 +76,6 @@ def animate( metadata_path :str) -> None:
     json_handler = JsonHandler()
 
 
-    
-    ## create unique output name
-    animation_output_path = DATA_DIR / f"Result/{str(uuid4())}.mp4" 
 
     ## load metadata json provided
     metadata_obj = json_handler.load(metadata_path)
