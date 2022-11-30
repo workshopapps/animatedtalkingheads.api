@@ -1,34 +1,22 @@
 import requests
 import time
-import itertools
+# import itertools
 import re
 
 
 def extract_wordtimestamps(sentence_dict):
-    sentence = sentence_dict["text"]
-    split_sentence = list(filter(None, re.split(r'[.,?]', sentence)))
-    sentence_lengths = [len(split.strip().split(' ')) for split in split_sentence]
-    word_obj = sentence_dict["words"]
+    split_sentence = sentence_dict["text"].split(' ')
+    words_obj = sentence_dict["words"]
+    timestamp_list = [f"{wrd['start']}-{wrd['end']}" for wrd in words_obj]
 
-    def word_timestamps( start, stop):
-        return ";".join([f"{word['start']}-{word['end']}" for word in word_obj[start: stop]])
-
-    if len(split_sentence) <= 1:
-        return {split_sentence[0]: word_timestamps(0, len(word_obj) )}
-
-    current_stop = sentence_lengths[0]
-    current_start = 0
     result = {}
-
-    for i, sentence in enumerate(split_sentence):
-        result[sentence] = word_timestamps(current_start, current_stop)
-        current_start = current_stop
-        try:
-            current_stop += sentence_lengths[i+1]
-        except IndexError:
-            print(sentence_lengths, result.values())
-            break
-        
+    start = 0
+    for index, wrd in enumerate(split_sentence):
+        if re.search(r'\.$|\?$|\,$', wrd):
+            sentence = " ".join(split_sentence[start: index +1])
+            timestamps = ";".join(timestamp_list[start:index+1])
+            result[sentence] = timestamps
+            start = index + 1
     return result
 
 

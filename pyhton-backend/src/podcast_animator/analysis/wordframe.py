@@ -3,7 +3,7 @@ import itertools
 import numpy as np
 import re
 
-path = "/home/chimdi/Desktop/animated talking heads/animatedtalkingheads.api/pyhton-backend/test_data/meta.json"
+path = "test_data/meta.json"
 
 def wordtoframe(path):
     #input : only json file path
@@ -97,7 +97,7 @@ def wordtoframeandwordtime(path):
         return final #[(frametime,word,wordtimerange)]
     
 
-def wordtoframenumber(path):
+def wordtoframenumber():
     #input : only json file path
     #output : [frametime,word,wordtimerange]
     with open(path) as file:
@@ -141,11 +141,12 @@ def wordtoframenumber(path):
             for t,s in zip(timelist,framenumber):
                 num = float(t)
                 if float(timenow[0]) < num < float(timenow[1]):
-                    final.append(s,word,timenow)
-                else:
-                    final.append(s,"empty")
-
-        return final #[(framenumber,word,wordtimerange)]
+                    print(s,word)
+                    # final.append(s,word)
+                # else:
+                    # final.append(s,"empty")
+        # print(final[:10])
+        # return final #[(framenumber,word,wordtimerange)]
 
 
 
@@ -207,5 +208,5 @@ def sentencestoframes(path):
 
             
 
-# if __name__ == "__main__":
-#     sentencestoframes()
+if __name__ == "__main__":
+    wordtoframenumber()

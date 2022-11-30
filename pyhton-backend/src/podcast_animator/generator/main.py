@@ -6,19 +6,17 @@
 
 ## DATA IMPORTS
 import os
+import time
 from sys import argv
-import json
 from pathlib import Path
 from uuid import uuid4
+from g2p_en import G2p
 from dotenv import load_dotenv
-import time
-from components.animator import generate_animation
 from moviepy.editor import VideoFileClip, AudioFileClip
+from podcast_animator.generator.components.animator import Animator
 from podcast_animator.analysis.diariazer import diarize_audio
-from podcast_animator.analysis.word_analyzer import WordAnalyzer
-from podcast_animator.analysis.utterance_analyzer import UtteranceAnalyzer
-from podcast_animator.analysis.models.analyzer import Analyzer
-from podcast_animator.utils.json_handler import JsonHandler
+from podcast_animator.utils.file_handlers import JsonHandler
+from podcast_animator.analysis.animation_frame_constructor import AnimationFrame
 
 
 ## move all paths to config.py in package root directory
@@ -80,48 +78,75 @@ def animate( metadata_path :str) -> None:
 
     
     ## create unique output name
-    output_path = DATA_DIR / f"Result/{str(uuid4())}.mp4" 
+    animation_output_path = DATA_DIR / f"Result/{str(uuid4())}.mp4" 
 
     ## load metadata json provided
     metadata_obj = json_handler.load(metadata_path)
+    user_dir_path = DATA_DIR/ f'user_data/{metadata_obj["dir_id"]}'
     audio_url: str = metadata_obj["audio_url"]
     audio_path: str = metadata_obj["audio_path"]
     avatar_map: dict = metadata_obj["avatar_map"]
     bg_id: str = metadata_obj["bg_path"]
-
-    num_speakers = len(avatar_map)
+    # num_speakers = len(avatar_map)
     bg_path = get_path(BG_DIR, bg_id, is_folder=False)
     avatar_paths = {avatar: get_path(AVATAR_DIR, value, is_folder=True
         ) for avatar, value in avatar_map.items()}
+    speaker_labels = avatar_paths.keys()
+    ## check if data has been processes
+    if not user_dir_path.exists():
+        os.mkdir(user_dir_path)
+
+        ## diarize audio and save to audio_folder
+        diarized_data = diarize_audio(audio_url, os.getenv("ASSEMBLYAI"))
+        json_handler.write(user_dir_path / "diarization.json", diarized_data)
+
+    else:
+        diarized_data = json_handler.load(user_dir_path / "diarization.json")
     
- 
-
-    diarized_data = diarize_audio(audio_url, os.getenv("ASSEMBLYAI"))
-    json_handler.append(metadata_path, diarized_data)
-    words = diarized_data["words"]
-    # utterances = diarized_data["utterances"]
-    audio_length = diarized_data["audio_duration"]
-
+    diarized_speeches = diarized_data["speech"]
+    audio_length_secs = diarized_data["audio_duration_seconds"]
     
 
-    
-    # word_analyzer = WordAnalyzer(audio_length, words)
-    # animation_mouth_frames = word_analyzer.write_metadata(DATA_DIR/ f"audio_metadatas/{uuid4()}.json")
-    with open(DATA_DIR / f"audio_metadatas/aa841f48-2515-45b8-84e2-0c56a4ab50f0.json") as ff:
-        animation_mouth_frames = json.load(ff)
-    utterance_analyzer = UtteranceAnalyzer(audio_length, diarized_data["utterances"])
-    subtitle_seq = utterance_analyzer.write_metadata(DATA_DIR/ f"audio_metadatas/{uuid4()}.json")
+    ## check if schema path has previously been built
+    schema_path = user_dir_path / "schema.json"
+    # create animation schema object
+    if schema_path.exists():
+        animation_frames_schema = json_handler.load(schema_path)
+        animation_frame_length = len(animation_frames_schema)
+    else:
+        animation_frame = AnimationFrame(diarized_speeches, speaker_labels, audio_length_secs)
+        ## instantiate phoneme transcriber
+        ## populate animation_schema
+        g2p_obj = G2p()
+        print(f'START POPULATING SCHEMA')
+        start_scheme = time.time()
+        animation_frame.populate_frames(g2p_obj, json_handler, schema_path, avatar_paths)
+        print(f'FINISH POPULATING SCHEMA : {time.time()- start_scheme}')
+        animation_frames_schema = animation_frame.animation_frames
+        animation_frame_length = animation_frame.animation_frame_length
+   
+    ## instantiate animator
+    animator = Animator(
+        bg_path, avatar_paths
+    )
 
-    ## animate to return path to animation
-    animation_path = generate_animation(
-        animation_mouth_frames, 
-        subtitle_seq,
-        bg_path, 
-        num_speakers, avatar_paths, DATA_DIR)
+    print("BUILDING IMAGES")
+    animator.build_images(
+        animation_frames_schema,
+        animation_frame_length
+    )
+    print("END IMAGES BUILD")
 
-    # return
-    ## add audio to generated animation
-    videoclip = VideoFileClip(str(animation_path))
+
+    print("BUILDING VIDEO")
+    soundless_video_path = user_dir_path / "no_sound.mp4"
+    animator.build_video(soundless_video_path)
+    print("END VIDEO BUILD")
+    ## add audio
+
+
+    output_path = user_dir_path / "animation.mp4"
+    videoclip = VideoFileClip(str(soundless_video_path))
     audioclip = AudioFileClip(str(audio_path))
     print("About to set audio clip")
     video = videoclip.set_audio(audioclip)
