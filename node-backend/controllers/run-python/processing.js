@@ -1,39 +1,28 @@
 const { PythonShell } = require('python-shell');
 const path = require('path');
 
-const runPy = async () => {
+export const runPy = async ({ jobConfig }) => {
   let options = {
     mode: 'text',
     pythonOptions: ['-u'],
 
-    args: [
-      path.resolve(
-        path.dirname(process.cwd() + '/') +
-          '/pyhton-backend/test_data/meta2.json'
-      ),
-    ],
+    args: [jobConfig.meta_json_file],
   };
 
   return new Promise(function (resolve, reject) {
     PythonShell.run(
       path.resolve(
-        path.resolve(
-          path.dirname(process.cwd() + '/') +
-            'pyhton-backend/src/podcast_animator/generator/main.py'
-        ),
-        options
+        path.dirname(process.cwd() + '/') +
+          'pyhton-backend/src/podcast_animator/generator/main.py'
       ),
+      options,
       function (err, res) {
-        console.error(err);
-        if (err) reject(err);
-        resolve(res[0]);
+        if (err) {
+          console.error(err);
+          reject({ err });
+        }
+        resolve({ success: true, video_path: res[0], jobConfig });
       }
     );
   });
-};
-
-module.exports = async (job) => {
-  const pyres = await runPy(job.data);
-
-  return pyres;
 };

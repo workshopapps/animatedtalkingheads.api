@@ -1,12 +1,65 @@
-const { writeFile } = require('fs/promises');
 const fs = require('fs');
+const { writeFile } = require('fs/promises');
 const Podcast = require('./../models/Podcast');
 const ApiError = require('../utils/errors/ApiError');
 const NotFound = require('../utils/errors/NotFound');
 const path = require('path');
 const runPythonScript = require('./run-python');
+const AnimatedVideo = require('../models/AnimatedVideo');
 
-// runPythonScript();
+function randomIntFromInterval() {
+  // min and max included
+  let val = Math.floor(Math.random() * (13 - 1 + 1) + 1);
+  val = String(val);
+  if (val < 10) {
+    val = 0 + val;
+    return val;
+  }
+
+  return val;
+}
+
+exports.generateAnimatedVideos = async (req, res, next) => {
+  let animatedVideoDoc = await AnimatedVideo.findById(
+    req.headers.animated_video_id
+  );
+  if (!animatedVideoDoc) {
+    animatedVideoDoc = await AnimatedVideo.create({
+      podcast_id: req.params.podcastId,
+      user_id: req.headers.user_id,
+    });
+  }
+
+  const podcastDoc = await Podcast.findById(req.params.podcastId);
+  const metaJson = {
+    audio_path: podcastDoc.file_path,
+    audio_url: podcastDoc.file_url,
+    avatar_map: {
+      A: '01',
+      B: '02',
+    },
+    bg_path: req.body.bg_path || randomIntFromInterval(),
+  };
+  const metaJsonFilePath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/test_data/${animatedVideoDoc._id}.json`
+  );
+  const metaJsonFile = await writeFile(
+    metaJsonFilePath,
+    JSON.stringify(metaJson),
+    'utf-8'
+  );
+  const jobConfig = {
+    ...metaJson,
+    user_id: req.headers.user_id,
+    animated_video_id: animatedVideoDoc._id,
+    meta_json_file: metaJsonFile,
+  };
+  await runPythonScript(jobConfig, metaJsonFilePath);
+
+  res.json(...animatedVideoDoc);
+};
+
 exports.podcastuploader = async (req, res, next) => {
   const user_file_path = (
     '/uploads/podcasts/' +
@@ -54,7 +107,7 @@ exports.getOnePodcast = async (req, res, next) => {
       _id: req.params.podcastId,
       user_id: req.headers.user_id,
     });
-    console.log(podcast);
+
     if (!podcast) {
       return next(new NotFound());
     }
@@ -64,7 +117,7 @@ exports.getOnePodcast = async (req, res, next) => {
   }
 };
 
-exports.getAllUserUploadedPodcaster = async (req, res, next) => {
+exports.getAllUserUploadedPodcast = async (req, res, next) => {
   try {
     const podcasts = await Podcast.find({
       user_id: req.headers.user_id,

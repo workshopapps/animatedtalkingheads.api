@@ -17,5 +17,5 @@ const podcastSchema = new Schema({
     required: true,
   },
 });
-
-module.exports = mongoose.model('Podcast', podcastSchema);
+const Podcast = mongoose.model('Podcast', podcastSchema);
+module.exports = Podcast;

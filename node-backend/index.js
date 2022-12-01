@@ -7,7 +7,7 @@ const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const NotFound = require('./utils/errors/NotFound');
-const path = require('path');
+require('./jobs/index')();
 const errorController = require('./controllers/error.controller');
 
 dotenv.config({ path: './.env' });
