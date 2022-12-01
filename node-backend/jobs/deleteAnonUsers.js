@@ -5,10 +5,10 @@ const User = require('../models/User');
 const PromiseMap = require('bluebird').map;
 
 const deleteAnonUser = async () => {
-  let todayDate = new Date();
-  todayDate.setDate(todayDate.getDate() - 30);
+  let aMonthAgoDate = new Date();
+  aMonthAgoDate.setDate(aMonthAgoDate.getDate() - 30);
   const users = await User.find({
-    last_time_accessed: { $lte: todayDate },
+    last_time_accessed: { $lte: aMonthAgoDate },
   });
 
   await PromiseMap(
@@ -40,7 +40,7 @@ const deleteAnonUser = async () => {
         console.error(err);
       }
     },
-    { concurrency: 2 }
+    { concurrency: 1 }
   );
 };
 

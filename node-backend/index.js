@@ -6,6 +6,7 @@ const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
+const podcastRouter = require('./routes/podcasts');
 const NotFound = require('./utils/errors/NotFound');
 require('./jobs/index')();
 const errorController = require('./controllers/error.controller');
@@ -36,7 +37,6 @@ mongoose.set('toObject', {
 const PORT = process.env.PORT || 4000;
 
 const fs = require('fs');
-const podcastRouter = require('./routes/podcasts');
 
 if (!fs.existsSync('./uploads')) {
   fs.mkdirSync('./uploads');

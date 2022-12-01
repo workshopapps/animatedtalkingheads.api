@@ -51,7 +51,7 @@ podcastRouter.get('/download', (req, res) => {
   res.download(file_path);
 });
 
-podcastRouter.get(
+podcastRouter.post(
   '/:podcastId/generate-video',
   checkUser,
   getAllUserCreatedAnimatedVideos

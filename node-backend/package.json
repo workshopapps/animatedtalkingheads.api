@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./index.js",
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "debug": "node --inspect-brk ./index.js"
   },
   "repository": {
     "type": "git",
