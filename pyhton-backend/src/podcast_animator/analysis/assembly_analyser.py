@@ -7,10 +7,10 @@ import collections
 
 
 
-API_KEY = "22a6f3ca548c414f819ba4de3247feac" #str(os.getenv("ASSEMBLYAI"))
+#API_KEY =  #str(os.getenv("ASSEMBLYAI"))
 # print(API_KEY)
 
-def diarize_audio(audio):
+def diarize_audio(audio, api):
     """ 
     using assembly ai we send an audio url and obtain json data for the audio file
     @author : cchimdindu
@@ -22,63 +22,55 @@ def diarize_audio(audio):
         lis: json file is sorted out and returned in list format
     """
 
-    endpoint1 = "https://api.assemblyai.com/v2/transcript"
+    url = "https://api.assemblyai.com/v2/transcript"
 
-    # json1 = {
-    # "audio_url": audio,
-    # "speaker_labels": True,
-    # "sentiment_analysis": True, "Number of labels is %d. Valid values are 2 to n_samples - 1 (inclusive)"
+    post_body = {
+    "audio_url": audio,
+    "speaker_labels": True, #include speaker labels
     # "disfluencies": True #transcribe filler words
-    # }
-    # headers1 = {
-    #     "authorization": API_KEY,
-    #     "content-type": "application/json",
-    # }
-    # response1 = requests.post(endpoint1, json=json1, headers=headers1)
-    # first = response1.json()
-    # print(first["id"])
-    # second = first["id"]
-    # rxym41rlo2-2606-4354-ae8f-095ccdf58181
-
-
-    # endpoint_result = "https://api.assemblyai.com/v2/transcript/" +  second
-    endpoint_result = "https://api.assemblyai.com/v2/transcript/" +  "rxym41rlo2-2606-4354-ae8f-095ccdf58181"
-    headers2 = {
-        "authorization": API_KEY,
     }
-    # print(first)
+    headers = {
+        "authorization": api,
+        "content-type": "application/json",
+    }
+    transcription_response = requests.post(url, json=post_body, headers=headers)
+    transcription_id = transcription_response.json()["id"]
     
-    # response2= requests.get(endpoint_result, headers=headers2)
-    # a = response2.json()
-  
-             
-    process_done = False
-    while not process_done:
-        response2= requests.get(endpoint_result, headers=headers2)
-        a = response2.json()
-        status = a["status"]
+    
+
+    ## remove content-type from request headers
+    del headers["content-type"]
+    
+        
+    transcription_status = False
+    while not transcription_status:
+        ## id of transcribed audio used for testing
+        # "rxym41rlo2-2606-4354-ae8f-095ccdf58181"
+        # response= requests.get(f'{url}/rxym41rlo2-2606-4354-ae8f-095ccdf58181', headers=headers)
+        response= requests.get(f'{url}/{transcription_id}', headers=headers)
+        request_data = response.json()
+        status = request_data["status"]
         if status != "completed":
             print(f"Processing Audio, Status: [{status}]")
             time.sleep(20) 
         else:
-            process_done = True           
-    
-    
+            transcription_status = True           
 
-
-    #maps words to timestamp only
-    # endpointVTT = "https://api.assemblyai.com/v2/transcript/" + second + "/vtt"
-
-    listout = {
-        "text":a["text"], 
-        "utterances": a["utterances"],
-        "words": a["words"],
-        "audio_duration": int(a["audio_duration"])
+    remove_list = ["confidence", "words"]
+    transcription = {
+        "transcription_id": 'rxym41rlo2-2606-4354-ae8f-095ccdf58181',
+        "audio_duration": int(request_data["audio_duration"]),
+        "text":request_data["text"], 
+        "utterances":[ 
+            { key: value for key, value in utterance.items() if key not in remove_list}
+        for utterance in request_data["utterances"]
+            ],
+        "words": [ 
+            { key: value for key, value in word.items() if key not in remove_list}
+        for word in request_data["words"]
+            ]
         }
-
-    # ress = requests.get(endpointVTT, headers=headers2)
-    # b = ress.text #just time and speech
-    return listout
+    return transcription
 
 
 

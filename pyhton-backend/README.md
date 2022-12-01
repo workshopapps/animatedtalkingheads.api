@@ -21,34 +21,58 @@ Clone and Navigate to repository
 Or Download Zipfile
    - Click on the green button `<>code`,at the bottom of the popup click Download ZIP 
 
-
->`cd podcast_animator`
+#### Windows
+>`cd animatedtalkingheads.api\pyhton-backend`
 
 To setup your virtual environment
 >`python -m venv venv`
 
 To activate your environment
 
-***For Windows:-***
 >`. venv\Scripts\activate`
 
-***Linux / Posix/ Mac:-***
+In your virtual environment install pip
+>`pip install -U pip`\
+>`pip install -r requirements.txt`
+
+**Install in development**
+> `pip install -e .[dev]`
+
+**Install in production**
+>`pip install .`
+
+#### Linux
+>`cd animatedtalkingheads.api/pyhton-backend`
+
+To setup your virtual environment
+>`python3 -m venv venv`
+
+To activate your environment
 >`source venv/bin/activate`
 
 In your virtual environment install pip
 >`pip install -U pip`\
 >`pip install -r requirements.txt`
 
-To run your code
-
-*with python*
->`python main.py meta.json`
-
-*with python3*
->`python3 main.py meta.json`
 
 **Install in development**
 > `pip install -e .[dev]`
+
+**Install in production**
+>`pip install .`
+
+
+#### To run your code
+
+*with python*
+>`python .\src\podcast_animator\generator\main.py path\to\json_config`
+
+
+*with python3*
+>`python3 .\src\podcast_animator\generator\main.py path\to\json_config`
+
+**Test Path**
+>`python .\src\podcast_animator\generator\main.py test_data\meta.json`
 
 >**Note**
 >*pre-commit hook(rejects commits if error found with format, commit is then formatted with black.) save directory and commit formatted changes*

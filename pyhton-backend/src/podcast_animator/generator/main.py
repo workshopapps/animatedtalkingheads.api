@@ -88,7 +88,7 @@ def animate( metadata_path :str) -> None:
     
  
     ## generate animation sequence
-    animation_sequence = generate_sequence(audio_url)
+    animation_sequence = generate_sequence(audio_url, os.getenv("ASSEMBLYAI"))
     # print(animation_sequence)
 
     ## animate to return path to animation

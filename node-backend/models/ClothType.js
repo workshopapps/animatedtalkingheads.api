@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const clothTypeSchema = new Schema({
   color: {
     type: String,
-    default:"white",
+    default: 'white',
     required: true,
   },
   style: {

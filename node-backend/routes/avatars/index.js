@@ -10,7 +10,8 @@ const {
 const avatarRouter = express.Router();
 
 avatarRouter.get('/', (req, res) => {
-  res.json({ data: 'all avatars' });
+
+  res.json({data:'all avatars'});
 });
 
 avatarRouter.post('/', schemaMiddleware(avaterSchema), addAvatar);
