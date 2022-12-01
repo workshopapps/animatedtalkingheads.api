@@ -13,7 +13,7 @@ pipeline {
                 dir('animatedtalkingheads.api/node-backend') {
                 
                     sh "npm install"
-                    sh "npm run build"
+                   
                     
                 }
 			} 
