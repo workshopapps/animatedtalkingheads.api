@@ -7,8 +7,12 @@ const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const NotFound = require('./utils/errors/NotFound');
+
+const authRoutes = require('./routes/user/index');
+// const cookieParser = require('cookie-parser');
 const path = require('path');
 const errorController = require('./controllers/error.controller');
+
 
 dotenv.config({ path: './.env' });
 const app = express();
@@ -56,6 +60,8 @@ app.use(cors());
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
+app.use(authRoutes);
+app.use('/uploads', express.static('./uploads'))
 
 app.use('/uploads', express.static('./uploads'));
 
