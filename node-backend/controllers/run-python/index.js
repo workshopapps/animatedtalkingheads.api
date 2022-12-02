@@ -7,9 +7,11 @@ const move = require('./move-file');
 const process = require('process');
 
 let connection = new IORedis(
-  `redis://aaronkenny:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:1845`
+  `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:1845`
 );
-
+console.log(
+  `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:1845`
+);
 // Reuse the ioredis instance
 const queue = new Queue('myqueue', { connection });
 const processorFile = path.join(__dirname, 'processing.js');

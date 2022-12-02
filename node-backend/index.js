@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+dotenv.config({ path: './.env' });
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -14,7 +15,6 @@ const authRoutes = require('./routes/user/index');
 const path = require('path');
 const errorController = require('./controllers/error.controller');
 
-dotenv.config({ path: './.env' });
 const app = express();
 const DB = process.env.mongo_url;
 
