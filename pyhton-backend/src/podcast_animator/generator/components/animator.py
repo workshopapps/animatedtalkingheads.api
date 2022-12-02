@@ -101,7 +101,30 @@ class Animator:
         cv2_image
         return cv2_image
 
+    def _draw_word(self, speaker_word: str, image: Image, offset: int) -> None:
+        """draws spoken words from analysed audio on frame 
+            as subtitles under the appropriate speaker 
+            created by @jimi
+            
+            Args:
+            speaker_word (str): subtitle to be drawn
+            image (Image): image to draw subtitle
+            offset (int): position to draw_subtitle
+        """
+        width, height = image.size
+        wrapper = textwrap.TextWrapper(width=width*0.07) 
+        word_list = wrapper.wrap(subtitle_text=speaker_word) 
+        caption_new = ''
+        for word in word_list[:-1]:
+            caption_new = caption_new + word + '\n'
+        caption_new += word_list[-1]
 
+        draw = ImageDraw.Draw(image)
+
+        w,h = draw.textsize(caption_new, font=self.font)
+
+        x,y = 0.5*(width-w),0.90*height-h
+        draw.text((x, y), caption_new, font=self.font)
    
     
 
