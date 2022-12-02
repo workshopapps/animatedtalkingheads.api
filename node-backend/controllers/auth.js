@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/UsersAuth");
 const jwt = require('jsonwebtoken');
 
 // handle errors
@@ -44,14 +44,6 @@ const createToken = (id) => {
 };
 
 // controller actions
-module.exports.signup_get = (req, res) => {
-  res.render('signup');
-}
-
-module.exports.login_get = (req, res) => {
-  res.render('login');
-}
-
 module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
 
@@ -88,5 +80,5 @@ module.exports.login_post = async (req, res) => {
 
 module.exports.logout_get = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
-  res.redirect('/');
+  // res.redirect('/');
 }
