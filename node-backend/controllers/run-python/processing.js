@@ -21,7 +21,7 @@ export const runPy = async ({ jobConfig }) => {
           console.error(err);
           reject({ err });
         }
-        resolve({ success: true, video_path: res[0], jobConfig });
+        resolve({ success: true, jobConfig });
       }
     );
   });

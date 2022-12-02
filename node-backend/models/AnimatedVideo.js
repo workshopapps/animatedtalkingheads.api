@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const animatedVideoSchema = new Schema({
-  video_path: {
+  video_url: {
     type: String,
   },
   status: {

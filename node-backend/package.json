@@ -19,9 +19,9 @@
   },
   "homepage": "https://github.com/workshopapps/animatedtalkingheads.api#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "bluebird": "^3.7.2",
     "bree": "^9.1.3",
-    "bcrypt": "^5.1.0",
     "bullmq": "^3.2.2",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

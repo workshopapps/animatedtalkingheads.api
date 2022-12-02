@@ -14,7 +14,6 @@ const authRoutes = require('./routes/user/index');
 const path = require('path');
 const errorController = require('./controllers/error.controller');
 
-
 dotenv.config({ path: './.env' });
 const app = express();
 const DB = process.env.mongo_url;
@@ -61,7 +60,7 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
 app.use(authRoutes);
-app.use('/uploads', express.static('./uploads'))
+app.use('/uploads', express.static('./uploads'));
 
 app.use('/uploads', express.static('./uploads'));
 

@@ -1,9 +1,9 @@
 const fs = require('fs');
-const { writeFile } = require('fs/promises');
+const path = require('path');
+const { writeFile, readFile } = require('fs/promises');
 const Podcast = require('./../models/Podcast');
 const ApiError = require('../utils/errors/ApiError');
 const NotFound = require('../utils/errors/NotFound');
-const path = require('path');
 const runPythonScript = require('./run-python');
 const AnimatedVideo = require('../models/AnimatedVideo');
 
@@ -39,11 +39,34 @@ exports.generateAnimatedVideos = async (req, res, next) => {
       B: '02',
     },
     bg_path: req.body.bg_path || randomIntFromInterval(),
+    dir_id: animatedVideoDoc.id,
   };
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${animatedVideoDoc._id}.json`
   );
+
+  const animatedVideoPath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/data/user_data/${animatedVideoDoc._id}`
+  );
+
+  if (!fs.existsSync(animatedVideoPath)) {
+    fs.mkdirSync(animatedVideoPath);
+  }
+
+  const diaJsonFilePath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/data/user_data/${animatedVideoDoc._id}/diarization.json`
+  );
+  const oldDiaJsonFilePath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/data/user_data/diarization.json`
+  );
+
+  const diaJsonFile = await readFile(oldDiaJsonFilePath, 'utf-8');
+  await writeFile(diaJsonFile, diaJsonFilePath, 'utf-8');
+
   const metaJsonFile = await writeFile(
     metaJsonFilePath,
     JSON.stringify(metaJson),

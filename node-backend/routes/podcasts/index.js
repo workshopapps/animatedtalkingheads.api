@@ -52,19 +52,19 @@ podcastRouter.get('/download', (req, res) => {
 });
 
 podcastRouter.post(
-  '/:podcastId/generate-video',
+  '/:podcastId/get-video',
   checkUser,
   getAllUserCreatedAnimatedVideos
 );
 
-podcastRouter.get(
+podcastRouter.post(
   '/:podcastId/animated-videos/:animatedVideoId',
   checkUser,
   getOneAnimatedVideo
 );
 
-podcastRouter.get(
-  '/:podcastId/animated-videos/',
+podcastRouter.post(
+  '/:podcastId/generate-video',
   checkUser,
   generateAnimatedVideos
 );
