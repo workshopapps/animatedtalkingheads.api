@@ -89,8 +89,8 @@ class AnimationFrame:
                 start_phonemes = sound_stamps[0]
                 for wrd_index, wt in enumerate(word_fractions):
                   end_phonemes = start_phonemes + (wt * len_one)
-                  first_phoneme_frame = round((start_phonemes / self.msec_per_frame)) 
-                  last_phoneme_frame = round((end_phonemes / self.msec_per_frame))
+                  first_phoneme_frame = round((start_phonemes / self.msec_per_frame)) - 2
+                  last_phoneme_frame = round((end_phonemes / self.msec_per_frame)) - 2
                   for phoneme_frame_index in range(first_phoneme_frame, last_phoneme_frame +1):
                     sound = sound_no_weights[wrd_index]
                     
@@ -98,15 +98,18 @@ class AnimationFrame:
                         mouth_shape = 'closed'
                     else:
                         mouth_shape = SHAPES[sound]
-                    self.animation_frames[phoneme_frame_index][speaker].append(
-                    {
-                       
-                        "word": word, 
-                        "mouth": str(avatar_map[speaker] / f'mouths/{mouth_shape}.png'),
-                        "eye": str(avatar_map[speaker] / "eyes/happy.png")
-                        }
-                    )
-                    start_phonemes = end_phonemes + 1
+                    try:
+                        self.animation_frames[phoneme_frame_index][speaker].append(
+                        {
+                           
+                            "word": word, 
+                            "mouth": str(avatar_map[speaker] / f'mouths/{mouth_shape}.png'),
+                            "eye": str(avatar_map[speaker] / "eyes/happy.png")
+                            }
+                        )
+                        start_phonemes = end_phonemes + 1
+                    except KeyError:
+                        pass
         
         file_handler.write(write_path, self.animation_frames)
     

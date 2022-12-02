@@ -19,7 +19,9 @@ INSTALL_REQUIRES = [
     "opencv-contrib-python==4.6.0.66",
     "requests",
     "python-dotenv",
-    "moviepy"
+    "moviepy",
+    "text2emoji",
+    "emoji==1.6.1"
 ]
 EXTRAS_REQUIRE = {
     "dev": [

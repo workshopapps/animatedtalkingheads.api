@@ -1,5 +1,4 @@
-import subprocess
-import ffmpeg   
+import subprocess 
 import random
 from pathlib import Path
 import cv2
@@ -39,12 +38,19 @@ class Animator:
         """
         animation_frame_length = animation_frame_length
 
-        
-        for i in range(1, 6000):
-        # for i in range(1, animation_frame_length + 1):
-            print(i)
-            image = self._create_image(schema[str(i)])
-            self.images.append(image)
+        max_iter_range = min(animation_frame_length, 6000)
+        try:
+            for i in range(1, max_iter_range):
+            # for i in range(1, animation_frame_length + 1):
+
+                image = self._create_image(schema[str(i)])
+                self.images.append(image)
+        except KeyError:
+             for i in range(1, max_iter_range):
+            # for i in range(1, animation_frame_length + 1):
+
+                image = self._create_image(schema[i])
+                self.images.append(image)
 
 
 
@@ -95,29 +101,31 @@ class Animator:
         cv2_image
         return cv2_image
 
-
     def _draw_word(self, speaker_word: str, image: Image, offset: int) -> None:
-        """draw subtitle on frame
-
-        Args:
+        """draws spoken words from analysed audio on frame 
+            as subtitles under the appropriate speaker 
+            created by @jimi
+            
+            Args:
             speaker_word (str): subtitle to be drawn
             image (Image): image to draw subtitle
             offset (int): position to draw_subtitle
         """
-        W,H = image.size
-        wrapper = textwrap.TextWrapper(width=W*0.07) 
+        width, height = image.size
+        wrapper = textwrap.TextWrapper(width=width*0.07) 
         word_list = wrapper.wrap(text=speaker_word) 
         caption_new = ''
-        for ii in word_list[:-1]:
-            caption_new = caption_new + ii + '\n'
+        for word in word_list[:-1]:
+            caption_new = caption_new + word + '\n'
         caption_new += word_list[-1]
 
         draw = ImageDraw.Draw(image)
 
         w,h = draw.textsize(caption_new, font=self.font)
 
-        x,y = 0.5*(W-w),0.90*H-h
+        x,y = 0.5*(width-w),0.90*height-h
         draw.text((x, y), caption_new, font=self.font)
+   
     
 
     def build_video(self, build_path: Path):

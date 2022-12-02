@@ -6,6 +6,10 @@ const podcastSchema = new Schema({
     type: String,
     required: true,
   },
+  file_url: {
+    type: String,
+    required: true,
+  },
   user_id: {
     required: true,
     type: mongoose.Schema.Types.ObjectId,
@@ -13,5 +17,5 @@ const podcastSchema = new Schema({
     required: true,
   },
 });
-
-module.exports = mongoose.model('Podcast', podcastSchema);
+const Podcast = mongoose.model('Podcast', podcastSchema);
+module.exports = Podcast;
