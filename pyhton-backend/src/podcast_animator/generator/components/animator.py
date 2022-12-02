@@ -38,9 +38,9 @@ class Animator:
         """
         animation_frame_length = animation_frame_length
 
-        
+        max_iter_range = max(animation_frame_length, 6000)
         try:
-            for i in range(1, 6000):
+            for i in range(1, max_iter_range):
             # for i in range(1, animation_frame_length + 1):
 
                 image = self._create_image(schema[str(i)])
