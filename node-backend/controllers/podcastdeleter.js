@@ -1,6 +1,7 @@
 const Podcast = require('../models/Podcast')
 const path = require('path')
 const fs = require('fs');
+const ApiError = require('../utils/errors/ApiError');
 
 //deletes directory of podcast and deletes podcast data from the database aswell
 const delpodcast = async (req, res,next) => {
@@ -14,11 +15,11 @@ const delpodcast = async (req, res,next) => {
       await podcast.remove()
 
       
-      res.send('podcast deleted.');
+      res.send('Podcast successfully deleted.');
     }
   
     catch(error){
-      next(error)
+      cb(new ApiError('Deleting failed.', 400), false);
     }
     }
     
