@@ -46,7 +46,7 @@ class Animator:
                 image = self._create_image(schema[str(i)])
                 self.images.append(image)
         except KeyError:
-             for i in range(1, 6000):
+             for i in range(1, max_iter_range):
             # for i in range(1, animation_frame_length + 1):
 
                 image = self._create_image(schema[i])
