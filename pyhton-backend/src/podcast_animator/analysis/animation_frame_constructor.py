@@ -107,6 +107,8 @@ class AnimationFrame:
                         }
                     )
                     start_phonemes = end_phonemes + 1
+                  except KeyError:
+                        pass
         
         file_handler.write(write_path, self.animation_frames)
     
