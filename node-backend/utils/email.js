@@ -1,41 +1,46 @@
 const nodemailer = require('nodemailer');
 const User = require('../models/User'); //get user email from user model
 
-const sendEmail = async options => {
+//const sendEmail = async options => {
 
-    var transporter = nodemailer.createTransport({
+    //const transporter = nodemailer.createTransport({
 /*         service:'gmail',
         auth:{
             user: process.env.EMAIL_USERNAME,
             pass:process.env.EMAIL_PASSWORD
         } */
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
+    const Email = require('email-templates');
+    const email = new Email({
+        message: {
+        from: 'shegzyrey<withlove@example.com>'
+        },
+        send: true,
+        transport: {    
+            host: "smtp.mailtrap.io",
+            port: 2525,
+            ssl: false,
+            tls: true,
+            auth: {
+                user: "385347a8cac45c",
+                pass: "318b8146500b7e"
+            }
         }
     });
+    const people = [
+        {firstName: 'ifihan', lastName: 'Jovialcore'},
+        {firstName: 'Naza', lastName: 'Chandan'}
+       ];
+    people.forEach((person) => {
+        email
+        .send({
+            template: 'animatedVideo',
+            message: {
+            to: 'mentor <noreply@hng.com>'
+            },
+            locals: person
+        })
+        .then(console.log)
+        .catch(console.error);
+    })
 
-    const mailOptions = {
-        from: 'shegzyrey <withlove@hng.com>',
-        to: options.email,
-        subject: options.subject,
-        text: options.message,
-/*         attachments: [{
-            filename: "${ User }.mp4",
-            path: file_path
-        }] */
-    };
-
-    await transporter.sendEmail(mailOptions, (error, info)=> {
-        if(error){
-            console.log("Error in sending mail", error)
-        }
-        else{
-            console.log('Email sent: ' + info.response)
-        } 
-    });
-};
-
-module.exports = sendEmail;
+//module.exports = sendEmail};
