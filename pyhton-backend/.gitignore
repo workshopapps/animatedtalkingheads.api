@@ -1,7 +1,9 @@
 
 # ## test_data
-# test_data/
-Result/*
+test_data/
+
+
+data/user_data/*
 
 
 ## vscode settings

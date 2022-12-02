@@ -2,10 +2,11 @@ const { writeFile } = require('fs/promises');
 const fs = require('fs');
 const Podcast = require('./../models/Podcast');
 const ApiError = require('../utils/errors/ApiError');
+const NotFound = require('../utils/errors/NotFound');
 const path = require('path');
 const runPythonScript = require('./run-python');
 
-runPythonScript();
+// runPythonScript();
 exports.podcastuploader = async (req, res, next) => {
   const user_file_path = (
     '/uploads/podcasts/' +
@@ -44,20 +45,36 @@ exports.podcastuploader = async (req, res, next) => {
     );
   }
 
-  const user_file_path = './uploads/podcasts/' + req.headers.user_id + '/';
-
-  const podcast_file_path = user_file_path + '-' + podcast.id + '-' + req.file.originalname;
-
-  if (!fs.existsSync(user_file_path)) {
-    fs.mkdirSync(user_file_path);
-  }
-  podcast = await Podcast.findOneAndUpdate(
-    { id: podcast._id, user_id: req.headers.user_id },
-    {
-      file_path: podcast_file_path,
-    }
-  );
-n
-
   res.send(podcast);
+};
+
+exports.getOnePodcast = async (req, res, next) => {
+  try {
+    const podcast = await Podcast.findOne({
+      _id: req.params.podcastId,
+      user_id: req.headers.user_id,
+    });
+    console.log(podcast);
+    if (!podcast) {
+      return next(new NotFound());
+    }
+    res.json(podcast);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAllUserUploadedPodcaster = async (req, res, next) => {
+  try {
+    const podcasts = await Podcast.find({
+      user_id: req.headers.user_id,
+    });
+
+    // if (podcast.length < ) {
+    //   next(new NotFound());
+    // }
+    res.json(podcasts);
+  } catch (err) {
+    next(err);
+  }
 };
