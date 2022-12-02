@@ -1,0 +1,5 @@
+# ffmpeg == 2.8.21
+# git+https://github.com/openai/whisper.git 
+opencv-contrib-python==4.6.0.66
+Pillow==9.1.1
+python-dotenv==0.21.0

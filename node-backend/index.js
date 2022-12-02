@@ -9,6 +9,9 @@ const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const NotFound = require('./utils/errors/NotFound');
+const path = require('path');
+
+console.log(path.basename(path.dirname(__filename)));
 
 dotenv.config({ path: './.env' });
 const app = express();
@@ -49,13 +52,12 @@ if (!fs.existsSync('./uploads/podcasts')) {
 // app configs.
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(morgan('dev'));
-app.use(cors());
+app.use(express.urlencoded({ 
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
+
 
 ///// payment route
 const paymentRoute = require('./routes/payment/index')
@@ -68,6 +70,9 @@ app.get('/error', (req, res)=>{
     res.render('error.pug');
 })
 app.use('/',paymentRoute)
+
+
+
 
 
 app.all('*', (req, res, next) => {

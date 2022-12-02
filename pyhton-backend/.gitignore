@@ -1,5 +1,12 @@
+
+# ## test_data
+# test_data/
+Result/*
+
+
 ## vscode settings
 settings.json
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
