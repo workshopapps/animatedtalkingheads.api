@@ -65,17 +65,17 @@ def diarize_audio(audio, api):
 
     url = "https://api.assemblyai.com/v2/transcript"
 
-    # post_body = {
-    # "audio_url": audio,
-    # "speaker_labels": True, #include speaker labels
-    # # "disfluencies": True #transcribe filler words
-    # }
+    post_body = {
+    "audio_url": audio,
+    "speaker_labels": True, #include speaker labels
+    # "disfluencies": True #transcribe filler words
+    }
     headers = {
         "authorization": api,
         "content-type": "application/json",
     }
-    # transcription_response = requests.post(url, json=post_body, headers=headers)
-    # transcription_id = transcription_response.json()["id"]
+    transcription_response = requests.post(url, json=post_body, headers=headers)
+    transcription_id = transcription_response.json()["id"]
     
     
 
@@ -87,8 +87,8 @@ def diarize_audio(audio, api):
     while not transcription_status:
         ## id of transcribed audio used for testing
         # "rxym41rlo2-2606-4354-ae8f-095ccdf58181"
-        response= requests.get(f'{url}/rxym41rlo2-2606-4354-ae8f-095ccdf58181', headers=headers)
-        # response= requests.get(f'{url}/{transcription_id}', headers=headers)
+#         response= requests.get(f'{url}/rxym41rlo2-2606-4354-ae8f-095ccdf58181', headers=headers)
+        response= requests.get(f'{url}/{transcription_id}', headers=headers)
         request_data = response.json()
         status = request_data["status"]
         if status != "completed":

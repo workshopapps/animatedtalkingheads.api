@@ -4,9 +4,9 @@ const runCronJobs = async () => {
   const bree = new Bree({
     jobs: [
       {
-        name: 'detele_anon_users',
-        path: './jobs/deleteAnonUsers.js',
-        interval: 'every 30 days',
+        name: 'Deleteinactiveuser',
+        path: './jobs/Deleteinactiveuser.js', //file that runs
+        cron: '60*60*24*30', //job runs every hour
       },
     ],
   });
