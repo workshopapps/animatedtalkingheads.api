@@ -98,16 +98,17 @@ class AnimationFrame:
                         mouth_shape = 'closed'
                     else:
                         mouth_shape = SHAPES[sound]
-                    self.animation_frames[phoneme_frame_index][speaker].append(
-                    {
-                       
-                        "word": word, 
-                        "mouth": str(avatar_map[speaker] / f'mouths/{mouth_shape}.png'),
-                        "eye": str(avatar_map[speaker] / "eyes/happy.png")
-                        }
-                    )
-                    start_phonemes = end_phonemes + 1
-                  except KeyError:
+                    try:
+                        self.animation_frames[phoneme_frame_index][speaker].append(
+                        {
+                           
+                            "word": word, 
+                            "mouth": str(avatar_map[speaker] / f'mouths/{mouth_shape}.png'),
+                            "eye": str(avatar_map[speaker] / "eyes/happy.png")
+                            }
+                        )
+                        start_phonemes = end_phonemes + 1
+                    except KeyError:
                         pass
         
         file_handler.write(write_path, self.animation_frames)
