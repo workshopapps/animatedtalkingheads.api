@@ -5,10 +5,15 @@ const fs = require('fs');
 const AnimatedVideo = require('../../models/AnimatedVideo');
 const move = require('./move-file');
 const process = require('process');
+//  `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:1845`,
 
-let connection = new IORedis(
-  `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:1845`
-);
+let connection = new IORedis({
+  host: 'redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com',
+  port: 1845,
+  password: 'Q3vpDUB@BKKe55B',
+  username: 'aaron',
+  connectTimeout: 30000,
+});
 console.log(
   `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:1845`
 );

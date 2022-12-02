@@ -1,0 +1,94 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Hi\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add assets controllers deploy.sh docker-compose.yml Dockerfile docs index.js jobs middlewares models node_modules package.json public README.md routes scripts uploads utils views yarn-error.log
+
+PATH: 
+  C:\Users\Hi\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\local\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Hi\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;C:\Windows\System32\OpenSSH;C:\Program Files\Git\cmd;C:\Program Files\GitHub CLI;C:\Program Files\nodejs;C:\Program Files\Go\bin;C:\Users\Hi\AppData\Local\Programs\Python\Python310\Scripts;C:\Users\Hi\AppData\Local\Programs\Python\Python310;C:\Users\Hi\AppData\Local\Microsoft\WindowsApps;C:\Users\Hi\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Hi\AppData\Roaming\npm;C:\Users\Hi\go\bin;C:\Program Files\Git\usr\bin\vendor_perl;C:\Program Files\Git\usr\bin\core_perl
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.12.1
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/docker-compose.yml: Not found
+      at params.callback [as _callback] (C:\Users\Hi\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:66145:18)
+      at self.callback (C:\Users\Hi\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:140890:22)
+      at Request.emit (node:events:513:28)
+      at Request.<anonymous> (C:\Users\Hi\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141862:10)
+      at Request.emit (node:events:513:28)
+      at IncomingMessage.<anonymous> (C:\Users\Hi\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141784:12)
+      at Object.onceWrapper (node:events:627:28)
+      at IncomingMessage.emit (node:events:525:35)
+      at endReadableNT (node:internal/streams/readable:1359:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+
+npm manifest: 
+  {
+    "name": "animatedtalkingheads.api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "dev": "nodemon ./index.js",
+      "start": "node ./index.js",
+      "debug": "node --inspect-brk ./index.js"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/workshopapps/animatedtalkingheads.api.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+      "url": "https://github.com/workshopapps/animatedtalkingheads.api/issues"
+    },
+    "homepage": "https://github.com/workshopapps/animatedtalkingheads.api#readme",
+    "dependencies": {
+      "bcrypt": "^5.1.0",
+      "bluebird": "^3.7.2",
+      "bree": "^9.1.3",
+      "bullmq": "^3.2.2",
+      "cors": "^2.8.5",
+      "dotenv": "^16.0.3",
+      "express": "^4.18.2",
+      "ioredis": "5.2.4",
+      "joi": "^17.7.0",
+      "jsonwebtoken": "^8.5.1",
+      "mongodb": "^4.12.1",
+      "mongoose": "^6.7.2",
+      "multer": "^1.4.5-lts.1",
+      "promise.map": "^0.5.0",
+      "pug": "^3.0.2",
+      "python-shell": "^3.0.1",
+      "stripe": "^11.1.0",
+      "swagger-jsdoc": "^6.2.5",
+      "swagger-ui-express": "^4.6.0",
+      "validator": "^13.7.0"
+    },
+    "devDependencies": {
+      "eslint": "^8.27.0",
+      "eslint-config-airbnb-base": "^15.0.0",
+      "eslint-config-node": "^4.1.0",
+      "eslint-config-prettier": "^8.5.0",
+      "eslint-plugin-node": "^11.1.0",
+      "eslint-plugin-prettier": "^4.2.1",
+      "morgan": "^1.10.0",
+      "nodemon": "^2.0.20",
+      "prettier": "^2.7.1"
+    },
+    "engines": {
+      "npm": ">=8.0.0 <9.0.0",
+      "node": "18.12.1",
+      "yarn": "1.22.19"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

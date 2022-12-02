@@ -67,10 +67,10 @@ podcastRouter.post(
   getOneAnimatedVideo
 );
 
-podcastRouter.post(
-  '/:podcastId/generate-video',
-  checkUser,
-  generateAnimatedVideos
-);
+// podcastRouter.post(
+//   '/:podcastId/generate-video',
+//   checkUser,
+//   generateAnimatedVideos
+// );
 
 module.exports = podcastRouter;
