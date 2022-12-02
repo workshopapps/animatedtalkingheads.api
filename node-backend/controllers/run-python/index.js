@@ -4,9 +4,10 @@ const path = require('path');
 const fs = require('fs');
 const AnimatedVideo = require('../../models/AnimatedVideo');
 const move = require('./move-file');
+const process = require('process');
 
 let connection = new IORedis(
-  'redis://aaronkenny:WT@UK8JRsriW4Jb@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:18458'
+  `redis://aaronkenny:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:1845`
 );
 
 // Reuse the ioredis instance
