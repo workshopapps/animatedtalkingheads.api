@@ -1,3 +1,4 @@
+//paystack config
 const {Payment} = require('../models/Payment')
 const request = require('request');
 const _ = require('lodash');
