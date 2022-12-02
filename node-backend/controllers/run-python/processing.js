@@ -1,13 +1,7 @@
 const { PythonShell } = require('python-shell');
 const path = require('path');
-const runPy = async (script) => {
-  console.log(
-    path.resolve(
-      path.dirname(process.cwd() + '/') +
-        '/scripts/pyhton-backend/test_data/meta.json'
-    )
-  );
 
+const runPy = async () => {
   let options = {
     mode: 'text',
     pythonOptions: ['-u'],
@@ -15,13 +9,13 @@ const runPy = async (script) => {
     args: [
       path.resolve(
         path.dirname(process.cwd() + '/') +
-          '/pyhton-backend/test_data/meta.json'
+          '/pyhton-backend/test_data/meta2.json'
       ),
     ],
   };
 
   return new Promise(function (resolve, reject) {
-    PythonShell.runString(
+    PythonShell.run(
       path.resolve(
         path.resolve(
           path.dirname(process.cwd() + '/') +
@@ -30,7 +24,7 @@ const runPy = async (script) => {
         options
       ),
       function (err, res) {
-        console.log(err);
+        console.error(err);
         if (err) reject(err);
         resolve(res[0]);
       }
@@ -40,6 +34,6 @@ const runPy = async (script) => {
 
 module.exports = async (job) => {
   const pyres = await runPy(job.data);
-  console.log(pyres.toUpperCase());
-  return pyres.toUpperCase();
+
+  return pyres;
 };
