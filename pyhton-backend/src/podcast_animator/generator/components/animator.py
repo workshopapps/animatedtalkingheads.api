@@ -1,158 +1,192 @@
-import cv2
-import os
-import sys
+import subprocess
+import ffmpeg   
+import random
 from pathlib import Path
-from uuid import uuid4
-from .image_generator import generate_image
-import itertools
-import time
-from podcast_animator.generator.components.sounds_and_emotions_sq import sound_pathfinder, eyes_pathfinder
+import cv2
+import numpy as np
+from PIL import Image , ImageDraw, ImageFont
+import textwrap
+from podcast_animator.analysis.animation_frame_constructor import AnimationFrame
+
+# from .image_generator import generate_image
+# import itertools
+# import time
+
+
+
 
 FRAMES = 24
 
 
 
-def _generate_state_sequence(img_path: Path, state: str) -> list[Path]:
-    """load the path to 24 images that make up a one second 
-       animation or default state for selected avatar
-    @author: anonnoone
-
-    Args:
-        img_path (Path): pathlib.Path object to selected avatar directory
-
-    Returns:
-        list[Path]: sorted list of animation or default sequence paths
-
-    >>>>: generate_speech_seqeunce(path/to/avatar_01, state="speech")
-    >>>>: [path/to/avatar_o1/state_01, ..., path/to/avatar_o1/state_24]
-    "em": [1, 2, 3, 4, 5, 6, 7] -> 100 msecs 
-    "em": 500msecs -> [01,02, 3, 3, 4, 4, 5, 5 , 06, 07]
+class Animator:
+    """generate animation from provided schema
     """
-    if state == "speech":
-        dir_files = [str(file.path) for file in os.scandir(img_path / "animation")]
-        return sorted(dir_files, key= lambda x: x.split('_')[1])
-    elif state == "silence":
-        return [img_path / "default.png" for _ in range(FRAMES)]
-    
-    
-# def _generate_state_sequence(img_path: Path, state: str, sound_list: list, eyes_list: list) -> list[Path]:
 
-    """load the path to images that make up the mouth posture for each sound 
-    @author: jimi
+    def __init__(self, background: Path, avatar_map: dict[str, Path], frames=24, **kwargs) -> None:
+        self.bg_path = background
+        self.avatar_map = avatar_map
+        self.images = []
+        self.frames = frames
+        self.font = ImageFont.truetype(f'data/Fonts/{kwargs.get("font") or "arial"}.ttf', 10)
 
-    Args:
-        img_path (Path): pathlib.Path object to selected avatar directory
-        state (str): pathlib.Path object to selected avatar directory
-        sound_list (list): pathlib.Path object to selected avatar directory
-        eyes_list (list): pathlib.Path object to selected avatar directory
+    def build_images(self, schema: dict[str, dict[str, list[dict[str, Path | str] | None]]], animation_frame_length: int):
+        """_summary_
 
-    Returns:
-        lists[Path]: sorted list of animation or default sequence paths
+        Args:
+            schema (dict[str, dict[str, list[dict[str, Path  |  str]  |  None]]]): _description_
+            animation_frame_length (int): _description_
+        """
+        animation_frame_length = animation_frame_length
+
         
-    """
-    # if state == "speech":
-    #     sound_dir_files = sound_pathfinder(sound_list, Path)
-    #     eye_dir_files = eyes_pathfinder(eyes_list, Path)
-    #     return [sound_dir_files, eye_dir_files]
-    # elif state == "silence":
-    #     return [img_path / "default.png" for _ in range(FRAMES)]
-    
+         try:
+            for i in range(1, 6000):
+            # for i in range(1, animation_frame_length + 1):
+
+                image = self._create_image(schema[str(i)])
+                self.images.append(image)
+        except KeyError:
+             for i in range(1, 6000):
+            # for i in range(1, animation_frame_length + 1):
+
+                image = self._create_image(schema[i])
+                self.images.append(image)
 
 
-def generate_animation(
-    data: dict[str, list[str]], 
-    bg_path: Path, num_speakers: int, 
-    avatar_dict: dict[str, str],
-    data_dir: Path) -> Path:
-    """
-    create animation using provided avatars and background
-    using sequence generated from audio file
 
-    @author: anonnoone
-
-    Args:
-        data (dict[str, list[str]]): speakers in audio and 
-        their action/state per second list
-
-        bg_path (Path): pathlib.Path object path to animation background
-        num_speakers (int): number of speakers in audio file
-        avatar_dict (dict[str, str]): speaker to selected avatar map
-        data_dir (Path): pathlib.Path object Path to application data
-
-    Returns:
-        Path: path to generated animation
-    >>>>: generate_animation(
-        {"A": ["speech", "sequence"...], "B": ["speech", "sequence"...]},
-        path/to/background_08
-        2, 
-        {"A": path/to/avatar_01, "B":[path/to/avatar_05]}
-    )
-    >>>>: DATA_DIR/temp/73hr- df44-ctr4-ct4t.mp4
-    """
-    images = []
-    img_paths = []
-    output = data_dir / f'temp/{str(uuid4())}.mp4'
-    
-    for speaker in data:
-        avatar_path = avatar_dict[speaker]
-        anm_seq = [_generate_state_sequence(avatar_path, state=state) for state in data[speaker][:600]]
-        img_paths.append(list(itertools.chain.from_iterable(anm_seq)))
-    
-        
-    print("Start Image Build") 
-    start_path = time.time()
-    if num_speakers == 2:
-        count = 1
-        for img_1, img_2 in zip(*img_paths):
-            state_images = [img_1, img_2]
-            avatar_images = [path for path in avatar_dict.values()]
-            images.append(
-                generate_image(state_images, avatar_images, bg_path)
-            )
-            count += 1
-    elif num_speakers ==3:
-        count = 1
-        for img_1, img_2, img_3 in zip(*img_paths):
-            state_images = [img_1, img_2, img_3]
-            avatar_images = [path for path in avatar_dict.values()]
-            images.append(
-                generate_image(state_images, avatar_images, bg_path)
-            )
-            count += 1
-    elif num_speakers ==4:
-        count = 1
-        for img_1, img_2, img_3, img_4 in zip(*img_paths):
-            state_images = [img_1, img_2, img_3, img_4]
-            avatar_images = [path for path in avatar_dict.values()]
-            images.append(
-                generate_image(state_images, avatar_images, bg_path)
-            )
-            count += 1
-
+    def _create_image(self, frame_obj):
+        background_image = Image.open(self.bg_path)
+        background_image = background_image.convert(mode='RGBA')
+        width, length = background_image.size
+        canvas = Image.new(mode='RGBA', size=(width, length), color=(255, 255, 255))
+        canvas.paste(im=background_image, box=(0,0))
+        offset = ''
+        for speaker in frame_obj:
+            base_image_path = self.avatar_map[speaker] / 'base.png'
+            base_image = Image.open(base_image_path)
+            base_image = base_image.convert('RGBA')
+            canvas = Image.alpha_composite(canvas, base_image)
             
-    print(f"IMage Build: [{time.time()-start_path}]")
-    frame_one = images[0]
+            if len(frame_obj[speaker]) == 0:
+                mouth_path = self.avatar_map[speaker] / "mouths/closed.png"
+                eye_path = self.avatar_map[speaker] / "eyes/default.png"
+                speaker_word = None
 
-    # return
-    print(len(images))
-    height, width, _ = frame_one.shape
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v') # Be sure to use lower case
-    out = cv2.VideoWriter(str(output.absolute()), fourcc, 24.0, (width, height))
+            else:
+                if len(frame_obj[speaker]) == 1:
+                    obj = frame_obj[speaker][0]
 
-    print("VIDEO WRITER START")
-    start_write = time.time()
-    for image in images:
-        out.write(image) # Write out frame to video
+                elif len(frame_obj[speaker]):
+                    obj = random.choice(frame_obj[speaker])
+                
+                mouth_path = obj["mouth"]
+                # TODO 1. add eyes
+                eye_path = self.avatar_map[speaker] / "eyes/default.png"
+                speaker_word = obj["word"]
+
+            mouth = Image.open(mouth_path)
+            mouth = mouth.convert('RGBA')
+            canvas = Image.alpha_composite(canvas, mouth)
+
+            eye = Image.open(eye_path)
+            eye = eye.convert('RGBA')
+            canvas = Image.alpha_composite(canvas, eye)
+
+            if speaker_word:
+                self._draw_word(speaker_word, canvas, offset)
+
+
+        numpy_img = np.array(canvas)
+        cv2_image = cv2.cvtColor(numpy_img, cv2.COLOR_RGB2BGR)
+        cv2_image
+        return cv2_image
+
+
+    def _draw_word(self, speaker_word: str, image: Image, offset: int) -> None:
+        """draw subtitle on frame
+
+        Args:
+            speaker_word (str): subtitle to be drawn
+            image (Image): image to draw subtitle
+            offset (int): position to draw_subtitle
+        """
+        W,H = image.size
+        wrapper = textwrap.TextWrapper(width=W*0.07) 
+        word_list = wrapper.wrap(text=speaker_word) 
+        caption_new = ''
+        for ii in word_list[:-1]:
+            caption_new = caption_new + ii + '\n'
+        caption_new += word_list[-1]
+
+        draw = ImageDraw.Draw(image)
+
+        w,h = draw.textsize(caption_new, font=self.font)
+
+        x,y = 0.5*(W-w),0.90*H-h
+        draw.text((x, y), caption_new, font=self.font)
+    
+
+    def build_video(self, build_path: Path):
+
+
+
+
+        frame_one = self.images[0]
+
+        # return
+        height, width, _ = frame_one.shape
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v') # Be sure to use lower case
+        out = cv2.VideoWriter(str(build_path.absolute()), fourcc, 24.0, (width, height))
+
+        # print("VIDEO WRITER START")
+        # start_write = time.time()
+        for image in self.images:
+            # subprocess.run(
+            # [f"ffmpeg -framerate 1 -i {image} -c:v libx264 -r 24 {str(output.absolute())}"],
+            # shell=True)
+            out.write(image) # Write out frame to video
+
+
+            # cv2.imshow('video',frame)
+            if (cv2.waitKey(1) & 0xFF) == ord('q'): # Hit `q` to exit
+                break
+            
+        # print(f"END WRITING: [{time.time() - start_write}]")
+        # Release everything if job is finished
+        out.release()
+        cv2.destroyAllWindows()
+        # return output
+
+        # frame_one = self.images[0]
+        # height, width, _ = frame_one.shape
+        # process = (
+        #         ffmpeg
+        #     .input('pipe:', format='rawvideo', pix_fmt='rgb24', s='{}x{}'.format(width, height))
+        #     .output(str(build_path), pix_fmt='yuv420p', vcodec='libx264', r=self.frames, format='mp4')
+        #     .overwrite_output()
+        #     .run_async(pipe_stdin=True)
+        #     )
+        # for image in self.images:
+        #     process.stdin.write(
+        #         image
+        #             .astype(np.uint8)
+        #             .tobytes()
+        #     )
+        #     process.stdin.close()
+        #     process.wait()
+        # for i in self.images:
+    
+        #     subprocess.run(
+        #         [f"ffmpeg -framerate 1 -i {i} -c:v libx264 -r {self.frames} {build_path}"],
+        #         shell=True
+        #     )
         
 
-        # cv2.imshow('video',frame)
-        if (cv2.waitKey(1) & 0xFF) == ord('q'): # Hit `q` to exit
-            break
-        
-    print(f"END WRITING: [{time.time() - start_write}]")
-    # Release everything if job is finished
-    out.release()
-    cv2.destroyAllWindows()
-    return output
+      
+   
+
+
+
 
     
