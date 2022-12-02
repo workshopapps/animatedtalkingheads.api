@@ -113,7 +113,7 @@ class Animator:
         """
         width, height = image.size
         wrapper = textwrap.TextWrapper(width=width*0.07) 
-        word_list = wrapper.wrap(subtitle_text=speaker_word) 
+        word_list = wrapper.wrap(text=speaker_word) 
         caption_new = ''
         for word in word_list[:-1]:
             caption_new = caption_new + word + '\n'
