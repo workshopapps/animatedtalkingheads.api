@@ -51,7 +51,7 @@ if (!fs.existsSync('./uploads/podcasts')) {
 // app configs.
 
 app.use(express.json());
-app.use(express.urlencoded({ 
+app.use(cors())
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);

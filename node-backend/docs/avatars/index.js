@@ -51,7 +51,7 @@ module.exports = {
           },
         },
       },
-
+    
       '/avatars': {
         post: {
           tags: ['Avatars'],
@@ -104,7 +104,6 @@ module.exports = {
                 },
               },
             },
-<<<<<<< HEAD
             404: {
               description: 'Todo is not found',
               content: {
@@ -116,43 +115,6 @@ module.exports = {
                       internal_code: 'Invalid id',
                     },
                   },
-=======
-          },
-        },
-        responses: {
-          201: {
-            description: 'Avatar created ',
-          },
-          500: {
-            description: 'Server error',
-          },
-        },
-      },
-    },
-    '/avatars/{id}': {
-      get: {
-        tags: ['fetch specific avatar'],
-        description: "Get user's avatar",
-        operationId: 'user avatar id',
-        parameters: [
-          {
-            name: 'id',
-            in: 'path',
-            schema: {
-              $ref: '#/components/schemas/id',
-            },
-            required: true,
-            description: 'avatar id',
-          },
-        ],
-        responses: {
-          200: {
-            description: 'user avatar fetched',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Todo',
->>>>>>> stripe-payment
                 },
               },
             },
