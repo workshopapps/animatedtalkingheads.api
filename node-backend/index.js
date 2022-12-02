@@ -1,4 +1,6 @@
 const express = require('express');
+const path = require('path')
+const pug = require('pug')
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -49,15 +51,28 @@ if (!fs.existsSync('./uploads/podcasts')) {
 // app configs.
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(morgan('dev'));
-app.use(cors());
+app.use(express.urlencoded({ 
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
 
-app.use('/uploads', express.static('./uploads'));
+
+///// payment route
+const paymentRoute = require('./routes/payment/index')
+app.use(express.static(path.join(__dirname, 'public/')));
+app.set('view engine', pug);
+app.get('/',(req, res) => {
+    res.render('index.pug');
+});
+app.get('/error', (req, res)=>{
+    res.render('error.pug');
+})
+app.use('/',paymentRoute)
+
+
+
+
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
