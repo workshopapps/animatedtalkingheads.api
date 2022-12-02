@@ -40,7 +40,7 @@ class Animator:
         animation_frame_length = animation_frame_length
 
         
-         try:
+        try:
             for i in range(1, 6000):
             # for i in range(1, animation_frame_length + 1):
 
