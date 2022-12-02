@@ -12,7 +12,7 @@ const NotFound = require('./utils/errors/NotFound');
 
 const authRoutes = require('./routes/user/index');
 // const cookieParser = require('cookie-parser');
-const path = require('path');
+// const path = require('path');
 const errorController = require('./controllers/error.controller');
 
 
