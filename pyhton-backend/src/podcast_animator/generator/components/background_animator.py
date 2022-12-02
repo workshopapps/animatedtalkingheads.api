@@ -1,5 +1,5 @@
 from pathlib import Path
-# from PIL import Image           Uncomment if you are trying to test the function
+# from PIL import Image          run 'python -m pip install Pillow'to install and use PIL, then import Image, to test the function
 import glob
 
 
