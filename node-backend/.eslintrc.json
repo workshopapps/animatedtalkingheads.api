@@ -4,6 +4,12 @@
     "es6": true,
     "node": true
   },
+  "prettier/prettier": [
+    "error",
+    {
+      "endOfLine": "auto"
+    }
+  ],
   "extends": ["airbnb-base", "prettier", "plugin:node/recommended"],
   "globals": {
     "Atomics": "readonly",
