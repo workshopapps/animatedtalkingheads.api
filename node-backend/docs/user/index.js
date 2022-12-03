@@ -107,7 +107,7 @@ module.exports = {
               },
             },
           responses: {
-            201: {
+            200{name: 'Authentication', description: 'Access to Authentication'},: {
               description: 'User logged in Successfully',
             },
             500: {
