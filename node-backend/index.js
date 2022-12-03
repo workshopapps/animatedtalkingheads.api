@@ -70,7 +70,7 @@ app.use('/uploads', express.static('./uploads'));
 const paymentRoute = require('./routes/payment/index')
 app.use(express.static(path.join(__dirname, 'public/')));
 app.set('view engine', pug);
-app.get('/',(req, res) => {
+app.get('/test-pay',(req, res) => {
     res.render('index.pug');
 });
 app.get('/error', (req, res)=>{
