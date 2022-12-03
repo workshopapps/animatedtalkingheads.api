@@ -59,6 +59,9 @@ app.use(cors())
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
+app.use('/auth',authRoutes);
+app.use('/uploads', express.static('./uploads'))
+
 app.use(authRoutes);
 app.use('/uploads', express.static('./uploads'));
 
