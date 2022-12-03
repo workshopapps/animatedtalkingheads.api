@@ -37,7 +37,11 @@ const multerFilter = (req, file, cb) => {
 
 const storage = multer.memoryStorage();
 
-const upload = multer({ storage, fileFilter: multerFilter });
+const upload = multer({
+  storage,
+  fileFilter: multerFilter,
+  limits: { fileSize: 500 * 1024 * 1024 },
+});
 podcastRouter.post(
   '/upload',
   checkUser,
@@ -63,10 +67,10 @@ podcastRouter.post(
   getOneAnimatedVideo
 );
 
-podcastRouter.post(
-  '/:podcastId/generate-video',
-  checkUser,
-  generateAnimatedVideos
-);
+// podcastRouter.post(
+//   '/:podcastId/generate-video',
+//   checkUser,
+//   generateAnimatedVideos
+// );
 
 module.exports = podcastRouter;

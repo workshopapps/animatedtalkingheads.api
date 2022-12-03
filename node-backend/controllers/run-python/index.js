@@ -1,21 +1,34 @@
-const IORedis = require('ioredis');
 const { Queue, Worker, Job } = require('bullmq');
+const Redis = require('ioredis').default;
 const path = require('path');
 const fs = require('fs');
 const AnimatedVideo = require('../../models/AnimatedVideo');
 const move = require('./move-file');
 const process = require('process');
+//  `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:18458`,
 
-let connection = new IORedis(
-  `redis://aaronkenny:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:1845`
+let connection = new Redis(
+  `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:18458`
 );
 
 // Reuse the ioredis instance
-const queue = new Queue('myqueue', { connection });
+const run = async () => {
+  await connection.set('lol', 'lol');
+  const lol = await connection.get('lol');
+  console.log(lol);
+};
+run();
+const queue = new Queue('myqueue', {
+  connection: new Redis(
+    `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:18458`
+  ),
+});
 const processorFile = path.join(__dirname, 'processing.js');
 const worker = new Worker(queue.name, processorFile, {
-  connection,
   concurrency: 2,
+  connection: new Redis(
+    `redis://aaron:${process.env.REDIS_PASSWORD}@redis-18458.c13.us-east-1-3.ec2.cloud.redislabs.com:18458`
+  ),
 });
 worker.on('completed', async (job, returnvalue) => {
   // Do something with the return value.

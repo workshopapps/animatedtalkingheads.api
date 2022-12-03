@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path')
 const pug = require('pug')
 const dotenv = require('dotenv');
+dotenv.config({ path: './.env' });
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -16,7 +17,6 @@ const authRoutes = require('./routes/user/index');
 // const path = require('path');
 const errorController = require('./controllers/error.controller');
 
-dotenv.config({ path: './.env' });
 const app = express();
 const DB = process.env.mongo_url;
 
@@ -59,6 +59,9 @@ app.use(cors())
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
+app.use('/auth',authRoutes);
+app.use('/uploads', express.static('./uploads'))
+
 app.use(authRoutes);
 app.use('/uploads', express.static('./uploads'));
 
@@ -67,7 +70,7 @@ app.use('/uploads', express.static('./uploads'));
 const paymentRoute = require('./routes/payment/index')
 app.use(express.static(path.join(__dirname, 'public/')));
 app.set('view engine', pug);
-app.get('/',(req, res) => {
+app.get('/test-pay',(req, res) => {
     res.render('index.pug');
 });
 app.get('/error', (req, res)=>{
