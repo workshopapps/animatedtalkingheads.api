@@ -7,7 +7,6 @@ const schemaMiddleware = (schema) =>
 
     if (error) {
       const errorMessages = error.details.map((err) => err.message);
-      console.log(error instanceof ValidationError);
       error.statusCode = 400;
       return next(error);
     }
