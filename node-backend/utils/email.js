@@ -1,5 +1,6 @@
 const nodemailer = require('nodemailer');
 const User = require('../models/User'); //get user email from user model
+const Email = require('email-templates');
 
 //const sendEmail = async options => {
 
@@ -9,12 +10,12 @@ const User = require('../models/User'); //get user email from user model
             user: process.env.EMAIL_USERNAME,
             pass:process.env.EMAIL_PASSWORD
         } */
-    const Email = require('email-templates');
     const email = new Email({
         message: {
-        from: 'shegzyrey<withlove@example.com>'
+        from: 'shegzyrey<withlove@voxclips.com>'
         },
         send: true,
+        preview: false,
         transport: {    
             host: "smtp.mailtrap.io",
             port: 2525,
@@ -33,7 +34,7 @@ const User = require('../models/User'); //get user email from user model
     people.forEach((person) => {
         email
         .send({
-            template: 'animatedVideo',
+            template: 'animateVideo',
             message: {
             to: 'mentor <noreply@hng.com>'
             },
