@@ -1,8 +1,12 @@
 module.exports = {
   tags: [
-    { name: 'Podcast', description: 'Access to Podcast' },
-    { name: 'Avatars', description: 'Access to Avatars' },
-    { name: 'Payment', description: 'Using the paystack payment option' },
-    {name: 'Authentication', description: 'Access to Authentication'},
-  ],
+    {
+      0:{ name: 'Podcast', description: 'Access to Podcast' },
+      1:{ name: 'Avatars', description: 'Access to Avatars' },
+      2:{ name: 'Payment', description: 'Using the paystack payment option' },
+      3:{ name: 'Password', description: 'Send reset password link' },
+      4:{ name: 'Authentication', description: 'Access to Authentication' },
+      
+  }
+],
 };
