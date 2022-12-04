@@ -2,5 +2,5 @@ node_modules
 uploads/
 
 .env
-
+env
 ./backend-node/.env
