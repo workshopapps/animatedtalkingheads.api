@@ -56,9 +56,10 @@ module.exports = {
           description: 'Log out user',
           operationId: 'logOutUser',
           parameters: [
-          { 
-            email: 'default@gmail.com',
-            password: 'defaultpassword',
+          {
+              schema: {
+                  $ref: '#/components/schemas/Authentication',
+              },
           }],
           responses: {
             201: {
