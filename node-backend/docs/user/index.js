@@ -1,6 +1,6 @@
 module.exports = {
     paths: {
-      '/auth/signin': {
+      '/signin': {
         post: {
           tags: ['Authentication'],
           description: 'create user account',
