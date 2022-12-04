@@ -1,4 +1,5 @@
-const express = require('express');
+/* eslint-disable prettier/prettier */
+const express = require('express')
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
@@ -7,6 +8,9 @@ const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const NotFound = require('./utils/errors/NotFound');
+
+// sten-add auth0 router dir
+const auth0Router = require('./routes/auth0');
 
 const authRoutes = require('./routes/user/index');
 // const cookieParser = require('cookie-parser');
@@ -60,10 +64,10 @@ app.use(cors());
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
-app.use(authRoutes);
 app.use('/uploads', express.static('./uploads'))
+app.use('/auth0', auth0Router); // sten-register auth0 url
 
-app.use('/uploads', express.static('./uploads'));
+// app.use('/uploads', express.static('./uploads'));
 
 app.all('*', (req, res, next) => {
   next(new NotFound());

@@ -14,7 +14,7 @@
   },
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "0",
     "no-unused-vars": "warn",
     "no-console": "off",
     "func-names": "off",
