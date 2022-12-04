@@ -3,8 +3,10 @@
 opencv-contrib-python==4.6.0.66
 Pillow==9.1.1
 python-dotenv==0.21.0
-pronouncing==0.2.0
 inflect==6.0.2
-g2p_en
-text2emoji==2.1.0
+g2p_en==2.1.0
+text2emotion==0.0.5
 emoji==1.6.1
+moviepy==1.0.3
+requests==2.27.1
+toolz==0.12.0

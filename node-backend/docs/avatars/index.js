@@ -51,7 +51,7 @@ module.exports = {
           },
         },
       },
-
+    
       '/avatars': {
         post: {
           tags: ['Avatars'],
