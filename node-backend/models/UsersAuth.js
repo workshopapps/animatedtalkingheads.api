@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
+const { stringify } = require('querystring');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -15,11 +17,16 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please enter a password'],
     minlength: [6, 'Minimum password length is 6 characters'],
   },
+
+  //passwordResetToken: String,
+  //passwordResetExpires: Date,
   token: {
     type: String,
     default: ''
   }
+
 });
+
 
 
 // fire a function before doc saved to db
@@ -51,7 +58,6 @@ userSchema.method.forgetpassword = async function (email, password) {
   }
   throw Error('incorrect email');
 }
-
 
 const User = mongoose.model('user', userSchema);
 

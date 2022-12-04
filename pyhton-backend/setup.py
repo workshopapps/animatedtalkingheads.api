@@ -1,6 +1,6 @@
 """Installation script for podcast_animator."""
 from pathlib import Path
-import setuptools 
+import setuptools
 
 DESCRIPTION = (
     "Podcast Animation Script for the HNGi9 internship, pytest, flake8, "
@@ -17,11 +17,14 @@ PROJECT_URLS = {
 INSTALL_REQUIRES = [
     "Pillow==9.1.1",
     "opencv-contrib-python==4.6.0.66",
-    "requests",
-    "python-dotenv",
-    "moviepy",
-    "text2emoji",
-    "emoji==1.6.1"
+    "requests==2.27.1",
+    "g2p_en==2.1.0",
+    "inflect==6.0.2",
+    "python-dotenv==0.21.0",
+    "moviepy==1.0.3",
+    "text2emotion==0.0.5",
+    "emoji==1.6.1",
+    "toolz==0.12.0",
 ]
 EXTRAS_REQUIRE = {
     "dev": [
