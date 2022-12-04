@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
+const { stringify } = require('querystring');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -14,8 +16,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please enter a password'],
     minlength: [6, 'Minimum password length is 6 characters'],
-  }
+  },
+
+  //passwordResetToken: String,
+  //passwordResetExpires: Date,
 });
+
 
 
 // fire a function before doc saved to db
@@ -47,7 +53,22 @@ userSchema.method.forgotpassword = async function (email, password) {
   }
   throw Error('incorrect email');
 }
+//might clear if the forgot password works
+/* userSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
 
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+    console.log({resetToken}, this.passwordResetToken);
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+
+  //crypto.createHash('sha256').update(resetToken).digest('hex');
+}; */
 const User = mongoose.model('user', userSchema);
 
 module.exports = User;
