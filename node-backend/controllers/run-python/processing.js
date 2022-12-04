@@ -1,39 +1,28 @@
 const { PythonShell } = require('python-shell');
 const path = require('path');
 
-const runPy = async () => {
+module.exports = async ({ data: { jobConfig } }) => {
+  console.log(jobConfig);
   let options = {
     mode: 'text',
+    // pythonPath: 'c/Users/Hi/AppData/Local/Microsoft/WindowsApps/python3',
     pythonOptions: ['-u'],
+    scriptPath: path.resolve(
+      path.dirname(process.cwd() + '/') +
+        '/pyhton-backend/src/podcast_animator/generator/'
+    ),
 
-    args: [
-      path.resolve(
-        path.dirname(process.cwd() + '/') +
-          '/pyhton-backend/test_data/meta2.json'
-      ),
-    ],
+    args: [jobConfig.meta_json_file],
   };
 
   return new Promise(function (resolve, reject) {
-    PythonShell.run(
-      path.resolve(
-        path.resolve(
-          path.dirname(process.cwd() + '/') +
-            'pyhton-backend/src/podcast_animator/generator/main.py'
-        ),
-        options
-      ),
-      function (err, res) {
+    PythonShell.run('/main.py', options, function (err, res) {
+      if (err) {
         console.error(err);
-        if (err) reject(err);
-        resolve(res[0]);
+        return reject({ err });
       }
-    );
+      console.log('success');
+      resolve({ success: true, jobConfig });
+    });
   });
-};
-
-module.exports = async (job) => {
-  const pyres = await runPy(job.data);
-
-  return pyres;
 };

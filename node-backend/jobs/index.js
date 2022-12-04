@@ -6,7 +6,7 @@ const runCronJobs = async () => {
       {
         name: 'Deleteinactiveuser',
         path: './jobs/Deleteinactiveuser.js', //file that runs
-        cron: '0 * * * *', //job runs every hour
+        cron: '60 * 60 * 24 * 30', //job runs every hour
       },
     ],
   });

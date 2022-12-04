@@ -8,14 +8,19 @@ const { podcastSchema } = require('./podcast.schema');
 const {
   podcastuploader,
   getOnePodcast,
-  getAllUserUploadedPodcaster,
+  getAllUserUploadedPodcast,
+  generateAnimatedVideos,
 } = require('../../controllers/podcast.controller');
 const getPodcast = require('../../controllers/podcastgetter');
 const podcastIdMiddleware = require('../../middlewares/podcastidstore');
 const deletePodcast = require('../../controllers/podcastdeleter');
+const {
+  getOneAnimatedVideo,
+  getAllUserCreatedAnimatedVideos,
+} = require('../../controllers/animatedvideo.controller');
 const podcastRouter = express.Router();
 
-podcastRouter.get('/', checkUser, getAllUserUploadedPodcaster);
+podcastRouter.get('/', checkUser, getAllUserUploadedPodcast);
 podcastRouter.get('/getpodcasts', getPodcast);
 
 podcastRouter.get('/:podcastId', checkUser, getOnePodcast);
@@ -32,7 +37,11 @@ const multerFilter = (req, file, cb) => {
 
 const storage = multer.memoryStorage();
 
-const upload = multer({ storage, fileFilter: multerFilter });
+const upload = multer({
+  storage,
+  fileFilter: multerFilter,
+  limits: { fileSize: 500 * 1024 * 1024 },
+});
 podcastRouter.post(
   '/upload',
   checkUser,
@@ -45,5 +54,23 @@ podcastRouter.get('/download', (req, res) => {
   const { file_path } = req.body;
   res.download(file_path);
 });
+
+podcastRouter.post(
+  '/:podcastId/get-video',
+  checkUser,
+  getAllUserCreatedAnimatedVideos
+);
+
+podcastRouter.post(
+  '/:podcastId/animated-videos/:animatedVideoId',
+  checkUser,
+  getOneAnimatedVideo
+);
+
+podcastRouter.post(
+  '/:podcastId/generate-video',
+  checkUser,
+  generateAnimatedVideos
+);
 
 module.exports = podcastRouter;

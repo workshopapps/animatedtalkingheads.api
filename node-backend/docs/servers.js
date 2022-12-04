@@ -5,7 +5,7 @@ module.exports = {
       description: 'Local server',
     },
     {
-      url: 'https://api.voxlips.hng.tech',
+      url: 'https://api.voxclips.hng.tech',
       description: 'Live Server',
     },
   ],
