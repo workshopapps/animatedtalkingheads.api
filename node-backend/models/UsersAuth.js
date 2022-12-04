@@ -14,6 +14,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please enter a password'],
     minlength: [6, 'Minimum password length is 6 characters'],
+  },
+  token: {
+    type: String,
+    default: ''
   }
 });
 
@@ -38,7 +42,7 @@ userSchema.statics.login = async function(email, password) {
   throw Error('incorrect email');
 };
 
-userSchema.method.forgotpassword = async function (email, password) {
+userSchema.method.forgetpassword = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
   const salt = await bcrypt.genSalt();
@@ -47,6 +51,7 @@ userSchema.method.forgotpassword = async function (email, password) {
   }
   throw Error('incorrect email');
 }
+
 
 const User = mongoose.model('user', userSchema);
 
