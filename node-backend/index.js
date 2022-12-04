@@ -1,6 +1,6 @@
 const express = require('express');
-const path = require('path')
-const pug = require('pug')
+const path = require('path');
+const pug = require('pug');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 const mongoose = require('mongoose');
@@ -19,7 +19,10 @@ const errorController = require('./controllers/error.controller');
 
 const app = express();
 const DB = process.env.mongo_url;
-
+// process.env.NODE_ENV != 'production' &&
+//   (process.env.ComSpec =
+//     process.env.SHELL && (process.env.COMSPEC = process.env.shell));
+// console.log(process.env.ComSpec);
 mongoose.connect(DB).then(() => console.log('DB connection successful!'));
 
 mongoose.set('strict', true);
@@ -54,30 +57,29 @@ if (!fs.existsSync('./uploads/podcasts')) {
 // app configs.
 
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 // app.use('/todos', todoRouter);
+console.log(JSON.stringify(docs));
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
+app.use('/auth', authRoutes);
+app.use('/uploads', express.static('./uploads'));
+
 app.use(authRoutes);
 app.use('/uploads', express.static('./uploads'));
 
-
 ///// payment route
-const paymentRoute = require('./routes/payment/index')
+const paymentRoute = require('./routes/payment/index');
 app.use(express.static(path.join(__dirname, 'public/')));
 app.set('view engine', pug);
-app.get('/',(req, res) => {
-    res.render('index.pug');
+app.get('/test-pay', (req, res) => {
+  res.render('index.pug');
 });
-app.get('/error', (req, res)=>{
-    res.render('error.pug');
-})
-app.use('/',paymentRoute)
-
-
-
-
+app.get('/error', (req, res) => {
+  res.render('error.pug');
+});
+app.use('/', paymentRoute);
 
 app.all('*', (req, res, next) => {
   next(new NotFound());

@@ -4,7 +4,7 @@ const { writeFile, readFile } = require('fs/promises');
 const Podcast = require('./../models/Podcast');
 const ApiError = require('../utils/errors/ApiError');
 const NotFound = require('../utils/errors/NotFound');
-// const runPythonScript = require('./run-python');
+const runPythonScript = require('./run-python');
 const AnimatedVideo = require('../models/AnimatedVideo');
 
 function randomIntFromInterval() {
@@ -19,71 +19,59 @@ function randomIntFromInterval() {
   return val;
 }
 
-// exports.generateAnimatedVideos = async (req, res, next) => {
-//   let animatedVideoDoc = await AnimatedVideo.findById(
-//     req.headers.animated_video_id
-//   );
-//   if (!animatedVideoDoc) {
-//     animatedVideoDoc = await AnimatedVideo.create({
-//       podcast_id: req.params.podcastId,
-//       user_id: req.headers.user_id,
-//     });
-//   }
+exports.generateAnimatedVideos = async (req, res, next) => {
+  let animatedVideoDoc = await AnimatedVideo.findById(
+    req.headers.animated_video_id
+  );
+  if (!animatedVideoDoc) {
+    animatedVideoDoc = await AnimatedVideo.create({
+      podcast_id: req.params.podcastId,
+      user_id: req.headers.user_id,
+    });
+  }
 
-//   const podcastDoc = await Podcast.findById(req.params.podcastId);
-//   const metaJson = {
-//     audio_path: podcastDoc.file_path,
-//     audio_url: podcastDoc.file_url,
-//     avatar_map: {
-//       A: '01',
-//       B: '02',
-//     },
-//     bg_path: req.body.bg_path || randomIntFromInterval(),
-//     dir_id: animatedVideoDoc.id,
-//   };
-//   const metaJsonFilePath = path.resolve(
-//     path.dirname(process.cwd() + '/') +
-//       `/pyhton-backend/test_data/${animatedVideoDoc._id}.json`
-//   );
+  const podcastDoc = await Podcast.findById(req.params.podcastId);
+  const metaJson = {
+    audio_path:
+      'C:\\Users\\Hi\\Documents\\hng9\\animatedtalkingheads.api\\node-backend\\uploads\\podcasts\\6388bf04bf67dd8d1a8eedfa\\6388bf04bf67dd8d1a8eedfa-1670165899395.mp3',
+    audio_url: podcastDoc.file_url,
+    avatar_map: {
+      A: '01',
+      B: '02',
+    },
+    bg_path: req.body.bg_path || randomIntFromInterval(),
+    dir_id: animatedVideoDoc.id,
+  };
 
-//   const animatedVideoPath = path.resolve(
-//     path.dirname(process.cwd() + '/') +
-//       `/pyhton-backend/data/user_data/${animatedVideoDoc._id}`
-//   );
+  const metaJsonFilePath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/test_data/${animatedVideoDoc._id}.json`
+  );
 
-//   if (!fs.existsSync(animatedVideoPath)) {
-//     fs.mkdirSync(animatedVideoPath);
-//   }
+  const animatedVideoFolderPath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/data/user_data/${animatedVideoDoc._id}`
+  );
 
-//   const diaJsonFilePath = path.resolve(
-//     path.dirname(process.cwd() + '/') +
-//       `/pyhton-backend/data/user_data/${animatedVideoDoc._id}/diarization.json`
-//   );
-//   const oldDiaJsonFilePath = path.resolve(
-//     path.dirname(process.cwd() + '/') +
-//       `/pyhton-backend/data/user_data/diarization.json`
-//   );
+  const metaJsonFile = await writeFile(
+    metaJsonFilePath,
+    JSON.stringify(metaJson),
+    'utf-8'
+  );
+  const jobConfig = {
+    ...metaJson,
+    user_id: req.headers.userid,
+    animated_video_id: animatedVideoDoc.id,
+    meta_json_file: metaJsonFilePath,
+    animatedVideoFolderPath,
+  };
+  await runPythonScript(jobConfig, metaJsonFilePath);
 
-//   const diaJsonFile = await readFile(oldDiaJsonFilePath, 'utf-8');
-//   await writeFile(diaJsonFile, diaJsonFilePath, 'utf-8');
-
-//   const metaJsonFile = await writeFile(
-//     metaJsonFilePath,
-//     JSON.stringify(metaJson),
-//     'utf-8'
-//   );
-//   const jobConfig = {
-//     ...metaJson,
-//     user_id: req.headers.user_id,
-//     animated_video_id: animatedVideoDoc._id,
-//     meta_json_file: metaJsonFile,
-//   };
-//   await runPythonScript(jobConfig, metaJsonFilePath);
-
-//   res.json(...animatedVideoDoc);
-// };
+  res.json(animatedVideoDoc);
+};
 
 exports.podcastuploader = async (req, res, next) => {
+  console.log(req.body.ext);
   const user_file_path = (
     '/uploads/podcasts/' +
     req.headers.user_id +
@@ -95,8 +83,8 @@ exports.podcastuploader = async (req, res, next) => {
     req.headers.user_id +
     '-' +
     Date.now() +
-    '-' +
-    req.file.originalname
+    '.' +
+    req.body.ext
   ).replaceAll(' ', '');
   let podcast = await Podcast.create({
     user_id: req.headers.user_id,
