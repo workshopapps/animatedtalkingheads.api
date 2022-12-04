@@ -9,7 +9,7 @@ module.exports = {
               content: {
                 'application/json': {
                   schema: {
-                    $ref: '#/components/schemas/UsersAuth',
+                    $ref: '#/components/schemas/Authentication',
                   },
                 },
               },
@@ -34,7 +34,7 @@ module.exports = {
               content: {
                 'application/json': {
                   schema: {
-                    $ref: '#/components/schemas/UsersAuth',
+                    $ref: '#/components/schemas/Authentication',
                   },
                 },
               },
@@ -59,7 +59,7 @@ module.exports = {
               content: {
                 'application/json': {
                   schema: {
-                    $ref: '#/components/schemas/UsersAuth',
+                    $ref: '#/components/schemas/Authentication',
                   },
                 },
               },
@@ -84,7 +84,7 @@ module.exports = {
               content: {
                 'application/json': {
                   schema: {
-                    $ref: '#/components/schemas/UsersAuth',
+                    $ref: '#/components/schemas/Authentication',
                   },
                 },
               },
