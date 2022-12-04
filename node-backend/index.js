@@ -1,6 +1,10 @@
+/* eslint-disable prettier/prettier */
+const express = require('express')
+
 const express = require('express');
 const path = require('path');
 const pug = require('pug');
+
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 const mongoose = require('mongoose');
@@ -11,6 +15,9 @@ const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const podcastRouter = require('./routes/podcasts');
 const NotFound = require('./utils/errors/NotFound');
+
+// sten-add auth0 router dir
+const auth0Router = require('./routes/auth0');
 
 const authRoutes = require('./routes/user/index');
 const rauthRoutes = require('./routes/user/rindex');
@@ -67,11 +74,17 @@ app.use('/podcasts', podcastRouter);
 
 app.use('/auth',authRoutes);
 app.use('/rauth',rauthRoutes);
+
 app.use('/uploads', express.static('./uploads'))
+app.use('/auth0', auth0Router); // sten-register auth0 url
+
+
+// app.use('/uploads', express.static('./uploads'));
 
 app.use(authRoutes);
 app.use(rauthRoutes);
 app.use('/uploads', express.static('./uploads'));
+
 
 ///// payment route
 const paymentRoute = require('./routes/payment/index');
