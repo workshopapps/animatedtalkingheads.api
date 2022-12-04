@@ -17,16 +17,14 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please enter a password'],
     minlength: [6, 'Minimum password length is 6 characters'],
   },
-<<<<<<< HEAD
 
   //passwordResetToken: String,
   //passwordResetExpires: Date,
-=======
   token: {
     type: String,
     default: ''
   }
->>>>>>> 9a4081417bb61a32802d541863c5dda33104e3d3
+
 });
 
 
@@ -60,26 +58,7 @@ userSchema.method.forgetpassword = async function (email, password) {
   }
   throw Error('incorrect email');
 }
-//might clear if the forgot password works
-/* userSchema.methods.createPasswordResetToken = function() {
-  const resetToken = crypto.randomBytes(32).toString('hex');
 
-<<<<<<< HEAD
-  this.passwordResetToken = crypto
-    .createHash('sha256')
-    .update(resetToken)
-    .digest('hex');
-
-    console.log({resetToken}, this.passwordResetToken);
-  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-
-  return resetToken;
-
-  //crypto.createHash('sha256').update(resetToken).digest('hex');
-}; */
-=======
-
->>>>>>> 9a4081417bb61a32802d541863c5dda33104e3d3
 const User = mongoose.model('user', userSchema);
 
 module.exports = User;
