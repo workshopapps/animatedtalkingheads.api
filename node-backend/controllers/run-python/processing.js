@@ -2,10 +2,12 @@ const { PythonShell } = require('python-shell');
 const path = require('path');
 
 module.exports = async ({ data: { jobConfig } }) => {
-  console.log(jobConfig);
   let options = {
     mode: 'text',
-    // pythonPath: 'c/Users/Hi/AppData/Local/Microsoft/WindowsApps/python3',
+    pythonPath: path.resolve(
+      path.dirname(process.cwd() + '/') +
+        '/pyhton-backend/venv/Scripts/python.exe'
+    ),
     pythonOptions: ['-u'],
     scriptPath: path.resolve(
       path.dirname(process.cwd() + '/') +
@@ -22,7 +24,7 @@ module.exports = async ({ data: { jobConfig } }) => {
         return reject({ err });
       }
       console.log('success');
-      resolve({ success: true, jobConfig });
+      return resolve({ success: true, jobConfig });
     });
   });
 };

@@ -16,7 +16,7 @@ const queue = new Queue('myqueue', {
   ),
 });
 const processorFile = path.join(__dirname, 'processing.js');
-
+console.log(processorFile);
 const worker = new Worker(queue.name, processorFile, {
   concurrency: 2,
   connection: new Redis(
@@ -24,11 +24,12 @@ const worker = new Worker(queue.name, processorFile, {
   ),
 });
 worker.on('completed', async (job, returnvalue) => {
+  console.log(returnvalue);
   // Do something with the return value.
   if (returnvalue.success) {
     const savedAnimatedVideoPath = path.resolve(
       path.dirname(process.cwd() + '/') +
-        `node-backend/data/uploads/${returnvalue.jobConfig.animated_video_id}`
+        `/node-backend/data/uploads/${returnvalue.jobConfig.animated_video_id}`
     );
 
     if (!fs.existsSync(savedAnimatedVideoPath)) {
@@ -38,11 +39,11 @@ worker.on('completed', async (job, returnvalue) => {
     move(
       path.resolve(
         path.dirname(process.cwd() + '/') +
-          `pyhton-backend/data/user_data/${returnvalue.jobConfig.animated_video_id}/animation.mp4`
+          `/pyhton-backend/data/user_data/${returnvalue.jobConfig.animated_video_id}/animation.mp4`
       ),
       path.resolve(
         path.dirname(process.cwd() + '/') +
-          `node-backend/data/uploads/${returnvalue.jobConfig.animated_video_id}/animation.mp4`
+          `/node-backend/data/uploads/${returnvalue.jobConfig.animated_video_id}/animation.mp4`
       ),
       () => {
         fs.unlink(returnvalue.jobConfig.animatedVideoFolderPath, (err) => {
