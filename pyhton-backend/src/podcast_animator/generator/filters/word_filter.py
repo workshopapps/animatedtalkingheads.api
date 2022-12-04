@@ -87,7 +87,7 @@ class WordFilter:
                         )
 
     def add_to_canvas(self, frame_data: tuple[int:Image]):
-        """_summary_
+        """add mouth shape and word subtitle to audio file
 
         Args:
             frame_index (int): _description_
@@ -96,7 +96,8 @@ class WordFilter:
 
         frame_index, canvas = frame_data
         frame_obj = self.animation_frames[str(frame_index)]
-        subtitle_offset = 0.1
+
+        subtitle_offset = 0.9  ## moves subtitle up a fraction for each speaker
         for speaker in frame_obj:
             if len(frame_obj[speaker]) < 1:
                 mouth_path = self.avatar_map[speaker] / "mouths/closed.png"
@@ -116,11 +117,14 @@ class WordFilter:
             canvas = Image.alpha_composite(canvas, mouth)
 
             if speaker_word:
-                self._draw_word(speaker_word, canvas, subtitle_offset)
 
+                self._draw_word(speaker_word, canvas, subtitle_offset, speaker)
+            subtitle_offset -= 0.1
         return frame_index, canvas
 
-    def _draw_word(self, speaker_word: str, image: Image, offset: int) -> None:
+    def _draw_word(
+        self, speaker_word: str, image: Image, offset: int, speaker: str
+    ) -> None:
         """draws spoken words from analysed audio on frame
         as subtitles under the appropriate speaker
         created by @jimi
@@ -130,6 +134,7 @@ class WordFilter:
         image (Image): image to draw subtitle
         offset (int): position to draw_subtitle
         """
+
         width, height = image.size
         wrapper = textwrap.TextWrapper(width=width * 0.07)
         word_list = wrapper.wrap(text=speaker_word)
@@ -143,4 +148,4 @@ class WordFilter:
         w, h = draw.textsize(caption_new, font=self.font)
 
         x, y = 0.5 * (width - w), offset * height - h
-        draw.text((x, y), caption_new, font=self.font)
+        draw.text((x, y), f"Speaker_{speaker}: {caption_new}", font=self.font)

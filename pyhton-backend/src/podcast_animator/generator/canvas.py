@@ -9,6 +9,7 @@ class Canvas:
 
     @classmethod
     def canvas(cls):
+        """create plain canvas image as base"""
         return Image.new(
             mode="RGBA", size=(cls.width, cls.length), color=(255, 255, 255)
         )

@@ -10,6 +10,7 @@ import cv2
 from podcast_animator.config import Config
 from podcast_animator.utils.dataschema import DataSchemer
 from podcast_animator.utils.file_handlers import JsonHandler
+from podcast_animator.utils.exec_time import exec_time
 from podcast_animator.utils.animation_settings import load_animation_settings
 from podcast_animator.analysis.diariazer import load_audio_diarization
 from podcast_animator.generator.processors import append_audio, convert_to_cv2
@@ -19,8 +20,10 @@ from podcast_animator.generator.filters.background_filter import BackgroundFilte
 from podcast_animator.generator.filters.face_filter import FaceFilter
 from podcast_animator.generator.filters.eye_filter import EyeFilter
 from podcast_animator.generator.filters.word_filter import WordFilter
+from pathlib import Path
 
 
+@exec_time
 def main(metadata_path: str):
     """_summary_
 
@@ -80,13 +83,16 @@ def main(metadata_path: str):
     fourcc = cv2.VideoWriter_fourcc(*"mp4v")
     out = cv2.VideoWriter(animated_video, fourcc, 24.0, (width, height))
     for i in range(1, animation_frame_length + 1):
-        canvas = Canvas.canvas()
-        image = pipeline.process(i, canvas)
-        print(f"PROGRESS: {round((i * 100) / animation_frame_length, 2)}%")
-        out.write(image)
-
-        if (cv2.waitKey(1) & 0xFF) == ord("q"):  # Hit `q` to exit
+        try:
+            canvas = Canvas.canvas()
+            image = pipeline.process(i, canvas)
+            print(f"PROGRESS: {round((i * 100) / animation_frame_length, 2)}%")
+            out.write(image)
+        except KeyboardInterrupt:
             break
+
+        # if (cv2.waitKey(1) & 0xFF) == ord("q"):  # Hit `q` to exit
+        #     break
 
         # Release everything if job is finished
     out.release()
@@ -94,7 +100,7 @@ def main(metadata_path: str):
 
     output_video = runtime_settings[DataSchemer.AUDIO_DIR_PATH] / "animation_sound.mp4"
     audio_path = runtime_settings[DataSchemer.AUDIO_PATH]
-    append_audio(animated_video, audio_path, output_video)
+    append_audio(animated_video, audio_path, str(output_video))
 
 
 if __name__ == "__main__":
