@@ -28,7 +28,6 @@ class AppConfig:
     """
 
     def __init__(self):
-        print(self.ROOT_DIR)
         if self.DOTENV_PATH.exists():
             load_dotenv(self.DOTENV_PATH)
             self.ASSEMBLYAI = os.getenv("ASSEMBLYAI", None)

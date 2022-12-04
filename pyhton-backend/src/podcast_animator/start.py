@@ -15,7 +15,9 @@ from podcast_animator.analysis.diariazer import load_audio_diarization
 from podcast_animator.generator.processors import append_audio, convert_to_cv2
 from podcast_animator.generator.canvas import Canvas
 from podcast_animator.generator.pipeline import VideoPipeLine
-from podcast_animator.generator.filters.filter import Filter
+from podcast_animator.generator.filters.background_filter import BackgroundFilter
+from podcast_animator.generator.filters.face_filter import FaceFilter
+from podcast_animator.generator.filters.eye_filter import EyeFilter
 from podcast_animator.generator.filters.word_filter import WordFilter
 
 
@@ -42,6 +44,15 @@ def main(metadata_path: str):
     )
 
     #######     BUILD FILTERS      #######
+    background_filter = BackgroundFilter(
+        background_dir=runtime_settings[DataSchemer.BG_PATH],
+        animation_frame_length=animation_frame_length,
+    )
+
+    face_filter = FaceFilter(avatar_map=runtime_settings[DataSchemer.AVATAR_PATHS])
+
+    eye_filter = EyeFilter(avatar_map=runtime_settings[DataSchemer.AVATAR_PATHS])
+
     word_filter = WordFilter(
         diarization_speeches=assembly_diarizations["speech"],
         animation_frame_length=animation_frame_length,
@@ -54,7 +65,13 @@ def main(metadata_path: str):
 
     pipeline = VideoPipeLine()
 
-    pipeline.compile(word_filter.add_to_canvas, convert_to_cv2)
+    pipeline.compile(
+        convert_to_cv2,
+        word_filter.add_to_canvas,
+        eye_filter.add_to_canvas,
+        face_filter.add_to_canvas,
+        background_filter.add_to_canvas,
+    )
 
     #######    END COMPILE PIPELINE    #######
 
@@ -65,13 +82,12 @@ def main(metadata_path: str):
     for i in range(1, animation_frame_length + 1):
         canvas = Canvas.canvas()
         image = pipeline.process(i, canvas)
-        print(type(image))
+        print(f"PROGRESS: {round((i * 100) / animation_frame_length, 2)}%")
         out.write(image)
 
         if (cv2.waitKey(1) & 0xFF) == ord("q"):  # Hit `q` to exit
             break
 
-        # print(f"END WRITING: [{time.time() - start_write}]")
         # Release everything if job is finished
     out.release()
     cv2.destroyAllWindows()

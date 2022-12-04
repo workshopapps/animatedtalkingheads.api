@@ -13,7 +13,7 @@ class VideoPipeLine:
         self.filters.append(filter)
 
     def compile(self, *args):
-        self.filters.extend(list(locals()["args"][1:]))
+        self.filters.extend(list(locals()["args"]))
         self.processor = compose(*self.filters)
 
     def process(self, frame_index: int | str, canvas: Image):

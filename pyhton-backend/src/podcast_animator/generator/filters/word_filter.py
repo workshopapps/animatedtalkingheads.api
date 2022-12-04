@@ -3,35 +3,53 @@ import random
 
 # from g2p_en import G2p
 import textwrap
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 # from podcast_animator.utils.mouth_shapes import SHAPES
 from podcast_animator.config import Config
 
 
 class WordFilter:
-    def __init__(
-        self, diarization_speeches: dict, animation_frame_length: int, avatar_map: dict
-    ) -> None:
-        """_summary_
+    """Filter class that manages speaker mouth state and subtitle on animation frames
 
+    author: @anonnoone
+    """
+
+    def __init__(
+        self, diarization_speeches: list, animation_frame_length: int, avatar_map: dict
+    ) -> None:
+        """
+        author: @anonnoone
         Args:
-            diarization_speeches (dict): _description_
-            animation_frame_length (int): _description_
-            avatar_map (int): _description_
+            diarization_speeches (dict): speaker diarization for audio
+            animation_frame_length (int): number of frames for entire animation duration
+            avatar_map (int): audio speaker labels mapped to chosen avatar directory path
         """
         self.diarized_speeches = diarization_speeches
         self.animation_frame_length = animation_frame_length
         self.avatar_map = avatar_map
+        self.font = ImageFont.load_default()
         self.animation_frames = None
         self._compose_animation_schema()
 
     @property
-    def speaker_labels(self):
+    def speaker_labels(self) -> list[str]:
+        """unique labels given to speakers in audio
+
+        author: @anonnoone
+
+        Returns:
+            list[str]
+        """
         return list(self.avatar_map.keys())
 
     @property
-    def msec_per_frame(self):
+    def msec_per_frame(self) -> float:
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
         return round(1000 / Config.FRAME_RATE, 2)
 
     def _compose_animation_schema(self):
@@ -61,10 +79,12 @@ class WordFilter:
                     last_frame = round((end_time / self.msec_per_frame)) - 2
 
                     for frame_id in range(first_frame, last_frame + 1):
-                        self.animation_frames[str(frame_id)][speaker] = {
-                            "word": word,
-                            "mouth": self.avatar_map[speaker] / f"mouths/ah.png",
-                        }
+                        self.animation_frames[str(frame_id)][speaker].append(
+                            {
+                                "word": word,
+                                "mouth": self.avatar_map[speaker] / f"mouths/ah.png",
+                            }
+                        )
 
     def add_to_canvas(self, frame_data: tuple[int:Image]):
         """_summary_
@@ -73,18 +93,19 @@ class WordFilter:
             frame_index (int): _description_
             canvas (Image): _description_
         """
+
         frame_index, canvas = frame_data
         frame_obj = self.animation_frames[str(frame_index)]
         subtitle_offset = 0.1
         for speaker in frame_obj:
-            if len(frame_obj[speaker]) == 0:
+            if len(frame_obj[speaker]) < 1:
                 mouth_path = self.avatar_map[speaker] / "mouths/closed.png"
                 speaker_word = None
             else:
                 if len(frame_obj[speaker]) == 1:
                     obj = frame_obj[speaker][0]
 
-                elif len(frame_obj[speaker]):
+                elif len(frame_obj[speaker]) > 1:
                     obj = random.choice(frame_obj[speaker])
 
                 mouth_path = obj["mouth"]
@@ -97,7 +118,7 @@ class WordFilter:
             if speaker_word:
                 self._draw_word(speaker_word, canvas, subtitle_offset)
 
-        return canvas
+        return frame_index, canvas
 
     def _draw_word(self, speaker_word: str, image: Image, offset: int) -> None:
         """draws spoken words from analysed audio on frame

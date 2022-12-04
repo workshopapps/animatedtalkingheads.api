@@ -31,7 +31,7 @@ def load_animation_settings(metadata_path: str, json_handler: FileHandler) -> di
         DataSchemer.AUDIO_DIR_PATH: audio_animation_directory,
         DataSchemer.AUDIO_URL: metadata_obj["audio_url"],
         DataSchemer.AUDIO_PATH: metadata_obj["audio_path"],
-        DataSchemer.BG_PATH: get_path(Config.BG_DIR, bg_id, is_folder=False),
+        DataSchemer.BG_PATH: get_path(Config.BG_DIR, bg_id, is_folder=True),
         DataSchemer.AVATAR_PATHS: {
             avatar: get_path(Config.AVATAR_DIR, value, is_folder=True)
             for avatar, value in avatar_map.items()

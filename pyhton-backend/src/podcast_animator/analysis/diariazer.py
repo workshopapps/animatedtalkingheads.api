@@ -95,15 +95,26 @@ def diarize_audio(audio):
 def load_audio_diarization(
     audio_url: str, audio_data_path: Path, file_handler: FileHandler
 ) -> dict:
-    """_summary_
+    """returns saved diarization data from audio directory if exists
+       else request and save diarization in audio directory
+
+       author: @anonnoone
 
     Args:
-        audio_url (str): _description_
-        audio_data_path (Path): _description_
-        file_handler (FileHandler): _description_
+        audio_url (str): downloadable url of audio file
+        audio_data_path (Path): unique directory for audio related files
+        file_handler (FileHandler): file management object, writes requested diarization to disk
 
     Returns:
-        dict: _description_
+        dict: dictionary containing diarization_id, speaker diarization of audio file and audio length in seconds
+
+        >>>> {
+            "transaction_id" : "rx.....",
+            "audio_length_secs" : 2340,
+            "speech" : [
+                ...
+            ]
+        }
     """
     saved_diariztion = audio_data_path / "diarization.json"
     if saved_diariztion.exists():
