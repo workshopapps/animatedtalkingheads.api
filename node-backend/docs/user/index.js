@@ -57,14 +57,9 @@ module.exports = {
           operationId: 'logOutUser',
           parameters: [
           { 
-            email: 'email',
-            password: 'password',
-            schema: {
-              $ref: '#/components/schemas/Authentication',
-            },
-            required: true,
-            description: 'file path for the podcast',
-          },],
+            email: 'default@gmail.com',
+            password: 'defaultpassword',
+          }],
           responses: {
             201: {
               description: 'Logged out Successfully',
