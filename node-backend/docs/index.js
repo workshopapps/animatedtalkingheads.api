@@ -6,16 +6,18 @@ const podcasts = require('./podcasts/index');
 const avatars = require('./avatars/index');
 const accessories = require('./accessories/index');
 const payment = require('./payment/index');
+const user = require('./user');
 
 module.exports = {
   ...basicInfo,
   ...servers,
   ...components,
   ...tags,
-
+  ...user,
   // ...accessories,
   // ...avatars,
 
   // ...payment,
+
   ...podcasts,
 };

@@ -17,6 +17,17 @@ module.exports = {
       description: 'The id of the user customizing avatar',
       example: '637747b42342eb4566c90133',
     },
+
+    auth_email: {
+      type: 'string',
+      description: 'Email used during authentication',
+      example: 'default@gmail.com',
+    },
+    auth_password: {
+      type: 'string',
+      description: 'The users password',
+      example: 'defaultpassword',
+    },
     amount: {
       type: 'number',
       description: 'The amount being subscribed for',
@@ -76,6 +87,17 @@ module.exports = {
         properties: {
           file_path: { $ref: '#/components/file_path' },
           user_id: { $ref: '#/components/id' },
+        },
+      },
+      Authentication: {
+        type: 'object',
+        properties: {
+          email: {
+            $ref: '#/components/auth_email',
+          },
+          password: {
+            $ref: '#/components/auth_password',
+          },
         },
       },
       AvatarInput: {
