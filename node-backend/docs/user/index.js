@@ -1,6 +1,6 @@
 module.exports = {
     paths: {
-      '/auth/signin': {
+      '/auth/signup': {
         post: {
           tags: ['Authentication'],
           description: 'create user account',
@@ -55,15 +55,16 @@ module.exports = {
           tags: ['Authentication'],
           description: 'Log out user',
           operationId: 'logOutUser',
-          requestBody: {
-              content: {
-                'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Authentication',
-                  },
-                },
-              },
+          parameters: [
+          { 
+            email: 'email',
+            password: 'password',
+            schema: {
+              $ref: '#/components/schemas/Authentication',
             },
+            required: true,
+            description: 'file path for the podcast',
+          },],
           responses: {
             201: {
               description: 'Logged out Successfully',
