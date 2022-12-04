@@ -5,6 +5,8 @@ const tags = require('./tags');
 const podcasts = require('./podcasts');
 const avatars = require('./avatars');
 const accessories = require('./accessories');
+const payment = require('./payment/index');
+const user = require('./user');
 
 module.exports = {
   ...basicInfo,
@@ -14,4 +16,6 @@ module.exports = {
   ...podcasts,
   ...accessories,
   ...avatars,
+  ...payment,
+  ...user
 };
