@@ -9,3 +9,4 @@ text2emotion==0.0.5
 emoji==1.6.1
 moviepy==1.0.3
 requests==2.27.1
+toolz==0.12.0

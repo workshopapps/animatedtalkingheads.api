@@ -18,14 +18,14 @@ exports.getOneAnimatedVideo = async (req, res, next) => {
 
 exports.getAllUserCreatedAnimatedVideos = async (req, res, next) => {
   try {
-    const animatedVideoDocs = await AnimatedVideo.find({
-      user_id: req.headers.user_id,
-    });
+    console.log('lol');
+    const animatedVideoDocs = await AnimatedVideo.find({});
     if (!animatedVideoDocs.length) {
       return next(new NotFound());
     }
     res.json(animatedVideoDocs);
   } catch (err) {
+    console.log('err');
     next(err);
   }
 };

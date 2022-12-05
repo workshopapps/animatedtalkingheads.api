@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const express = require('express')
 const app = express()
 const userSession = require('express-user-session')
