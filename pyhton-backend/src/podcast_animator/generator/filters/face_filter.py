@@ -4,24 +4,26 @@ from PIL import Image
 
 
 class FaceFilter:
-    """Interface class
-    defines architecture to modify a feature for selected frame of animation
-
-    author: @anonnoone
-
-
-    """
-
-    def __init__(self, avatar_map: dict):
+    def __init__(self, avatar_map: dict, animation_frame_length: int):
         self.avatar_map = avatar_map
+        self.animation_frame_length = animation_frame_length
+        self.animation_frames = None
+        self._compose_animation_schema()
+
+    def speaker_labels(self) -> list[str]:
+        return list(self.avatar_map.keys())
 
     def _compose_animation_schema(self):
-        raise NotImplemented
+        self.animation_frames = {
+            str(frame_number): {avatar_id: [] for avatar_id in self.speaker_labels}
+            for frame_number in range(1, self.animation_frame_length + 1)
+        }
 
     def add_to_canvas(self, frame_data: tuple[int | img_obj]) -> img_obj:
         frame_index, canvas = frame_data
+        frame_obj = self.animation_frames[str(frame_index)]
 
-        for speaker in self.avatar_map:
+        for speaker in frame_obj:
             face_image_path = self.avatar_map[speaker] / "face.png"
             face_image = Image.open(face_image_path)
             face_image = face_image.convert("RGBA")
