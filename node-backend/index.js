@@ -20,7 +20,7 @@ const NotFound = require('./utils/errors/NotFound');
 const auth0Router = require('./routes/auth0');
 
 const authRoutes = require('./routes/user/index');
-const rauthRoutes = require('./routes/user/rindex');
+const rauthRoutes = require('./routes/emails/rindex');
 // const cookieParser = require('cookie-parser');
 // const path = require('path');
 const errorController = require('./controllers/error.controller');

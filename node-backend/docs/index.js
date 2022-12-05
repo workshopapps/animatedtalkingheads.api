@@ -7,6 +7,9 @@ const avatars = require('./avatars/index');
 const accessories = require('./accessories/index');
 const payment = require('./payment/index');
 const user = require('./user');
+const emails = require('./emails');
+
+
 
 module.exports = {
   ...basicInfo,
@@ -14,10 +17,13 @@ module.exports = {
   ...components,
   ...tags,
   ...user,
+  ...emails,
   // ...accessories,
   // ...avatars,
 
   // ...payment,
 
   ...podcasts,
+  
 };
+
