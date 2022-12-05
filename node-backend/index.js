@@ -19,7 +19,7 @@ const errorController = require('./controllers/error.controller');
 
 const app = express();
 const DB = process.env.mongo_url;
-
+app.use(morgan('tiny'))
 mongoose.connect(DB).then(() => console.log('DB connection successful!'));
 
 mongoose.set('strict', true);
