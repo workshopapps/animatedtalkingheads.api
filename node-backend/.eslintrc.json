@@ -1,9 +1,15 @@
 {
-  "env": {
+    "env": {
     "commonjs": true,
     "es6": true,
     "node": true
   },
+  "prettier/prettier": [
+    "error",
+    {
+      "endOfLine": "auto"
+    }
+  ],
   "extends": ["airbnb-base", "prettier", "plugin:node/recommended"],
   "globals": {
     "Atomics": "readonly",
@@ -14,7 +20,7 @@
   },
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": "0",
     "no-unused-vars": "warn",
     "no-console": "off",
     "func-names": "off",

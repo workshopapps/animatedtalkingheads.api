@@ -17,6 +17,11 @@ module.exports = {
       description: 'The id of the user customizing avatar',
       example: '637747b42342eb4566c90133',
     },
+    forgot_email: {
+      type: 'string',
+      description: 'Email used to register',
+      example: 'example@gmail.com',
+    },
 
     auth_email: {
       type: 'string',
@@ -97,6 +102,14 @@ module.exports = {
           },
           password: {
             $ref: '#/components/auth_password',
+          },
+        },
+      },
+      Password: {
+        type: 'object',
+        properties: {
+          email: {
+            $ref: '#/components/forgot_email',
           },
         },
       },

@@ -1,4 +1,8 @@
+/* eslint-disable prettier/prettier */
+const User = require("../models/User");
+
 const User = require("../models/UsersAuth");
+
 const jwt = require('jsonwebtoken');
 
 // module.exports.forgetpassword_post = async (req, res) => {
