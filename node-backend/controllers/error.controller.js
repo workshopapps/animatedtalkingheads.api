@@ -76,12 +76,6 @@ module.exports = (err, req, res, next) => {
   else if (error instanceof ValidationError)
     error = error.details.map((err) => err.message);
   else if (error.type === 'NotFound') error = error;
-  else if ((err.path = '_id'))
-    error = {
-      ...error,
-      isOperational: true,
-      message: 'Id is improperly formatted',
-    };
   else {
     error.message = 'Internal Server Error';
   }

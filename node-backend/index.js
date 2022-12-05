@@ -63,11 +63,14 @@ if (!fs.existsSync('./uploads/podcasts')) {
 }
 
 // app configs.
+app.use('/uploads', express.static('./uploads'));
+
+// app.use(authRoutes);
+app.use('/uploads', express.static('./uploads'));
 
 app.use(express.json());
 app.use(cors());
 // app.use('/todos', todoRouter);
-console.log(JSON.stringify(docs));
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
@@ -84,6 +87,7 @@ app.use('/auth0', auth0Router); // sten-register auth0 url
 app.use(authRoutes);
 app.use(rauthRoutes);
 app.use('/uploads', express.static('./uploads'));
+
 
 
 ///// payment route

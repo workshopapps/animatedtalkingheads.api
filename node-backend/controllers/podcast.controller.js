@@ -20,6 +20,7 @@ function randomIntFromInterval() {
 }
 
 exports.generateAnimatedVideos = async (req, res, next) => {
+  // console.log(req)
   let animatedVideoDoc = await AnimatedVideo.findById(
     req.headers.animated_video_id
   );
