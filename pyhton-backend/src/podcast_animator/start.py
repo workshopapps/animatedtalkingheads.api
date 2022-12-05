@@ -23,7 +23,7 @@ from podcast_animator.generator.filters.word_filter import WordFilter
 from pathlib import Path
 
 
-@exec_time
+
 def main(metadata_path: str):
     """_summary_
 
