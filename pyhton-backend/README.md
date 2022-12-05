@@ -62,17 +62,23 @@ In your virtual environment install pip
 >`pip install .`
 
 
+
+** Create secrets directory and file
+> `mkdir src/podcast_animator/env`
+> `touch src/podcast_animator/env/.env`
+> within `src/podcast_animator/env/.env` add `ASSEMBLYAI=<your-assemblyai-key>`
+
 #### To run your code
 
 *with python*
->`python .\src\podcast_animator\generator\main.py path\to\json_config`
+>`python .\src\podcast_animator\start.py path\to\json_config`
 
 
 *with python3*
->`python3 .\src\podcast_animator\generator\main.py path\to\json_config`
+>`python3 .\src\podcast_animator\start.py path\to\json_config`
 
 **Test Path**
->`python .\src\podcast_animator\generator\main.py test_data\meta.json`
+>`python .\src\podcast_animator\start.py test_data\meta.json`
 
 >**Note**
 >*pre-commit hook(rejects commits if error found with format, commit is then formatted with black.) save directory and commit formatted changes*
@@ -93,7 +99,8 @@ In your virtual environment install pip
            "A": "01",
            "B": "02"
        },
-       "bg_path": "01"
+       "bg_path": "01",
+       "dir_id": "<insert-unique-id-for-audio-file>"
       }
    ~~~
 
