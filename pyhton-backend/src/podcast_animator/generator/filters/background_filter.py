@@ -39,12 +39,12 @@ class BackgroundFilter:
         counter = 0 
         while counter < len(range(1, self.animation_frame_length+1)):       
             if counter%self.interval==0:                                        #Checks for the interval to load in the dynamic sequence
-                for i in range(1, len(self.bg_sq_files)+1):     
+                for i in range(len(self.bg_sq_files)):     
                     self.animation_frames.update({str(i+counter): self.bg_sq_files[i]})
                 counter+=len(self.bg_sq_files)
                 
             else:                                                                                       #Uses the default background image when the interval has not been reached
-                self.animation_frames.update({str(counter): self.directory_path / "default.png"})
+                self.animation_frames.update({str(counter): self.directory_path.parent / "default.png"})
                 counter+=1
         
     def add_to_canvas(self, frame_data: tuple[int | img_obj]) -> img_obj:                   #This method adds it to the canvas and returns the canvas as a filtered object
@@ -53,4 +53,4 @@ class BackgroundFilter:
         bg_image = Image.open(background_path)
         bg_image = bg_image.convert(mode="RGBA")
         canvas.paste(im=bg_image, box=(0, 0))
-        return canvas
+        return frame_index, canvas
