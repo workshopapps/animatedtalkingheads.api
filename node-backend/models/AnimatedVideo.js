@@ -12,7 +12,6 @@ const animatedVideoSchema = new Schema({
     default: 'PENDING',
   },
   podcast_id: {
-    required: true,
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Podcast',
     required: true,

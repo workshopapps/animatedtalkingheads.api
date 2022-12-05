@@ -1,46 +1,54 @@
 module.exports = {
   components: {
-    
     head_file_path: {
       type: 'string',
       description:
-      'The file_path can point the dir containing user preffered avatar head',
+        'The file_path can point the dir containing user preffered avatar head',
       example: '.assets/Avatars-front/Avatars-01.png',
     },
     scene_file_path: {
       type: 'string',
       description:
-      'The file_path can point the dir containing user preffered avatar background',
+        'The file_path can point the dir containing user preffered avatar background',
       example: '.assets/scenery/background1.png',
     },
     user_id: {
       type: 'string',
-      description:
-      'The id of the user customizing avatar',
+      description: 'The id of the user customizing avatar',
       example: '637747b42342eb4566c90133',
     },
-    
+    forgot_email: {
+      type: 'string',
+      description: 'Email used to register',
+      example: 'example@gmail.com',
+    },
+
+    auth_email: {
+      type: 'string',
+      description: 'Email used during authentication',
+      example: 'default@gmail.com',
+    },
+    auth_password: {
+      type: 'string',
+      description: 'The users password',
+      example: 'defaultpassword',
+    },
     amount: {
       type: 'number',
-      description:
-      'The amount being subscribed for',
-      example:500,
+      description: 'The amount being subscribed for',
+      example: 500,
     },
     full_name: {
       type: 'string',
-      description:
-      'The fullname of the user subscribing',
+      description: 'The fullname of the user subscribing',
       example: 'John Not-Doe',
     },
     email: {
       type: 'string',
-      description:
-      'The email of the user subscribing',
+      description: 'The email of the user subscribing',
       example: 'johndefinitelynot-doe@gmail.com',
     },
-    
-  
-    
+
     schemas: {
       User: {
         type: 'object',
@@ -67,7 +75,6 @@ module.exports = {
           email: {
             $ref: '#/components/email',
           },
-          
         },
       },
       Podcast: {
@@ -87,20 +94,38 @@ module.exports = {
           user_id: { $ref: '#/components/id' },
         },
       },
+      Authentication: {
+        type: 'object',
+        properties: {
+          email: {
+            $ref: '#/components/auth_email',
+          },
+          password: {
+            $ref: '#/components/auth_password',
+          },
+        },
+      },
+      Password: {
+        type: 'object',
+        properties: {
+          email: {
+            $ref: '#/components/forgot_email',
+          },
+        },
+      },
       AvatarInput: {
         type: 'object',
         properties: {
-          head_file_path:{
-            $ref:'#/components/head_file_path'
+          head_file_path: {
+            $ref: '#/components/head_file_path',
           },
-          scene_file_path:{
-            $ref:'#/components/scene_file_path'
+          scene_file_path: {
+            $ref: '#/components/scene_file_path',
           },
-    
-      user_id: { $ref: '#/components/user_id' },
+
+          user_id: { $ref: '#/components/user_id' },
         },
       },
-      
     },
     // Error_Types: {
     //   type: 'object',

@@ -55,22 +55,22 @@ podcastRouter.get('/download', (req, res) => {
   res.download(file_path);
 });
 
-podcastRouter.post(
-  '/:podcastId/get-video',
+podcastRouter.get(
+  '/animated-videos/:animatedVideoId',
+  checkUser,
+  getOneAnimatedVideo
+);
+
+podcastRouter.get(
+  '/animated-videos',
   checkUser,
   getAllUserCreatedAnimatedVideos
 );
 
 podcastRouter.post(
-  '/:podcastId/animated-videos/:animatedVideoId',
+  '/:podcastId/generate-video',
   checkUser,
-  getOneAnimatedVideo
+  generateAnimatedVideos
 );
-
-// podcastRouter.post(
-//   '/:podcastId/generate-video',
-//   checkUser,
-//   generateAnimatedVideos
-// );
 
 module.exports = podcastRouter;

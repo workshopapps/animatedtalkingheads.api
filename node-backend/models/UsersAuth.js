@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 const bcrypt = require('bcrypt');
+const crypto = require("crypto");
+const { stringify } = require('querystring');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -14,8 +16,17 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, 'Please enter a password'],
     minlength: [6, 'Minimum password length is 6 characters'],
+  },
+
+  //passwordResetToken: String,
+  //passwordResetExpires: Date,
+  token: {
+    type: String,
+    default: ''
   }
+
 });
+
 
 
 // fire a function before doc saved to db
@@ -37,6 +48,16 @@ userSchema.statics.login = async function(email, password) {
   }
   throw Error('incorrect email');
 };
+
+userSchema.method.forgetpassword = async function (email, password) {
+  const user = await this.findOne({ email });
+  if (user) {
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+  }
+  throw Error('incorrect email');
+}
 
 const User = mongoose.model('user', userSchema);
 
