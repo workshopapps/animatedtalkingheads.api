@@ -15,19 +15,23 @@ try{
         full_name : form.full_name
     }
     form.amount *= 100;
-    
+
     initializePayment(form, (error, body)=>{
+        try{
         if(error){
             //handle errors
             console.log(error);
-            return res.redirect('/error')
+            return res.json({error})
             return;
         }
         response = JSON.parse(body);
         console.log(response)
         // return
         res.redirect(response.data.authorization_url)
-
+            }
+            catch(error){
+                res.json({error})
+            }
     });
     }catch(error){
         res.json({error})
@@ -36,8 +40,6 @@ try{
 
 const verifyRequest= (req,res) => {
     try{
-
-    
     const ref = req.query.reference;
     verifyPayment(ref, (error,body)=>{
         if(error){
@@ -50,11 +52,8 @@ const verifyRequest= (req,res) => {
         const data = _.at(response.data, ['reference', 'amount','customer.email', 'metadata.full_name']);
 
         [reference, amount, email, full_name] =  data;
-        
         let newPayment = {reference, amount, email, full_name}
-
         const payment = new Payment(newPayment)
-
         payment.save().then((payment)=>{
             if(!payment){
                 return res.redirect('/error');
@@ -68,7 +67,6 @@ const verifyRequest= (req,res) => {
     res.json({error})
 }
 }
-
 const getReceipt = (req, res)=>{
     try{
     const id = req.params.id;
