@@ -67,6 +67,8 @@ podcastRouter.get(
   getAllUserCreatedAnimatedVideos
 );
 
+podcastRouter.get('/lol', getAllUserCreatedAnimatedVideos);
+
 podcastRouter.post(
   '/:podcastId/generate-video',
   checkUser,

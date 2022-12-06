@@ -10,6 +10,7 @@ const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const podcastRouter = require('./routes/podcasts');
+const paymentRoute = require('./routes/payment/index');
 const NotFound = require('./utils/errors/NotFound');
 
 const authRoutes = require('./routes/user/index');
@@ -64,12 +65,12 @@ app.use(express.json());
 app.use(cors());
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
-app.use('/avatars', avatarRouter);
 app.use('/podcasts', podcastRouter);
+app.use('/avatars', avatarRouter);
 app.use('/auth', authRoutes);
 
 ///// payment route
-const paymentRoute = require('./routes/payment/index');
+
 app.use(express.static(path.join(__dirname, 'public/')));
 app.set('view engine', pug);
 app.get('/test-pay', (req, res) => {
