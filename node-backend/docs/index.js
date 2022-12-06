@@ -9,8 +9,6 @@ const payment = require('./payment/index');
 const user = require('./user');
 const emails = require('./emails');
 
-
-
 module.exports = {
   ...basicInfo,
   ...servers,
@@ -18,12 +16,10 @@ module.exports = {
   ...tags,
   ...user,
   ...emails,
-  // ...accessories,
-  // ...avatars,
+  ...accessories,
+  ...avatars,
 
-  // ...payment,
+  ...payment,
 
   ...podcasts,
-  
 };
-
