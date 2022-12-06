@@ -23,14 +23,25 @@ class EyeFilter:
         self.animation_frame_length = animation_frame_length
         self.avatar_map = avatar_map
         self.animation_frames = None
-        self.blinking_sequences = self.get_eyes()
+        self.blinking_sequences = self.get_eyes_blinking() #sad
+        self.looking_sequences = self.get_eyes_looking() #look
         self._compose_animation_schema()
 
     @property
     def speaker_labels(self):
         return list(self.avatar_map.keys())
 
-    def get_eyes(self):
+    def get_eyes_blinking(self):
+        #files for blinking
+        return {
+            speaker: sorted([Path(file) for file in os.scandir(self.avatar_map[speaker] / "eyes/sad") if file.is_file()],
+                key=lambda x: str(x.name).split(".")[0].split("_")[1]
+            )
+            for speaker in self.speaker_labels
+        }
+
+    def get_eyes_looking(self):
+        #files for looking around
         return {
             speaker: sorted([Path(file) for file in os.scandir(self.avatar_map[speaker] / "eyes/look") if file.is_file()],
                 key=lambda x: str(x.name).split(".")[0].split("_")[1]
@@ -44,14 +55,33 @@ class EyeFilter:
             for frame_number in range(1, self.animation_frame_length + 1)
         }
         
-  
+        randomnumbers = [1,65,78,2,3,5565,35,12,500, 637, 7, 23]
         for avatar_id in self.speaker_labels:
             counter = 1
             while counter <  self.animation_frame_length + 1:
-                if counter % 168 == 0:
+
+                if random.choice(randomnumbers) == 1 and counter % 168 == 0:
+                    #blinking
+                    for index, blink_image in enumerate(self.blinking_sequences[avatar_id]) :
+                        loop_index = counter + index
+                        if loop_index > self.animation_frame_length:
+                            break
+                        self.animation_frames[str(loop_index)][avatar_id] = blink_image
+                    counter += len(self.blinking_sequences[avatar_id])
+
+                    #look around
+                    for index, look_image in enumerate(self.looking_sequences[avatar_id]) :
+                        loop_index = counter + index
+                        if loop_index > self.animation_frame_length:
+                            break
+                        self.animation_frames[str(loop_index)][avatar_id] = look_image
+                    counter += len(self.looking_sequences[avatar_id])
+
+                elif counter % 168 == 0:
+                    #just blinking
                     for index, blink_image in enumerate(
                         self.blinking_sequences[avatar_id]
-                    ):
+                    ) :
                         loop_index = counter + index
                         if loop_index > self.animation_frame_length:
                             break
@@ -60,7 +90,9 @@ class EyeFilter:
                         ] = blink_image
                   
                     counter += len(self.blinking_sequences[avatar_id])
+
                 else:
+                    #default eyes
                     self.animation_frames[str(counter)][avatar_id] = (
                         self.avatar_map[avatar_id] / f"eyes/happy.png"
                     )
