@@ -27,7 +27,7 @@ try{
         response = JSON.parse(body);
         console.log(response)
         // return
-        res.redirect(response.data.authorization_url)
+        res.json({link:response.data.authorization_url})
             }
             catch(error){
                 res.json({error})
