@@ -102,7 +102,7 @@ module.exports = {
             in: 'path',
             name: 'podcastID',
             schema: {
-              type: 'integer',
+              type: 'string',
             },
             required: true,
             description: 'ID of the podcast to use',
@@ -111,7 +111,7 @@ module.exports = {
             in: 'header',
             name: 'user_id',
             schema: {
-              type: 'integer',
+              type: 'string',
             },
             required: true,
             description: 'ID of the user to use, placed  in the headers',
@@ -119,13 +119,20 @@ module.exports = {
         ],
         requestBody: {
           content: {
-            'multipart/form-data': {
+            'application/json': {
               schema: {
                 type: 'object',
                 properties: {
-                  podcast: {
+                  audio_path: {
                     type: 'string',
-                    format: 'binary',
+                    required: true,
+                  },
+                  audio_url: {
+                    type: 'string',
+                    required: true,
+                  },
+                  bg_path: {
+                    type: 'string',
                   },
                 },
               },
