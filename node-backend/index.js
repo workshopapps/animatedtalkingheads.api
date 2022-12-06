@@ -1,3 +1,4 @@
+
 const express = require('express');
 const path = require('path');
 const pug = require('pug');
@@ -27,7 +28,9 @@ const errorController = require('./controllers/error.controller');
 const app = express();
 const DB = process.env.mongo_url;
 
-app.use(morgan('tiny'));
+
+app.use(morgan('tiny'))
+
 
 // process.env.NODE_ENV != 'production' &&
 //   (process.env.ComSpec =
