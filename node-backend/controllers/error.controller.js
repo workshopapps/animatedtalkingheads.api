@@ -64,7 +64,7 @@ module.exports = (err, req, res, next) => {
   // else if (process.env.NODE_ENV === 'production') {
   let error = { ...err };
   error.message = err.message;
-  console.log(err.path);
+  console.log(err);
   if (error.code === 'LIMIT_FILE_SIZE')
     error = new ApiError('Payload too large, the limit is 250mb', 413);
   else if (error.name === 'CastError') error = handleCastErrorDB(error);
@@ -76,12 +76,6 @@ module.exports = (err, req, res, next) => {
   else if (error instanceof ValidationError)
     error = error.details.map((err) => err.message);
   else if (error.type === 'NotFound') error = error;
-  else if ((err.path = '_id'))
-    error = {
-      ...error,
-      isOperational: true,
-      message: 'Id is improperly formatted',
-    };
   else {
     error.message = 'Internal Server Error';
   }

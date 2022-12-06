@@ -5,6 +5,7 @@ const User = require('../models/User');
 const PromiseMap = require('bluebird').map;
 
 const deleteAnonUser = async () => {
+  console.log('deleting inactive users');
   let aMonthAgoDate = new Date();
   aMonthAgoDate.setDate(aMonthAgoDate.getDate() - 30);
   const users = await User.find({

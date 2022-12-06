@@ -19,7 +19,11 @@ const {
   getAllUserCreatedAnimatedVideos,
 } = require('../../controllers/animatedvideo.controller');
 const podcastRouter = express.Router();
-
+podcastRouter.post(
+  '/:podcastId/generate-video',
+  checkUser,
+  generateAnimatedVideos
+);
 podcastRouter.get('/', checkUser, getAllUserUploadedPodcast);
 podcastRouter.get('/getpodcasts', getPodcast);
 
@@ -55,22 +59,16 @@ podcastRouter.get('/download', (req, res) => {
   res.download(file_path);
 });
 
-podcastRouter.post(
-  '/:podcastId/get-video',
-  checkUser,
-  getAllUserCreatedAnimatedVideos
-);
-
-podcastRouter.post(
-  '/:podcastId/animated-videos/:animatedVideoId',
+podcastRouter.get(
+  '/animated-videos/:animatedVideoId',
   checkUser,
   getOneAnimatedVideo
 );
 
-// podcastRouter.post(
-//   '/:podcastId/generate-video',
-//   checkUser,
-//   generateAnimatedVideos
-// );
+podcastRouter.get(
+  '/animated-videos',
+  checkUser,
+  getAllUserCreatedAnimatedVideos
+);
 
 module.exports = podcastRouter;
