@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-const express = require('express')
 
 const express = require('express');
 const path = require('path');
@@ -29,7 +28,7 @@ const app = express();
 const DB = process.env.mongo_url;
 
 app.use(morgan('tiny'))
-=======
+
 // process.env.NODE_ENV != 'production' &&
 //   (process.env.ComSpec =
 //     process.env.SHELL && (process.env.COMSPEC = process.env.shell));
