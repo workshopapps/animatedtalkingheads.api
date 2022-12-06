@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-const express = require('express')
+const express = require('express');
 
 const express = require('express');
 const path = require('path');
@@ -14,6 +14,7 @@ const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const podcastRouter = require('./routes/podcasts');
+const animatedRouter = require('./routes/animatedvidoes');
 const paymentRoute = require('./routes/payment/index');
 const NotFound = require('./utils/errors/NotFound');
 
@@ -29,8 +30,8 @@ const errorController = require('./controllers/error.controller');
 const app = express();
 const DB = process.env.mongo_url;
 
-app.use(morgan('tiny'))
-=======
+app.use(morgan('tiny'));
+
 // process.env.NODE_ENV != 'production' &&
 //   (process.env.ComSpec =
 //     process.env.SHELL && (process.env.COMSPEC = process.env.shell));
@@ -77,21 +78,18 @@ app.use(cors());
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/podcasts', podcastRouter);
+app.use('/animated-videos', animatedRouter);
 
-app.use('/auth',authRoutes);
-app.use('/rauth',rauthRoutes);
+app.use('/auth', authRoutes);
+app.use('/rauth', rauthRoutes);
 
-app.use('/uploads', express.static('./uploads'))
+app.use('/uploads', express.static('./uploads'));
 app.use('/auth0', auth0Router); // sten-register auth0 url
-
 
 // app.use('/uploads', express.static('./uploads'));
 
 app.use(authRoutes);
 app.use(rauthRoutes);
-app.use('/uploads', express.static('./uploads'));
-
-
 
 ///// payment route
 
