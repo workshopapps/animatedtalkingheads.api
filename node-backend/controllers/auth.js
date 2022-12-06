@@ -1,7 +1,4 @@
-/* eslint-disable prettier/prettier */
-const User = require("../models/User");
-
-const User = require("../models/UsersAuth");
+const UserAuth = require('../models/UsersAuth');
 
 const jwt = require('jsonwebtoken');
 
@@ -40,13 +37,13 @@ const handleErrors = (err) => {
   }
 
   return errors;
-}
+};
 
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
   return jwt.sign({ id }, 'net ninja secret', {
-    expiresIn: maxAge
+    expiresIn: maxAge,
   });
 };
 
@@ -55,55 +52,52 @@ module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.create({ email, password });
-    const token = createToken(user._id);
+    const user = await UserAuth.create({ email, password });
+    const token = createToken(UserAuth._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user: user._id });
-  }
-  catch(err) {
+    res.status(201).json({ user: UserAuth._id });
+  } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
- 
-}
+};
 
 module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.login(email, password);
-    console.log(User.login())
-    const token = createToken(user._id);
+    const user = await UserAuth.login(email, password);
+    console.log(UserAuth.login());
+    const token = createToken(UserAuth._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ user: user._id });
-  } 
-  catch (err) {
-    console.log(err)
+    res.status(200).json({ user: UserAuth._id });
+  } catch (err) {
+    console.log(err);
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
-
-}
+};
 
 module.exports.logout_get = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
   // res.redirect('/');
-  res.status(200).json({message : "successfully logged out"})
-}
-
+  res.status(200).json({ message: 'successfully logged out' });
+};
 
 module.exports.forgetpassword_post = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const user = await User.update({ email, password }, {
- $set: { password: password}
-});
-    const token = createToken(user._id);
+    const user = await UserAuth.update(
+      { email, password },
+      {
+        $set: { password: password },
+      }
+    );
+    const token = createToken(UserAuth._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user: user._id });
-  }
-  catch(err) {
+    res.status(201).json({ user: UserAuth._id });
+  } catch (err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
-}
+};

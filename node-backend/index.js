@@ -1,6 +1,3 @@
-/* eslint-disable prettier/prettier */
-const express = require('express');
-
 const express = require('express');
 const path = require('path');
 const pug = require('pug');
@@ -13,8 +10,8 @@ const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
+const animatedVideoRouter = require('./routes/animatedvidoes/');
 const podcastRouter = require('./routes/podcasts');
-const animatedRouter = require('./routes/animatedvidoes');
 const paymentRoute = require('./routes/payment/index');
 const NotFound = require('./utils/errors/NotFound');
 
@@ -78,7 +75,7 @@ app.use(cors());
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/podcasts', podcastRouter);
-app.use('/animated-videos', animatedRouter);
+app.use('/animated-videos', animatedVideoRouter);
 
 app.use('/auth', authRoutes);
 app.use('/rauth', rauthRoutes);
