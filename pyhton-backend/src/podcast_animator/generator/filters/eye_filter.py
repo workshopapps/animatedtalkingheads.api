@@ -79,7 +79,7 @@ class EyeFilter:
             for frame_number in range(1, self.animation_frame_length + 1)
         }
 
-        randomnumbers = [1, 65, 78, 2, 3, 5565, 35, 12, 500, 637, 7, 23]
+        randomnumbers = [1, 2, 3, 4]
         randomblinks = [72, 120, 168, 240]
         for avatar_id in self.speaker_labels:
             counter = 1
