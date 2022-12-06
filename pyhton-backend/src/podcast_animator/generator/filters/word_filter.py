@@ -133,19 +133,20 @@ class WordFilter:
         speaker_word (str): subtitle to be drawn
         image (Image): image to draw subtitle
         offset (int): position to draw_subtitle
+        speaker (int): current frame 
         """
 
-        width, height = image.size
-        wrapper = textwrap.TextWrapper(width=width * 0.07)
+        width, height = image.size                                     #Collecting dimensions of the image 
+        wrapper = textwrap.TextWrapper(width=width * 0.07)              #Using width to calculating the appropriate dimension of each word displayed
         word_list = wrapper.wrap(text=speaker_word)
         caption_new = ""
-        for word in word_list[:-1]:
+        for word in word_list[:-1]:                                         #The loops adds the appropriate word for that frame from a list of words 
             caption_new = caption_new + word + "\n"
         caption_new += word_list[-1]
 
-        draw = ImageDraw.Draw(image)
+        draw = ImageDraw.Draw(image)                                            #Drawing the image dimension on the frame
 
-        w, h = draw.textsize(caption_new, font=self.font)
+        w, h = draw.textsize(caption_new, font=self.font)                          #Getting the vales of the text size 
 
-        x, y = 0.5 * (width - w), offset * height - h
-        draw.text((x, y), f"Speaker_{speaker}: {caption_new}", font=self.font)
+        x, y = 0.5 * (width - w), offset * height - h                               #Using text size and offset values to calculate position on the image 
+        draw.text((x, y), f"Speaker_{speaker}: {caption_new}", font=self.font)          #Drawing the words to the image
