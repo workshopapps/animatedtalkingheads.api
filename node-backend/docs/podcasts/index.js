@@ -31,6 +31,67 @@ module.exports = {
         },
       },
     },
+    '/animated-videos/{animatedVideoId}': {
+      get: {
+        tags: ['AnimatedVideo'],
+        description: 'Animate a podcast',
+        operationId: 'AnimatedPodcast',
+        parameters: [
+          {
+            in: 'path',
+            name: 'animatedVideoId',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the podcast to use',
+          },
+          {
+            in: 'header',
+            name: 'user_id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the user to use, put in headers',
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Podcast created successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/animated-videos/': {
+      get: {
+        tags: ['AnimatedVideo'],
+        description: 'Upload a podcast',
+        operationId: 'uploadPodcast',
+        parameters: [
+          {
+            in: 'header',
+            name: 'user_id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the user to use, put in headers',
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Podcast created successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
     '/podcasts/{podcastID}/generate-video': {
       post: {
         tags: ['Podcast'],
@@ -41,21 +102,37 @@ module.exports = {
             in: 'path',
             name: 'podcastID',
             schema: {
-              type: 'integer',
+              type: 'string',
             },
             required: true,
             description: 'ID of the podcast to use',
           },
+          {
+            in: 'header',
+            name: 'user_id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the user to use, placed  in the headers',
+          },
         ],
         requestBody: {
           content: {
-            'multipart/form-data': {
+            'application/json': {
               schema: {
                 type: 'object',
                 properties: {
-                  podcast: {
+                  audio_path: {
                     type: 'string',
-                    format: 'binary',
+                    required: true,
+                  },
+                  audio_url: {
+                    type: 'string',
+                    required: true,
+                  },
+                  bg_path: {
+                    type: 'string',
                   },
                 },
               },
