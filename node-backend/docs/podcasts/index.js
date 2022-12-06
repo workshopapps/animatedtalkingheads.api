@@ -34,8 +34,8 @@ module.exports = {
     '/animated-videos/{animatedVideoId}': {
       get: {
         tags: ['AnimatedVideo'],
-        description: 'Upload a podcast',
-        operationId: 'uploadPodcast',
+        description: 'Animate a podcast',
+        operationId: 'AnimatedPodcast',
         parameters: [
           {
             in: 'path',
