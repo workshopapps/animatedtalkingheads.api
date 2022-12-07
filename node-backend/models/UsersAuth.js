@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const { isEmail } = require('validator');
 const bcrypt = require('bcrypt');
-const crypto = require("crypto");
-const { stringify } = require('querystring');
+//const crypto = require("crypto");
+//const { stringify } = require('querystring');
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -20,10 +20,10 @@ const userSchema = new mongoose.Schema({
 
   //passwordResetToken: String,
   //passwordResetExpires: Date,
-  token: {
+/*   token: {
     type: String,
     default: ''
-  }
+  } */
 
 });
 
@@ -59,6 +59,6 @@ userSchema.method.forgetpassword = async function (email, password) {
   throw Error('incorrect email');
 }
 
-const User = mongoose.model('user', userSchema);
+const UserAuth = mongoose.model('user', userSchema);
 
-module.exports = User;
+module.exports = UserAuth;

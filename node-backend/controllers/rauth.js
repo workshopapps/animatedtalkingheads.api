@@ -2,17 +2,17 @@ const User = require("../models/UsersAuth");
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
 const randomstring = require("randomstring");
-const res = require("express/lib/response")
-
+const res = require("express/lib/response");
+require('dotenv').config();
 const sendResetPasswordMail = async(email, token) => {
 
   try {
     const transporter = nodemailer.createTransport({  
-        host: "smtp.mailtrap.io",
-        port: 2525,
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
         auth: {
-            user: "385347a8cac45c",
-            pass: "318b8146500b7e"
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
         }
     });
     const mailOptions = {
