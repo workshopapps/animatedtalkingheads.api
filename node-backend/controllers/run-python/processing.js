@@ -22,12 +22,13 @@ module.exports = async ({ data: { jobConfig } }) => {
       return PythonShell.run('start.py', options, function (err, res) {
         if (err) {
           console.error(err);
-          return reject({ err });
+          reject({ err });
         }
-        console.log('success');
-        return resolve({ success: true, jobConfig });
+
+        resolve({ success: true, jobConfig });
       });
     } catch (err) {
+      reject({ err });
       console.log(err);
     }
   });
