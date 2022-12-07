@@ -44,9 +44,9 @@ userSchema.statics.login = async function(email, password) {
     if (auth) {
       return user;
     }
-    throw Error('incorrect password');
+    throw Error('Invalid Credentials');
   }
-  throw Error('incorrect email');
+  throw Error('Invalid Credentials');
 };
 
 userSchema.method.forgetpassword = async function (email, password) {
@@ -59,6 +59,6 @@ userSchema.method.forgetpassword = async function (email, password) {
   throw Error('incorrect email');
 }
 
-const User = mongoose.model('user', userSchema);
+const User = mongoose.model('userAuth', userSchema);
 
 module.exports = User;
