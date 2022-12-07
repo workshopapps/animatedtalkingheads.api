@@ -15,12 +15,9 @@ const podcastRouter = require('./routes/podcasts');
 const paymentRoute = require('./routes/payment/index');
 const NotFound = require('./utils/errors/NotFound');
 
-// sten-add auth0 router dir
-const auth0Router = require('./routes/auth0');
-
 const authRoutes = require('./routes/user/index');
 const rauthRoutes = require('./routes/emails/rindex');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 // const path = require('path');
 const errorController = require('./controllers/error.controller');
 
@@ -72,6 +69,7 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(express.json());
 app.use(cors());
 // app.use('/todos', todoRouter);
+console.log(JSON.stringify(docs));
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/podcasts', podcastRouter);
 app.use('/animated-videos', animatedVideoRouter);

@@ -1494,20 +1494,20 @@ bcrypt@^5.1.0:
     "@mapbox/node-pre-gyp" "^1.0.10"
     node-addon-api "^5.0.0"
 
-binary-extensions@^2.0.0:
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
-  integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
+"binary-extensions@^2.0.0":
+  "integrity" "sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA=="
+  "resolved" "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
+  "version" "2.2.0"
 
 bluebird@^3.7.2:
   version "3.7.2"
   resolved "https://registry.npmjs.org/bluebird/-/bluebird-3.7.2.tgz"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
-body-parser@1.20.1:
-  version "1.20.1"
-  resolved "https://registry.npmjs.org/body-parser/-/body-parser-1.20.1.tgz"
-  integrity sha512-jWi7abTbYwajOytWCQc37VulmWiRae5RyTpaCyDcS5/lMdtwSz5lOpDE67srw/HYe35f1z3fDQw+3txg7gNtWw==
+"body-parser@1.20.1":
+  "integrity" "sha512-jWi7abTbYwajOytWCQc37VulmWiRae5RyTpaCyDcS5/lMdtwSz5lOpDE67srw/HYe35f1z3fDQw+3txg7gNtWw=="
+  "resolved" "https://registry.npmjs.org/body-parser/-/body-parser-1.20.1.tgz"
+  "version" "1.20.1"
   dependencies:
     bytes "3.1.2"
     content-type "~1.0.4"
@@ -1898,15 +1898,15 @@ content-type@~1.0.4:
   resolved "https://registry.npmjs.org/content-type/-/content-type-1.0.4.tgz"
   integrity sha512-hIP3EEPs8tB9AT1L+NUqtwOAps4mk2Zob89MWXMHjHWg9milF/j4osnnQLXBCBFBk/tvIG/tUc9mOUJiPBhPXA==
 
-cookie-signature@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz"
-  integrity sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==
+"cookie-signature@1.0.6":
+  "integrity" "sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ=="
+  "resolved" "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz"
+  "version" "1.0.6"
 
-cookie@0.5.0, cookie@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/cookie/-/cookie-0.5.0.tgz"
-  integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
+"cookie@0.5.0":
+  "integrity" "sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw=="
+  "resolved" "https://registry.npmjs.org/cookie/-/cookie-0.5.0.tgz"
+  "version" "0.5.0"
 
 core-util-is@1.0.2:
   version "1.0.2"
@@ -3710,10 +3710,10 @@ jws@^3.2.2:
     jwa "^1.4.1"
     safe-buffer "^5.0.1"
 
-kareem@2.4.1:
-  version "2.4.1"
-  resolved "https://registry.npmjs.org/kareem/-/kareem-2.4.1.tgz"
-  integrity sha512-aJ9opVoXroQUPfovYP5kaj2lM7Jn02Gw13bL0lg9v0V7SaUc0qavPs0Eue7d2DcC3NjqI6QAUElXNsuZSeM+EA==
+"kareem@2.4.1":
+  "integrity" "sha512-aJ9opVoXroQUPfovYP5kaj2lM7Jn02Gw13bL0lg9v0V7SaUc0qavPs0Eue7d2DcC3NjqI6QAUElXNsuZSeM+EA=="
+  "resolved" "https://registry.npmjs.org/kareem/-/kareem-2.4.1.tgz"
+  "version" "2.4.1"
 
 keyv@^4.0.0:
   version "4.5.2"

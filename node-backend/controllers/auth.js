@@ -57,8 +57,9 @@ module.exports.signup_post = async (req, res) => {
     const user = await UserAuth.create({ email, password });
     const token = createToken(UserAuth._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user: UserAuth._id });
-  } catch (err) {
+    res.status(201).json({ user: user._id });
+  }
+  catch(err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
@@ -68,13 +69,14 @@ module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await UserAuth.login(email, password);
-    console.log(UserAuth.login());
-    const token = createToken(UserAuth._id);
+    const user = await User.login(email, password);
+    console.log(User.login())
+    const token = createToken(user._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ user: UserAuth._id });
-  } catch (err) {
-    console.log(err);
+    res.status(200).json({ user: user._id });
+  } 
+  catch (err) {
+    console.log(err)
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
@@ -97,8 +99,9 @@ module.exports.forgetpassword_post = async (req, res) => {
     );
     const token = createToken(UserAuth._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user: UserAuth._id });
-  } catch (err) {
+    res.status(201).json({ user: user._id });
+  }
+  catch(err) {
     const errors = handleErrors(err);
     res.status(400).json({ errors });
   }
