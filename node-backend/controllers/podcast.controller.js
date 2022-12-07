@@ -79,15 +79,12 @@ exports.podcastuploader = async (req, res, next) => {
     req.headers.user_id +
     '/'
   ).replaceAll(' ', '');
+  const fileExt = req.file.originalname ? req.file.originalname : req.file.ext;
+  let save_file_directory =
+    user_file_path + req.headers.user_id + '-' + Date.now() + fileExt;
 
-  const save_file_directory = (
-    user_file_path +
-    req.headers.user_id +
-    '-' +
-    Date.now() +
-    '.' +
-    req.body.ext
-  ).replaceAll(' ', '');
+  save_file_directory = save_file_directory.replaceAll(' ', '');
+  console.log(save_file_directory);
   let podcast = await Podcast.create({
     user_id: req.headers.user_id,
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,

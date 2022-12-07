@@ -29,7 +29,7 @@ worker.on('failed', async (job, err) => {
   );
   if (!fs.existsSync(originalFolder)) {
     await AnimatedVideo.findByIdAndUpdate(
-      returnvalue.jobConfig.animated_video_id,
+      job.data.jobConfig.animated_video_id,
       { status: 'ERROR' }
     );
     return;
@@ -84,7 +84,7 @@ worker.on('completed', async (job, returnvalue) => {
   );
   if (!fs.existsSync(originalFolder)) {
     await AnimatedVideo.findByIdAndUpdate(
-      returnvalue.jobConfig.animated_video_id,
+      job.data.jobConfig.animated_video_id,
       { status: 'ERROR' }
     );
     return;
