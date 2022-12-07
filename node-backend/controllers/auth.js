@@ -1,4 +1,6 @@
+
 const UserAuth = require('../models/UsersAuth');
+
 
 const jwt = require('jsonwebtoken');
 
