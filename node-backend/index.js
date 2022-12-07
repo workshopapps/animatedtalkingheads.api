@@ -1,4 +1,3 @@
-
 const express = require('express');
 const path = require('path');
 const pug = require('pug');
@@ -28,9 +27,7 @@ const errorController = require('./controllers/error.controller');
 const app = express();
 const DB = process.env.mongo_url;
 
-
-app.use(morgan('tiny'))
-
+app.use(morgan('tiny'));
 
 // process.env.NODE_ENV != 'production' &&
 //   (process.env.ComSpec =
@@ -68,10 +65,9 @@ if (!fs.existsSync('./uploads/podcasts')) {
 }
 
 // app configs.
-app.use('/uploads', express.static('./uploads'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 // app.use(authRoutes);
-app.use('/uploads', express.static('./uploads'));
 
 app.use(express.json());
 app.use(cors());
