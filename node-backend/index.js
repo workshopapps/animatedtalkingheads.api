@@ -11,10 +11,10 @@ const docs = require('./docs');
 const avatarRouter = require('./routes/avatars');
 const podcastRouter = require('./routes/podcasts');
 const NotFound = require('./utils/errors/NotFound');
-
+const bodyParser = require('body-parser');
 const authRoutes = require('./routes/user/index');
 const rauthRoutes = require('./routes/emails/rindex');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 // const path = require('path');
 const errorController = require('./controllers/error.controller');
 
@@ -60,6 +60,15 @@ if (!fs.existsSync('./uploads/podcasts')) {
 app.use(express.json());
 app.use(cors());
 // app.use('/todos', todoRouter);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(cors({ origin: (origin, callback) => callback(null, true), credentials: true }));
+app.use('/accounts', require('./accounts/accounts.controller'));
+app.use(errorHandler);
+
+
+
 console.log(JSON.stringify(docs));
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/avatars', avatarRouter);
