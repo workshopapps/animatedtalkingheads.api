@@ -96,7 +96,7 @@ module.exports = {
       post: {
         tags: ['Podcast'],
         description: 'Upload a podcast',
-        operationId: 'uploadPodcast',
+        operationId: 'GenerateVideo',
         parameters: [
           {
             in: 'path',
