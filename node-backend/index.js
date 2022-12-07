@@ -78,7 +78,7 @@ app.use('/auth', authRoutes);
 app.use('/rauth', rauthRoutes);
 
 app.use('/uploads', express.static('./uploads'));
-app.use('/auth0', auth0Router); // sten-register auth0 url
+//app.use('/auth0', auth0Router); // sten-register auth0 url
 
 // app.use('/uploads', express.static('./uploads'));
 

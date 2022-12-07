@@ -1,4 +1,3 @@
-const express = require('express');
 const Joi = require('joi');
 const User = require("../models/UsersAuth");
 const Token = require("../models/tokres");
@@ -13,6 +12,7 @@ const crypto = require("crypto")
 //const validateRequest = require('_middleware/validate-request');
 //const authorize = require('_middleware/authorize')
 const accountService = require('../jobs/service');
+
 
 
 

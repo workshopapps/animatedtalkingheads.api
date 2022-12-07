@@ -20,9 +20,9 @@ module.exports = {
     resetPassword,
     //getAll,
     getById,
-    create,
-    update,
-    delete: _delete
+   // create,
+   // update,
+   // delete: _delete
 };
 
 async function authenticate({ email, password}) {

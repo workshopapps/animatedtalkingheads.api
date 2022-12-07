@@ -1,10 +1,10 @@
 const dotenv = require('dotenv');
 dotenv.config({ path: '../.env' });
 const mongoose = require('mongoose');
-//const connectionOptions = { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
-//mongoose.connect(process.env.MONGODB_URI || config.connectionString, connectionOptions);
-//mongoose.Promise = global.Promise;
-
+/* const connectionOptions = { useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false };
+mongoose.connect(process.env.MONGODB_URI || process.env.connectionString, connectionOptions);
+mongoose.Promise = global.Promise;
+ */
 module.exports = {
     Account: require('../models/UsersAuth'),
     RefreshToken: require('../models/tokres'),

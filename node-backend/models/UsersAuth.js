@@ -32,8 +32,8 @@ schema.set('toJSON', {
       delete ret.passwordHash;
   }
 });
-
-module.exports = mongoose.model('Account', schema);
+ const User = mongoose.model('Account', schema);
+module.exports = User
 
 
 /* const userSchema = new Schema({
