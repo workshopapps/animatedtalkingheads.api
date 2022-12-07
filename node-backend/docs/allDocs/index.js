@@ -6,7 +6,6 @@ module.exports = {
         description: 'Upload a podcast',
         operationId: 'uploadPodcast',
 
-        consumes: ['multipart/form-data'],
         requestBody: {
           content: {
             'multipart/form-data': {
@@ -32,7 +31,270 @@ module.exports = {
         },
       },
     },
-    '/avatars': {
+    '/animated-videos/{animatedVideoId}': {
+      get: {
+        tags: ['AnimatedVideo'],
+        description: 'Animate a podcast',
+        operationId: 'AnimatedPodcast',
+        parameters: [
+          {
+            in: 'path',
+            name: 'animatedVideoId',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the podcast to use',
+          },
+          {
+            in: 'header',
+            name: 'user_id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the user to use, put in headers',
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Podcast created successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/animated-videos/': {
+      get: {
+        tags: ['AnimatedVideo'],
+        description: 'Upload a podcast',
+        operationId: 'uploadPodcast',
+        parameters: [
+          {
+            in: 'header',
+            name: 'user_id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the user to use, put in headers',
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Podcast created successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/podcasts/{podcastID}/generate-video': {
+      post: {
+        tags: ['Podcast'],
+        description: 'Upload a podcast',
+        operationId: 'uploadPodcast',
+        parameters: [
+          {
+            in: 'path',
+            name: 'podcastID',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the podcast to use',
+          },
+          {
+            in: 'header',
+            name: 'user_id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the user to use, placed  in the headers',
+          },
+        ],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  audio_path: {
+                    type: 'string',
+                    required: true,
+                  },
+                  audio_url: {
+                    type: 'string',
+                    required: true,
+                  },
+                  bg_path: {
+                    type: 'string',
+                  },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'Podcast created successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+     '/paystack/pay': {
+      post: {
+        tags: ['Payment'],
+        description: 'pay with paystack',
+        operationId: 'paystack pay',
+
+        requestBody: {
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Payment',
+                },
+              },
+            },
+          },
+        responses: {
+          201: {
+            description: 'redirecting to paystack',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    }, 
+          '/auth/signup': {
+        post: {
+          tags: ['Authentication'],
+          description: 'create user account',
+          operationId: 'createUserAccount',
+          requestBody: {
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Authentication',
+                  },
+                },
+              },
+            },
+          responses: {
+            201: {
+              description: 'User account Created Successfully',
+            },
+            500: {
+              description: 'Server error',
+            },
+          },
+        },
+      },
+
+      '/auth/forgetpassword': {
+        post: {
+          tags: ['Authentication'],
+          description: 'Clear user password',
+          operationId: 'clearUserPassword',
+          requestBody: {
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Authentication',
+                  },
+                },
+              },
+            },
+          responses: {
+            201: {
+              description: 'password cleared successfully',
+            },
+            500: {
+              description: 'Server error',
+            },
+          },
+        },
+      },
+
+      '/auth/logout': {
+        get: {
+          tags: ['Authentication'],
+          description: 'Log out user',
+          operationId: 'logOutUser',
+          parameters: [
+          {
+              schema: {
+                  $ref: '#/components/schemas/Authentication',
+              },
+          }],
+          responses: {
+            201: {
+              description: 'Logged out Successfully',
+            },
+            500: {
+              description: 'Server error',
+            },
+          },
+        },
+      },
+
+      '/auth/login': {
+        post: {
+          tags: ['Authentication'],
+          description: 'Log in user',
+          operationId: 'logInUser',
+          requestBody: {
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Authentication',
+                  },
+                },
+              },
+            },
+          responses: {
+            201: {
+              description: 'User logged in Successfully',
+            },
+            500: {
+              description: 'Server error',
+            },
+          },
+        },
+      },
+       '/rauth/forgotpassword': {
+      post: {
+        tags: ['Password'],
+        description: 'forget password',
+        operationId: 'forgetPassword',
+        requestBody: {
+            content: {
+              'application/json': {
+                schema: {
+                  $ref: '#/components/schemas/Password',
+                },
+              },
+            },
+          },
+        responses: {
+          200: {
+            description: 'sent successfuly',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+'/avatars': {
       get: {
         tags: ['Avatars'],
         description: 'Get avatars',
@@ -269,5 +531,7 @@ module.exports = {
         },
       },
     },
+
+
   },
 };
