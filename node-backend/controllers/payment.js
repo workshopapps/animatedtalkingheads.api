@@ -70,12 +70,12 @@ const verifyRequest= (req,res) => {
 const getReceipt = (req, res)=>{
     try{
     const id = req.params.id;
-    Donor.findById(id).then((donor)=>{
+    Payment.findById(id).then((payment)=>{
         if(!donor){
-            //handle error when the donor is not found
+            //handle error when the paymeny is not found
             res.redirect('/error')
         }
-        res.render('success.pug',{donor});
+        res.render('success.pug',{payment});
     }).catch((e)=>{
         res.redirect('/error')
     })

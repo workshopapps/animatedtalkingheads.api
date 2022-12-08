@@ -203,6 +203,9 @@ module.exports = {
     },
     '/paystack/pay': {
       post: {
+          security:[{
+        bearerAuth:[]
+      }],
         tags: ['Payment'],
         description: 'pay with paystack',
         operationId: 'paystack pay',
