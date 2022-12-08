@@ -1,7 +1,8 @@
 const express = require('express');
+const Sentry = require('@sentry/node');
 const path = require('path');
 const pug = require('pug');
-const auth = require("./middlewares/authMiddleware");
+const auth = require('./middlewares/authMiddleware');
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 const mongoose = require('mongoose');
@@ -24,10 +25,17 @@ const rauthRoutes = require('./routes/emails/rindex');
 // const path = require('path');
 const errorController = require('./controllers/error.controller');
 
-const userSettingsRoute= require('./routes/protectedRoutes/userSettings')
+const userSettingsRoute = require('./routes/protectedRoutes/userSettings');
 
+Sentry.init({
+  dsn: 'https://847f70043a354431a605fe554591ae6a@o4504282743635968.ingest.sentry.io/4504293110317056',
+});
 
 const app = express();
+
+// The request handler must be the first middleware on the app
+app.use(Sentry.Handlers.requestHandler());
+
 const DB = process.env.mongo_url;
 
 app.use(morgan('tiny'));
@@ -82,7 +90,7 @@ app.use('/animated-videos', animatedVideoRouter);
 app.use('/auth', authRoutes);
 app.use('/rauth', rauthRoutes);
 
-app.use('/settings',auth, userSettingsRoute)
+app.use('/settings', auth, userSettingsRoute);
 
 app.use('/uploads', express.static('./uploads'));
 app.use('/auth0', auth0Router); // sten-register auth0 url
@@ -102,11 +110,13 @@ app.get('/test-pay', (req, res) => {
 app.get('/error', (req, res) => {
   res.render('error.pug');
 });
-app.use('/',paymentRoute);
+app.use('/', paymentRoute);
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
 });
+
+app.use(Sentry.Handlers.errorHandler());
 
 app.use(errorController);
 
