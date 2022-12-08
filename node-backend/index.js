@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const pug = require('pug');
-
+const auth = require("./middlewares/authMiddleware");
 const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 const mongoose = require('mongoose');
@@ -23,6 +23,9 @@ const rauthRoutes = require('./routes/emails/rindex');
 // const cookieParser = require('cookie-parser');
 // const path = require('path');
 const errorController = require('./controllers/error.controller');
+
+const userSettingsRoute= require('./routes/protectedRoutes/userSettings')
+
 
 const app = express();
 const DB = process.env.mongo_url;
@@ -78,6 +81,8 @@ app.use('/animated-videos', animatedVideoRouter);
 
 app.use('/auth', authRoutes);
 app.use('/rauth', rauthRoutes);
+
+app.use('/settings',auth, userSettingsRoute)
 
 app.use('/uploads', express.static('./uploads'));
 app.use('/auth0', auth0Router); // sten-register auth0 url
