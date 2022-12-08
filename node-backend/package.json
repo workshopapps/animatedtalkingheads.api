@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/workshopapps/animatedtalkingheads.api#readme",
   "dependencies": {
+    "@sentry/node": "^7.24.2",
     "async": "^3.2.4",
     "bcrypt": "^5.1.0",
     "bluebird": "^3.7.2",
