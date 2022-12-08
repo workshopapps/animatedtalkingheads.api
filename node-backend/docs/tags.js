@@ -6,7 +6,7 @@ module.exports = {
       { name: 'Payment', description: 'Using the paystack payment option by @deverence' },
       { name: 'Password', description: 'Send reset password link' },
       { name: 'Authentication', description: 'Access to Authentication by @justakinyi/@shegzeyrey' },
-      {name:'UserSettings', description:'Storing user settings by @devrence'},
+      {name:'UserSettings', description:'Storing user settings by @deverence'},
   
 ],
 };

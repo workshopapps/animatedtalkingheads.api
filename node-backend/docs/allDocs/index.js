@@ -201,6 +201,23 @@ module.exports = {
         },
       },
     },
+    '/getpayments': {
+      get: {
+        tags: ['Payment'],
+        description: 'Get paid users For Dev Purpose',
+        operationId: 'userpaymentget',
+
+        
+        responses: {
+          200: {
+            description: 'User payments object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
     '/paystack/pay': {
       post: {
           security:[{
