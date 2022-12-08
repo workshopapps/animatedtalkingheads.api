@@ -18,12 +18,6 @@ const userSchema = new mongoose.Schema({
     minlength: [6, 'Minimum password length is 6 characters'],
   },
 
-  //passwordResetToken: String,
-  //passwordResetExpires: Date,
-  token: {
-    type: String,
-    default: ''
-  }
 
 });
 
