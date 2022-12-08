@@ -23,6 +23,7 @@ from podcast_animator.generator.filters.word_filter import WordFilter
 from pathlib import Path
 
 
+
 def main(metadata_path: str):
     """_summary_
 
@@ -57,7 +58,7 @@ def main(metadata_path: str):
         animation_frame_length=animation_frame_length,
         avatar_map=runtime_settings[DataSchemer.AVATAR_PATHS],
     )
-
+    
     word_filter = WordFilter(
         diarization_speeches=assembly_diarizations["speech"],
         animation_frame_length=animation_frame_length,
