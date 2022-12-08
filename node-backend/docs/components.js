@@ -127,9 +127,7 @@ module.exports = {
           full_name: {
             $ref: '#/components/full_name',
           },
-          email: {
-            $ref: '#/components/email',
-          },
+          
         },
       },
       UserSettings:{
