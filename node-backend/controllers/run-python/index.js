@@ -12,7 +12,7 @@ const queue = new Queue('animated-video', {
   ),
 });
 const processorFile = path.join(__dirname, 'processing.js');
-console.log(processorFile);
+
 const worker = new Worker(queue.name, processorFile, {
   connection: new Redis(
     `rediss://red-ce81h2kgqg4canlv287g:CGf3WrF2EhTlSgI2dg1E16WfkNlwVp4l@oregon-redis.render.com:6379`
