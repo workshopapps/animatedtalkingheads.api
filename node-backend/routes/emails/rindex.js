@@ -3,7 +3,9 @@ const rauthController = require('../../controllers/rauth');
 
 const rrouter = Router();
 
+
+rrouter.post('/signup', rauthController.signup_post);
 rrouter.post('/forgotpassword', rauthController.forgotpassword);
-rrouter.get('/resetpassword', rauthController.resetpassword);
+rrouter.patch('/resetpassword/:token', rauthController.resetpassword);
 
 module.exports = rrouter;
