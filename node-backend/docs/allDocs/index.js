@@ -153,8 +153,59 @@ module.exports = {
         },
       },
     },
+    '/settings/add': {
+      post: {
+        security:[{
+        bearerAuth:[]
+      }],
+        tags: ['UserSettings'],
+        description: 'Store user preferred settings',
+        operationId: 'usersettings',
+
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UserSettings',
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'User settings object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/settings/get': {
+      get: {
+        security:[{
+        bearerAuth:[]
+      }],
+        tags: ['UserSettings'],
+        description: 'Get user preferred settings',
+        operationId: 'usersettingsget',
+
+        
+        responses: {
+          200: {
+            description: 'User settings object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
     '/paystack/pay': {
       post: {
+          security:[{
+        bearerAuth:[]
+      }],
         tags: ['Payment'],
         description: 'pay with paystack',
         operationId: 'paystack pay',

@@ -22,7 +22,7 @@ const callback = (error, response, body)=>{
 }
 const verifyPayment = (ref, mycallback) => {
     const options = {
-        url : 'https://api.paystack.co/transaction/verify/'+encodeURIComponent(ref    ),
+        url : 'https://api.paystack.co/transaction/verify/'+encodeURIComponent(ref  ),
         headers : {
             authorization: MySecretKey,
             'content-type': 'application/json',

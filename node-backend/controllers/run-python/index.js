@@ -106,7 +106,7 @@ const runPythonScript = async (jobConfig, pathToMeta) => {
   );
 
   await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
-    video_path:
+    video_url:
       req.protocol +
       '://' +
       req.get('host') +

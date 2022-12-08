@@ -45,7 +45,7 @@ const verifyRequest= (req,res) => {
         if(error){
             //handle errors appropriately
             console.log(error)
-            return res.redirect('/error');
+            return res.json({message:"payment verification"});
         }
         response = JSON.parse(body);        
 
@@ -56,11 +56,11 @@ const verifyRequest= (req,res) => {
         const payment = new Payment(newPayment)
         payment.save().then((payment)=>{
             if(!payment){
-                return res.redirect('/error');
+                return res.json({message:"something happened"});
             }
             res.redirect('/receipt/'+payment._id);
         }).catch((e)=>{
-            res.redirect('/error');
+            res.json({message:e});
         })
     })
 }catch(error){
@@ -70,12 +70,12 @@ const verifyRequest= (req,res) => {
 const getReceipt = (req, res)=>{
     try{
     const id = req.params.id;
-    Donor.findById(id).then((donor)=>{
-        if(!donor){
-            //handle error when the donor is not found
+    Payment.findById(id).then((payment)=>{
+        if(!payment){
+            //handle error when the paymeny is not found
             res.redirect('/error')
         }
-        res.render('success.pug',{donor});
+        res.render('success.pug',{payment});
     }).catch((e)=>{
         res.redirect('/error')
     })
