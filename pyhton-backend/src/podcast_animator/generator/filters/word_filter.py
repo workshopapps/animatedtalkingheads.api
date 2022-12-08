@@ -1,11 +1,11 @@
 import re
 import random
 
-# from g2p_en import G2p
+from g2p_en import G2p
 import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
-# from podcast_animator.utils.mouth_shapes import SHAPES
+from podcast_animator.utils.mouth_shapes import SHAPES
 from podcast_animator.config import Config
 
 
@@ -30,6 +30,7 @@ class WordFilter:
         self.avatar_map = avatar_map
         self.font = ImageFont.load_default()
         self.animation_frames = None
+        self.animation_offset = 3
         self._compose_animation_schema()
 
     @property
@@ -45,21 +46,25 @@ class WordFilter:
 
     @property
     def msec_per_frame(self) -> float:
-        """_summary_
+        """amount of miliseconds within each frame
+
+        author: @anonnoone
 
         Returns:
-            _type_: _description_
+            float:
         """
         return round(1000 / Config.FRAME_RATE, 2)
 
-    def _compose_animation_schema(self):
-        """ """
+    def _compose_animation_schema(self) -> None:
+        """assign words and mouth shapes to frames
+        using the duration of the words in miliseconds
+        """
         self.animation_frames = {
             str(frame_number): {avatar_id: [] for avatar_id in self.speaker_labels}
             for frame_number in range(1, self.animation_frame_length + 1)
         }
 
-        # g2p_obj = G2p()
+        g2p_obj = G2p()
 
         for speech_object in self.diarized_speeches:
             speaker = speech_object["speaker"]
@@ -72,19 +77,70 @@ class WordFilter:
                         speech_object["sentences"][sentence].split(";"),
                     )
                 )
-                for word, time_stamp in timestamp_tuple:
-                    word = re.sub(r"\.$|\?$|\,$", "", word)
-                    start_time, end_time = list(map(int, time_stamp.split("-")))
-                    first_frame = round((start_time / self.msec_per_frame)) - 2
-                    last_frame = round((end_time / self.msec_per_frame)) - 2
 
-                    for frame_id in range(first_frame, last_frame + 1):
-                        self.animation_frames[str(frame_id)][speaker].append(
-                            {
-                                "word": word,
-                                "mouth": self.avatar_map[speaker] / f"mouths/ah.png",
-                            }
+                for word, time_stamp in timestamp_tuple:
+                    #### PROCESS WORD  ####
+                    ## strip word of punctuations
+                    word = re.sub(r"\.$|\?$|\,$", "", word)
+
+                    ## calculate length in miliseconds of word
+                    start_time, end_time = map(int, time_stamp.split("-"))
+                    word_duration = end_time - start_time
+
+                    # calculate limit/ boundaries of the word
+                    # first_word_frame = round((start_time / self.msec_per_frame))
+                    last_word_frame = (
+                        round(end_time / self.msec_per_frame) - self.animation_offset
+                    )
+
+                    ## extract mouth shapes for each phoneme
+                    mouth_shapes = list(
+                        map(
+                            lambda x: SHAPES[x] if x in SHAPES else x,
+                            map(
+                                lambda x: re.sub(r"\d+", "", x),
+                                filter(lambda phoneme: phoneme != " ", g2p_obj(word)),
+                            ),
                         )
+                    )
+
+                    ## calculate length of single phoneme in word
+                    single_phoneme_duration = word_duration / len(mouth_shapes)
+
+                    start_sound = start_time
+                    for mouth_shape in mouth_shapes:
+                        # print(mouth_shape, start_sound)
+                        end_sound = start_sound + single_phoneme_duration
+
+                        ## calculate every frame where phoneme is present
+                        first_shape_frame, last_shape_frame = map(
+                            lambda x: min(x, last_word_frame),
+                            map(
+                                lambda x: round(
+                                    (x / self.msec_per_frame) - self.animation_offset
+                                ),
+                                [start_sound, end_sound],
+                            ),
+                        )
+
+                        ## add shapes to frames
+                        for frame_index in range(first_shape_frame, last_shape_frame):
+                            self.animation_frames[str(frame_index)][speaker].append(
+                                {
+                                    "word": word,
+                                    "mouth": self.avatar_map[speaker]
+                                    / f"mouths/{mouth_shape}.png",
+                                }
+                            )
+
+                        start_sound = end_sound
+
+                    self.animation_frames[str(last_shape_frame)][speaker].append(
+                        {
+                            "word": word,
+                            "mouth": str(self.avatar_map[speaker] / "mouths/closed.png"),
+                        }
+                    )
 
     def add_to_canvas(self, frame_data: tuple[int:Image]):
         """add mouth shape and word subtitle to audio file
@@ -107,7 +163,7 @@ class WordFilter:
                     obj = frame_obj[speaker][0]
 
                 elif len(frame_obj[speaker]) > 1:
-                    obj = random.choice(frame_obj[speaker])
+                    obj = frame_obj[speaker][-1]
 
                 mouth_path = obj["mouth"]
                 speaker_word = obj["word"]
@@ -136,17 +192,28 @@ class WordFilter:
         speaker (int): current frame of speaker
         """
 
-        width, height = image.size                                      #Collecting dimensions of the image 
-        wrapper = textwrap.TextWrapper(width=width * 0.07)                  #Using width to calculating the appropriate dimension of each word displayed
-        word_list = wrapper.wrap(text=speaker_word)                             
-        caption_new = ""                        
-        for word in word_list[:-1]:                                                     #The loops adds the appropriate word for that frame from a list of words
+        width, height = image.size  # Collecting dimensions of the image
+        wrapper = textwrap.TextWrapper(
+            width=width * 0.07
+        )  # Using width to calculating the appropriate dimension of each word displayed
+        word_list = wrapper.wrap(text=speaker_word)
+        caption_new = ""
+        for word in word_list[
+            :-1
+        ]:  # The loops adds the appropriate word for that frame from a list of words
             caption_new = caption_new + word + "\n"
         caption_new += word_list[-1]
 
-        draw = ImageDraw.Draw(image)                                                    #Drawing the image dimension on the frame
+        draw = ImageDraw.Draw(image)  # Drawing the image dimension on the frame
 
-        w, h = draw.textsize(caption_new, font=self.font)                           #Getting the vales of the text size 
+        w, h = draw.textsize(
+            caption_new, font=self.font
+        )  # Getting the vales of the text size
 
-        x, y = 0.5 * (width - w), offset * height - h                           #Using text size and offset values to calculate position on the image 
-        draw.text((x, y), f"Speaker_{speaker}: {caption_new}", font=self.font)     ##Drawing the words to the image
+        x, y = (
+            0.5 * (width - w),
+            offset * height - h,
+        )  # Using text size and offset values to calculate position on the image
+        draw.text(
+            (x, y), f"Speaker_{speaker}: {caption_new}", font=self.font
+        )  ##Drawing the words to the image

@@ -25,8 +25,8 @@ def load_animation_settings(metadata_path: str, json_handler: FileHandler) -> di
     bg_id: str = metadata_obj["bg_path"]
     audio_animation_directory = Config.DATA_DIR / f'user_data/{metadata_obj["dir_id"]}'
     if not audio_animation_directory.exists():
-        print("Creating directory")
-        os.mkdir(audio_animation_directory)
+        # os.mkdir(audio_animation_directory)
+        audio_animation_directory.mkdir(parents=True)
 
     return {
         DataSchemer.AUDIO_DIR_PATH: audio_animation_directory,
