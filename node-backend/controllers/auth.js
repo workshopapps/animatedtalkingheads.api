@@ -4,10 +4,6 @@ const UserAuth = require('../models/UsersAuth');
 
 const jwt = require('jsonwebtoken');
 
-// module.exports.forgetpassword_post = async (req, res) => {
-//   console.log('forget password')
-// };
-// handle errors
 const handleErrors = (err) => {
   console.log(err.message, err.code);
   let errors = { email: '', password: '' };
@@ -43,8 +39,8 @@ const handleErrors = (err) => {
 
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
-const createToken = (id) => {
-  return jwt.sign({ id }, 'net ninja secret', {
+const createToken = (email) => {
+  return jwt.sign({ email }, 'thisShouldBeMovedToDotEnvLater', {
     expiresIn: maxAge,
   });
 };
@@ -54,13 +50,18 @@ module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
 
   try {
+    console.log(UserAuth._id)
     const user = await UserAuth.create({ email, password });
-    const token = createToken(UserAuth._id);
+    const token = createToken(email);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user: UserAuth._id });
+    res.status(201).json({ user: token });
   } catch (err) {
-    const errors = handleErrors(err);
-    res.status(400).json({ errors });
+    if (err.code === 11000) {
+    err.message = 'Email already registered, Login';
+    // return ;
+  }
+
+    res.status(400).json({ error:err.message });
   }
 };
 
@@ -69,20 +70,18 @@ module.exports.login_post = async (req, res) => {
 
   try {
     const user = await UserAuth.login(email, password);
-    console.log(UserAuth.login());
-    const token = createToken(UserAuth._id);
+    const token = createToken(email);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ user: UserAuth._id });
+    res.status(200).json({ user: token });
   } catch (err) {
     console.log(err);
     const errors = handleErrors(err);
-    res.status(400).json({ errors });
+    res.status(400).json({ error:err.message });
   }
 };
 
 module.exports.logout_get = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
-  // res.redirect('/');
   res.status(200).json({ message: 'successfully logged out' });
 };
 

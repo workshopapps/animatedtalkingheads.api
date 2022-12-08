@@ -34,7 +34,7 @@ exports.generateAnimatedVideos = async (req, res, next) => {
   const podcastDoc = await Podcast.findById(req.params.podcastId);
   const metaJson = {
     audio_path: podcastDoc.file_path,
-    audio_url: podcastDoc.file_url,
+    audio_url: 'podcastDoc.file_url',
     avatar_map: {
       A: '01',
       B: '02',
@@ -47,7 +47,6 @@ exports.generateAnimatedVideos = async (req, res, next) => {
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${animatedVideoDoc._id}.json`
   );
-
   const animatedVideoFolderPath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${animatedVideoDoc._id}`
@@ -77,15 +76,12 @@ exports.podcastuploader = async (req, res, next) => {
     req.headers.user_id +
     '/'
   ).replaceAll(' ', '');
+  const fileExt = req.file.originalname ? req.file.originalname : req.file.ext;
+  let save_file_directory =
+    user_file_path + req.headers.user_id + '-' + Date.now() + fileExt;
 
-  const save_file_directory = (
-    user_file_path +
-    req.headers.user_id +
-    '-' +
-    Date.now() +
-    '.' +
-    req.body.ext
-  ).replaceAll(' ', '');
+  save_file_directory = save_file_directory.replaceAll(' ', '');
+  console.log(save_file_directory);
   let podcast = await Podcast.create({
     user_id: req.headers.user_id,
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,

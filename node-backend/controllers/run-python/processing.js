@@ -18,13 +18,17 @@ module.exports = async ({ data: { jobConfig } }) => {
   };
 
   return new Promise(function (resolve, reject) {
-    PythonShell.run('/main.py', options, function (err, res) {
-      if (err) {
-        console.error(err);
-        return reject({ err });
-      }
-      console.log('success');
-      return resolve({ success: true, jobConfig });
-    });
+    try {
+      return PythonShell.run('start.py', options, function (err, res) {
+        if (err) {
+          console.error(err);
+          reject({ err });
+        }
+        console.log(res);
+        resolve({ success: true, jobConfig });
+      });
+    } catch (err) {
+      reject({ err });
+    }
   });
 };
