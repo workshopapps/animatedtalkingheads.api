@@ -102,7 +102,7 @@ app.get('/test-pay', (req, res) => {
 app.get('/error', (req, res) => {
   res.render('error.pug');
 });
-app.use('/', paymentRoute);
+app.use('/',paymentRoute);
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
