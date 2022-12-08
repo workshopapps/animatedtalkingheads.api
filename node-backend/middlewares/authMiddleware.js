@@ -5,7 +5,7 @@ const auth = async (req, res, next) => {
     console.log('auth start')
     const { authorization } = req.headers;
     if (!authorization || !authorization.startsWith("Bearer")) {
-        return res.json({message:"supply Bearer token"})
+        return res.status(401).json({message:"Unauthorized!! supply Bearer token"})
     }
     const token = authorization.split(" ")[1];
     console.log(token)
