@@ -36,11 +36,10 @@ const handleErrors = (err) => {
 
   return errors;
 };
-
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
-const createToken = (email) => {
-  return jwt.sign({ email }, 'thisShouldBeMovedToDotEnvLater', {
+const createToken = (email,id) => {
+  return jwt.sign({ email,id }, 'thisShouldBeMovedToDotEnvLater', {
     expiresIn: maxAge,
   });
 };
@@ -50,9 +49,14 @@ module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    console.log(UserAuth._id)
+    const checkIfExists= await UserAuth.findOne({email:req.body.email})
+    if (checkIfExists){
+      return res.json({message: 'Email already registered, Sign In'})
+    }
     const user = await UserAuth.create({ email, password });
-    const token = createToken(email);
+    const getUser= await UserAuth.findOne({email:req.body.email})
+    
+    const token = createToken(email, getUser._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(201).json({ user: token });
   } catch (err) {

@@ -5,7 +5,17 @@ module.exports = {
         tags: ['Podcast'],
         description: 'Upload a podcast',
         operationId: 'uploadPodcast',
-
+        parameters: [
+          {
+            in: 'header',
+            name: 'user_id',
+            schema: {
+              type: 'string',
+            },
+            required: true,
+            description: 'ID of the user to use, put in headers',
+          },
+        ],
         requestBody: {
           content: {
             'multipart/form-data': {
@@ -34,7 +44,7 @@ module.exports = {
     '/animated-videos/{animatedVideoId}': {
       get: {
         tags: ['AnimatedVideo'],
-        description: 'Animate a podcast',
+        description: 'Get an animated video',
         operationId: 'AnimatedPodcast',
         parameters: [
           {
@@ -44,7 +54,8 @@ module.exports = {
               type: 'string',
             },
             required: true,
-            description: 'ID of the podcast to use',
+            description:
+              'ID of the animated video you want to view its progress ',
           },
           {
             in: 'header',
@@ -69,8 +80,9 @@ module.exports = {
     '/animated-videos/': {
       get: {
         tags: ['AnimatedVideo'],
-        description: 'Upload a podcast',
-        operationId: 'uploadPodcast',
+
+        description: 'view all animated videos ever created by a user',
+        operationId: 'ViewAllAnimatedVideo',
         parameters: [
           {
             in: 'header',
@@ -84,7 +96,7 @@ module.exports = {
         ],
         responses: {
           201: {
-            description: 'Podcast created successfully',
+            description: 'Animated Video created successfully',
           },
           500: {
             description: 'Server error',
@@ -94,8 +106,8 @@ module.exports = {
     },
     '/podcasts/{podcastID}/generate-video': {
       post: {
-        tags: ['Podcast'],
-        description: 'Upload a podcast',
+        tags: ['Podcast', 'AnimatedVideo'],
+        description: 'Generate an animated video',
         operationId: 'GenerateVideo',
         parameters: [
           {
@@ -123,14 +135,6 @@ module.exports = {
               schema: {
                 type: 'object',
                 properties: {
-                  audio_path: {
-                    type: 'string',
-                    required: true,
-                  },
-                  audio_url: {
-                    type: 'string',
-                    required: true,
-                  },
                   bg_path: {
                     type: 'string',
                   },
@@ -149,21 +153,21 @@ module.exports = {
         },
       },
     },
-     '/paystack/pay': {
+    '/paystack/pay': {
       post: {
         tags: ['Payment'],
         description: 'pay with paystack',
         operationId: 'paystack pay',
 
         requestBody: {
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Payment',
-                },
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Payment',
               },
             },
           },
+        },
         responses: {
           201: {
             description: 'redirecting to paystack',
@@ -173,117 +177,118 @@ module.exports = {
           },
         },
       },
-    }, 
-          '/auth/signup': {
-        post: {
-          tags: ['Authentication'],
-          description: 'create user account',
-          operationId: 'createUserAccount',
-          requestBody: {
-              content: {
-                'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Authentication',
-                  },
-                },
-              },
-            },
-          responses: {
-            201: {
-              description: 'User account Created Successfully',
-            },
-            500: {
-              description: 'Server error',
-            },
-          },
-        },
-      },
-
-      '/auth/forgetpassword': {
-        post: {
-          tags: ['Authentication'],
-          description: 'Clear user password',
-          operationId: 'clearUserPassword',
-          requestBody: {
-              content: {
-                'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Authentication',
-                  },
-                },
-              },
-            },
-          responses: {
-            201: {
-              description: 'password cleared successfully',
-            },
-            500: {
-              description: 'Server error',
-            },
-          },
-        },
-      },
-
-      '/auth/logout': {
-        get: {
-          tags: ['Authentication'],
-          description: 'Log out user',
-          operationId: 'logOutUser',
-          parameters: [
-          {
+    },
+    '/auth/signup': {
+      post: {
+        tags: ['Authentication'],
+        description: 'create user account',
+        operationId: 'createUserAccount',
+        requestBody: {
+          content: {
+            'application/json': {
               schema: {
-                  $ref: '#/components/schemas/Authentication',
+                $ref: '#/components/schemas/Authentication',
               },
-          }],
-          responses: {
-            201: {
-              description: 'Logged out Successfully',
-            },
-            500: {
-              description: 'Server error',
             },
           },
         },
+        responses: {
+          201: {
+            description: 'User account Created Successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
       },
+    },
 
-      '/auth/login': {
-        post: {
-          tags: ['Authentication'],
-          description: 'Log in user',
-          operationId: 'logInUser',
-          requestBody: {
-              content: {
-                'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Authentication',
-                  },
-                },
+    '/auth/forgetpassword': {
+      post: {
+        tags: ['Authentication'],
+        description: 'Clear user password',
+        operationId: 'clearUserPassword',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Authentication',
               },
-            },
-          responses: {
-            201: {
-              description: 'User logged in Successfully',
-            },
-            500: {
-              description: 'Server error',
             },
           },
         },
+        responses: {
+          201: {
+            description: 'password cleared successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
       },
-       '/rauth/forgotpassword': {
+    },
+
+    '/auth/logout': {
+      get: {
+        tags: ['Authentication'],
+        description: 'Log out user',
+        operationId: 'logOutUser',
+        parameters: [
+          {
+            schema: {
+              $ref: '#/components/schemas/Authentication',
+            },
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Logged out Successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
+    '/auth/login': {
+      post: {
+        tags: ['Authentication'],
+        description: 'Log in user',
+        operationId: 'logInUser',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Authentication',
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'User logged in Successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/rauth/forgotpassword': {
       post: {
         tags: ['Password'],
         description: 'forget password',
         operationId: 'forgetPassword',
         requestBody: {
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Password',
-                },
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Password',
               },
             },
           },
+        },
         responses: {
           200: {
             description: 'sent successfuly',
@@ -294,7 +299,7 @@ module.exports = {
         },
       },
     },
-'/avatars': {
+    '/avatars': {
       get: {
         tags: ['Avatars'],
         description: 'Get avatars',
@@ -313,7 +318,7 @@ module.exports = {
           },
         },
       },
-    
+
       '/avatars': {
         post: {
           tags: ['Avatars'],
@@ -531,7 +536,5 @@ module.exports = {
         },
       },
     },
-
-
   },
 };
