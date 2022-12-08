@@ -22,7 +22,14 @@ const userSchema = new mongoose.Schema({
   //passwordResetExpires: Date,
   token: {
     type: String,
-    default: ''
+  },
+
+  passwordResetToken: String,
+  passwordResetExpires: Date,
+  active: {
+    type: Boolean,
+    default: true,
+    select: false
   }
 
 });
@@ -59,6 +66,20 @@ userSchema.method.forgetpassword = async function (email, password) {
   throw Error('incorrect email');
 }
 
+userSchema.methods.createPasswordResetToken = function() {
+  const resetToken = crypto.randomBytes(32).toString('hex');
+
+  this.passwordResetToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex');
+
+   console.log({ resetToken }, this.passwordResetToken);
+
+  this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+  return resetToken;
+};
 const User = mongoose.model('userAuth', userSchema);
 
 module.exports = User;

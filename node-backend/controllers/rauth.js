@@ -1,10 +1,12 @@
 const User = require("../models/UsersAuth");
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
-const randomstring = require("randomstring");
-const res = require("express/lib/response")
+//const randomstring = require("randomstring");
+//const res = require("express/lib/response");
+const Email = require('../utils/email');
+const crypto = require('crypto');
 
-const sendResetPasswordMail = async(email, token) => {
+/* const sendResetPasswordMail = async(email, token) => {
 
   try {
     const transporter = nodemailer.createTransport({  
@@ -33,7 +35,7 @@ const sendResetPasswordMail = async(email, token) => {
       res.status(400).send({success:false,msg:"ch"});
     }
 
-}
+} */
 // module.exports.forgetpassword_post = async (req, res) => {
 //   console.log('forget password')
 // };
@@ -71,12 +73,45 @@ const handleErrors = (err) => {
   return errors;
 }
 
+
+// create json web token
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (email) => {
+  return jwt.sign({ email },  process.env.JWT_SECRET, {
+    expiresIn: maxAge,
+  });
+};
+
+/* const createSendToken = (user, statusCode, req, res) => {
+    const token = createToken(user._id);
+
+    res.cookie('jwt', token,  {
+        expires: new DataTransfer(
+            Date.now() + maxAge *24 * 60 * 60  *1000
+        ),
+        nttponly: true,
+        secure: req.secure | req.headers['x-forwarded-proto'] === 'https'
+    });
+     // Remove password from output
+  user.password = undefined;
+
+  res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      user
+    }
+  });
+}; */
+
+
 // controller actions
 module.exports.signup_post = async (req, res) => {
     const { email, password } = req.body;
   
     try {
       const user = await User.create({ email, password });
+      await user.save()
       const token = createToken(user._id);
       res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
       res.status(201).json({ user: user._id });
@@ -90,19 +125,32 @@ module.exports.signup_post = async (req, res) => {
   module.exports.forgotpassword = async (req, res) => {
 
     //const { email, password } = req.body;
-    try {
+    
       const email = req.body.email;
       const user = await User.findOne({email:req.body.email});
-  
-      if(user){
-        const randomString = randomstring.generate();
+      try {
+      if(!user){
+        res.status(200).send({success:true, msg:"This email does not exits."})
+    }else{  
+    const resetToken = user.createPasswordResetToken();
+    await user.save({validateBeforeSave: false});
+
+        /* const randomString = randomstring.generate();
         const userData = await User.updateOne({email:email},{$set:{token:randomString}})
         sendResetPasswordMail(user.email, randomString);
-        res.status(200).send({success:true, msg:"Please check your inbox of mail and reset your password."})
-      }
-      else{
-        res.status(200).send({success:true, msg:"This email does not exits."})
-      }
+        res.status(200).send({success:true, msg:"Please check your inbox of mail and reset your password."}) */
+    
+        const resetURL = `${req.protocol}://${req.get(
+            'host'
+        )}/rauth/resetpassword/${resetToken}`;
+        await new Email(user, resetURL).sendPasswordReset();
+        console.log(user);
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Token sent to email!'
+          });
+        }
    /*    const user = await User.update({ email, password }, {
    $set: { password: password}
   });
@@ -117,19 +165,35 @@ module.exports.signup_post = async (req, res) => {
   }
 module.exports.resetpassword = async(req, res) => {
     try {
-        const token = req.query.token;
-        const tokenData = await User.findOne({ token:token});
-        if(tokenData){
-          const password = req.body.password;
-          const newPassword = await securePassword(password);
-          const userData = await User.findByIdAndUpdate({ _id:tokenData._id }, {$set:{password:newPassword, token:''}}, {new:true})
-          res.status(200).send({success:true, msg:"User Password has been reset.", data:userData})
-        }
-        else{
-          res.status(200).send({success:true, msg:"This link has expired."})
-        }
+        // 1) Get user based on the token
+        const hashedToken = crypto
+        .createHash('sha256')
+        .update(req.params.token)
+        .digest('hex');
+        //console.log(user, passwordResetToken, hashedToken);
+        const user = await User.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gt: Date.now() }
+        });
+        
+
+        // 2) If token has not expired, and there is user, set the new password
+        if (!user) {
+            res.status(400).send({success:false, msg:"Invalid token."})
+        }else{
+        user.password = req.body.password;
+        //user.passwordConfirm = req.body.passwordConfirm;
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save();
+
+        const token = createToken(user._id);
+        //res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+        //res.status(200).json({ user: token });
+        console.log(user.password);
+    }
     }catch (error) {
-      res.status(200).send({success:false, msg:error.message});
+      res.status(400).send({success:false, msg:error.message});
     }
 }
 
