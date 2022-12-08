@@ -1,5 +1,4 @@
 from pathlib import Path
-
 # from PIL import Image          run 'python -m pip install Pillow'to install and use PIL, then import Image, to test the function
 import glob
 
@@ -16,17 +15,18 @@ Returns:
 """
 
 
-path = Path.cwd().parents[3]  # Set your prefered directory
+path = Path.cwd().parents[3]            #Set your prefered directory
 
-bg_path = path / "data" / "image" / "backgrounds"
+bg_path = path/"data"/"image"/"backgrounds"     
 bg_seq_list = []
 
 
-def bg_animate(bg_id: int) -> list:
-    bg_seq_path = bg_path / f"background_{bg_id}"
+def bg_animate(bg_id: int) -> list:                  
+    bg_seq_path = bg_path/f"background_{bg_id}"
     for files in bg_seq_path.iterdir():
         bg_seq_list.append(files)
-
+        
+    
     """    
     This creates a gif animation of the file sequence
     and saves in a specified directory
@@ -42,8 +42,8 @@ def bg_animate(bg_id: int) -> list:
                    duration=100, Loop=0
                    )
     """
+    
+    return bg_seq_list                  #Background sequence list is returned
 
-    return bg_seq_list  # Background sequence list is returned
 
-
-# bg_animate(4)      Uncomment this and line 31-43 to test how the function works
+#bg_animate(4)      Uncomment this and line 31-43 to test how the function works 

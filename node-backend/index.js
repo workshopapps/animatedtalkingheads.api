@@ -1,4 +1,3 @@
-
 const express = require('express');
 const Sentry = require('@sentry/node');
 const path = require('path');
@@ -39,9 +38,7 @@ app.use(Sentry.Handlers.requestHandler());
 
 const DB = process.env.mongo_url;
 
-
-app.use(morgan('tiny'))
-
+app.use(morgan('tiny'));
 
 //get payment for development purpose
 const {getPayments}=require('./controllers/payment')
@@ -82,10 +79,9 @@ if (!fs.existsSync('./uploads/podcasts')) {
 }
 
 // app configs.
-app.use('/uploads', express.static('./uploads'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 // app.use(authRoutes);
-app.use('/uploads', express.static('./uploads'));
 
 app.use(express.json());
 app.use(cors());

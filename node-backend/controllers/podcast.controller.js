@@ -63,9 +63,9 @@ exports.generateAnimatedVideos = async (req, res, next) => {
     animated_video_id: animatedVideoDoc.id,
     meta_json_file: metaJsonFilePath,
     animatedVideoFolderPath,
+    reqHost: req.protocol + '://' + req.get('host'),
   };
-  await runPythonScript(jobConfig, metaJsonFilePath);
-
+  await runPythonScript(jobConfig);
   res.json(animatedVideoDoc);
 };
 
