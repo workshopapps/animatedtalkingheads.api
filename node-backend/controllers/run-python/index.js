@@ -6,7 +6,7 @@ const AnimatedVideo = require('../../models/AnimatedVideo');
 const move = require('./move-file');
 const process = require('process');
 
-const queue = new Queue('myqueue', {
+const queue = new Queue('animated-video', {
   connection: new Redis(
     `rediss://red-ce81h2kgqg4canlv287g:CGf3WrF2EhTlSgI2dg1E16WfkNlwVp4l@oregon-redis.render.com:6379`
   ),
@@ -18,10 +18,12 @@ const worker = new Worker(queue.name, processorFile, {
     `rediss://red-ce81h2kgqg4canlv287g:CGf3WrF2EhTlSgI2dg1E16WfkNlwVp4l@oregon-redis.render.com:6379`
   ),
 });
+
 worker.on('error', (err) => {
   console.log({ error: { err } });
 });
 worker.on('failed', async (job, err) => {
+  console.log(err);
   // Do something with the return value.
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
@@ -78,6 +80,7 @@ worker.on('resumed', (job) => {
 });
 worker.on('completed', async (job, returnvalue) => {
   // Do something with the return value.
+  console.log({ job, returnvalue });
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation.mp4`
@@ -131,7 +134,7 @@ worker.on('completed', async (job, returnvalue) => {
 });
 
 const runPythonScript = async (jobConfig) => {
-  const res = await queue.add(jobConfig.animated_video_id, { jobConfig });
+  const res = await queue.add(jobConfig.animated_video_id, { jobConfig }, {});
 };
 
 module.exports = runPythonScript;

@@ -24,12 +24,11 @@ module.exports = async ({ data: { jobConfig } }) => {
           console.error(err);
           reject({ err });
         }
-
+        console.log(res);
         resolve({ success: true, jobConfig });
       });
     } catch (err) {
       reject({ err });
-      console.log(err);
     }
   });
 };

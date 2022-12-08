@@ -33,10 +33,8 @@ exports.generateAnimatedVideos = async (req, res, next) => {
 
   const podcastDoc = await Podcast.findById(req.params.podcastId);
   const metaJson = {
-    audio_path: path.resolve(
-      'C:\\Users\\Hi\\Documents\\hng9\\animatedtalkingheads.api\\node-backend\\uploads\\podcasts\\6388bf04bf67dd8d1a8eedfa\\6388bf04bf67dd8d1a8eedfa-1670082921265-sample2.mp3'
-    ),
-    audio_url: podcastDoc.file_url,
+    audio_path: podcastDoc.file_path,
+    audio_url: 'podcastDoc.file_url',
     avatar_map: {
       A: '01',
       B: '02',
@@ -44,12 +42,11 @@ exports.generateAnimatedVideos = async (req, res, next) => {
     bg_path: req.body.bg_path || randomIntFromInterval(),
     dir_id: animatedVideoDoc.id,
   };
-  console.log(metaJson);
+
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${animatedVideoDoc._id}.json`
   );
-  // C:\\Users\\Hi\\Documents\\hng9\\animatedtalkingheads.api\\node-backend\\uploads\\podcasts\\6388bf04bf67dd8d1a8eedfa\\6388bf04bf67dd8d1a8eedfa-1670082921265-sample2.mp3
   const animatedVideoFolderPath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${animatedVideoDoc._id}`
