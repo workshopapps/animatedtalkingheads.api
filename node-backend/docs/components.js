@@ -1,5 +1,12 @@
 module.exports = {
   components: {
+    securitySchemes:{
+    bearerAuth:{
+      type:'http',
+      scheme: 'bearer',
+      bearerFormat:"JWT"
+    }
+  },
     head_file_path: {
       type: 'string',
       description:
@@ -48,6 +55,54 @@ module.exports = {
       description: 'The email of the user subscribing',
       example: 'johndefinitelynot-doe@gmail.com',
     },
+    youtube:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    twitter:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:true
+
+    },
+    facebook:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    googleDrive:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    oneDrive:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    dropBox:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    instagram:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:true
+
+    },
+    linkedIn:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
 
     schemas: {
       User: {
@@ -77,6 +132,35 @@ module.exports = {
           },
         },
       },
+      UserSettings:{
+        type:'object',
+        properties:{
+          youtube: {
+            $ref: '#/components/youtube',
+          },
+          twitter: {
+            $ref: '#/components/twitter',
+          },
+          facebook: {
+            $ref: '#/components/facebook',
+          },
+          googleDrive: {
+            $ref: '#/components/googleDrive',
+          },
+          oneDrive: {
+            $ref: '#/components/oneDrive',
+          },
+          dropBox: {
+            $ref: '#/components/dropBox',
+          },
+          instagram: {
+            $ref: '#/components/instagram',
+          },
+          linkedIn: {
+            $ref: '#/components/linkedIn',
+          },
+      }
+    },
       Podcast: {
         type: 'object',
         properties: {
@@ -127,16 +211,5 @@ module.exports = {
         },
       },
     },
-    // Error_Types: {
-    //   type: 'object',
-    //   properties: {
-    //     message: {
-    //       type: 'string',
-    //     },
-    //     internal_code: {
-    //       type: 'string',
-    //     },
-    //   },
-    // },
   },
 };
