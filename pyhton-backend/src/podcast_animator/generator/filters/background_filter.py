@@ -44,7 +44,7 @@ class BackgroundFilter:
     def sq_interval_rand(self):
         
         """The sq_interval_`rand method takes only the self parameter 
-            to access the class variables. The function of this method
+            to access the class variables. The purpose of this method
             is to populate the list self.interval with numbers in hundreds
             based on the the animation frame length. animation frame lengths
             of at most 1,400 frames will be given a smaller list than 
