@@ -27,12 +27,12 @@ module.exports = {
     forgot_email: {
       type: 'string',
       description: 'Email used to register',
-      example: 'example@gmail.com',
+      example: 'abdulsamadarowosaiye201@yahoo.com',
     },
     contact_name:{
       type: 'string',
       description: 'name of someone contacting',
-      example: 'shegz Olode',
+      example: 'shegz',
     },
     contact_email:{
       type: 'string',

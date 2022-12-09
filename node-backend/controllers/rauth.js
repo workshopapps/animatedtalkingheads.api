@@ -49,10 +49,6 @@ const handleErrors = (err) => {
     errors.email = 'That email is not registered';
   }
 
-  // incorrect password
-  if (err.message === 'incorrect password') {
-    errors.password = 'That password is incorrect';
-  }
 
   // duplicate email error
   if (err.code === 11000) {
@@ -71,7 +67,7 @@ const handleErrors = (err) => {
   }
 
   return errors;
-}
+};
 
 
 // create json web token
@@ -81,28 +77,6 @@ const createToken = (email) => {
     expiresIn: maxAge,
   });
 };
-
-/* const createSendToken = (user, statusCode, req, res) => {
-    const token = createToken(user._id);
-
-    res.cookie('jwt', token,  {
-        expires: new DataTransfer(
-            Date.now() + maxAge *24 * 60 * 60  *1000
-        ),
-        nttponly: true,
-        secure: req.secure | req.headers['x-forwarded-proto'] === 'https'
-    });
-     // Remove password from output
-  user.password = undefined;
-
-  res.status(statusCode).json({
-    status: 'success',
-    token,
-    data: {
-      user
-    }
-  });
-}; */
 
 
 // controller actions
@@ -144,19 +118,13 @@ module.exports.signup_post = async (req, res) => {
             'host'
         )}/rauth/resetpassword/${resetToken}`;
         await new Email(user, resetURL).sendPasswordReset();
-        console.log(user.password);
+       // console.log(user.password);
 
         res.status(200).json({
             status: 'success',
             message: 'Token sent to email!'
           });
         }
-   /*    const user = await User.update({ email, password }, {
-   $set: { password: password}
-  });
-      const token = createToken(user._id);
-      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-      res.status(201).json({ user: user._id }); */
     }
     catch(err) {
       const errors = handleErrors(err);
@@ -190,7 +158,7 @@ module.exports.resetpassword = async(req, res) => {
         const token = createToken(user._id);
         //res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
         res.status(200).json({ user: token });
-        console.log(user.password);
+        //console.log(user.password);
     }
     }catch (error) {
       res.status(400).send({success:false, msg:error.message});
