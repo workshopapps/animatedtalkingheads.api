@@ -37,5 +37,5 @@ SHAPES = {
     "W" : "wr",
     "Y" : "ee",
     "ZH" : "oh",
-    "Z": "sczshch",
+    "Z": "ee",
 }
