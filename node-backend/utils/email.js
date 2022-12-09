@@ -2,8 +2,6 @@ const nodemailer = require('nodemailer');
 //const User = require('../models/User'); //get user email from user model
 const pug = require('pug');
 const { convert } = require('html-to-text');
-//const dotenv = require('dotenv');
-//dotenv.config({ path: './../.env' });
 require('dotenv').config();
 
 
@@ -18,23 +16,14 @@ module.exports = class Email {
     }
 
 newTransport() {
-   /*  if (process.env.NODE_ENV === 'production') {
-      // Sendgrid
-      return nodemailer.createTransport({
-        service: 'SendGrid',
-        auth: {
-          user: process.env.SENDGRID_USERNAME,
-          pass: process.env.SENDGRID_PASSWORD
-        }
-      });
-    } */
 
     return nodemailer.createTransport({
-      host: process.env.EMAIL_HOST,
-      port: process.env.EMAIL_PORT,
+      service: process.env.SERVICE,
+      host: process.env.HOST,
+      secre:false,
       auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD
+        user: process.env.USER,
+        pass: process.env.PASS
       }
     });
   }
@@ -58,12 +47,13 @@ async send(template, subject) {
 
         // 3) Create a transport and send email
     await this.newTransport().sendMail(mailOptions);
+    
 }
 
-async sendVideo() {
+/* async sendVideo() {
     await this.send('video', 'your video link is here');
   }
-
+ */
   async sendPasswordReset() {
     await this.send(
       'passwordReset',
@@ -72,38 +62,4 @@ async sendVideo() {
   }
 };
 
-/* const sendEmail = async options => {
-    try {
-    var transporter = nodemailer.createTransport({
-        host: process.env.EMAIL_HOST,
-        port: process.env.EMAIL_PORT,
-        auth: {
-            user: process.env.EMAIL_USERNAME,
-            pass: process.env.EMAIL_PASSWORD
-        }
-    });
 
-    const mailOptions = {
-        from: 'shegzyrey <withlove@hng.com>',
-        to: options.email,
-        subject: options.subject,
-        text: options.message, */
-/*         attachments: [{
-            filename: "${ User }.mp4",
-            path: file_path
-        }] */
-   // };
-
-/*     await transporter.sendEmail(mailOptions, (error, info)=> {
-        if(error){
-            console.log("Error in sending mail", error)
-        }
-        else{
-            console.log('Email sent: ' + info.response)
-        } 
-    });
-    } catch (error) {
-        res.status(400).send({success:false,msg:"ch"});
-      }
-};
- */
