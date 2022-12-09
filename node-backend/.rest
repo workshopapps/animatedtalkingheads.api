@@ -85,3 +85,39 @@ Content-Type: application/json
     "amount":3400,
     "full_name":"alo odunaYO"
 }
+
+
+###
+POST http://localhost:4000/auth/signup
+Content-Type: application/json
+
+{   
+    "email":"mauahel@gmail.com",
+    "password": "rhfbdjnmdks"
+}
+
+###
+POST http://localhost:4000/auth/login
+Content-Type: application/json
+
+{   
+    "email":"mauahel@gmail.com",
+    "password": "rhfbdjnmdks"
+}
+###
+POST http://localhost:4000/rauth/contact
+Content-Type: application/json
+
+{   
+    "name" : "example",
+    "email": "example@gmail.com",
+    "message": "hi there i'm testing"    
+}
+
+###
+PATCH http://localhost:4000/rauth/resetpassword/fb1d77e3dff7c0ae734c959ce408d00b57e9f3f11803ef9e3a7e5ff95a971d2b
+Content-Type: application/json
+
+{   
+  "password": "rhfbdjnmdks34"  
+}
