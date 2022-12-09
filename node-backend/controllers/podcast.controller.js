@@ -33,10 +33,8 @@ exports.generateAnimatedVideos = async (req, res, next) => {
 
   const podcastDoc = await Podcast.findById(req.params.podcastId);
   const metaJson = {
-    audio_path:
-      'C:\\Users\\Hi\\Documents\\hng9\\animatedtalkingheads.api\\node-backend\\uploads\\podcasts\\6388bf04bf67dd8d1a8eedfa\\6388bf04bf67dd8d1a8eedfa-1670448131290file_example_MP3_5MG.mp3',
-    audio_url:
-      'http://api.voxclips.hng.tech/uploads/podcasts/6390ee7733432daf20cd1e7a/6390ee7733432daf20cd1e7a-1670442615829.mp3',
+    audio_path: podcastDoc.file_path,
+    audio_url: 'podcastDoc.file_url',
     avatar_map: {
       A: '01',
       B: '02',
