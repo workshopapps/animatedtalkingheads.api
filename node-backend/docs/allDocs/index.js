@@ -137,6 +137,23 @@ module.exports = {
                 properties: {
                   bg_path: {
                     type: 'string',
+                    description: 'background image, Use `01` for now',
+                  },
+                  avater: {
+                    type: 'object',
+                    properties: {
+                      a: {
+                        type: 'string',
+                        description:
+                          'id for the avatar you want to use. Use `01` for now',
+                      },
+                      b: {
+                        type: 'string',
+                        description:
+                          'id for the avatar you want to use. Use `02` for now',
+                      },
+                    },
+                    description: 'map of the avatar object',
                   },
                 },
               },
@@ -155,9 +172,11 @@ module.exports = {
     },
     '/settings/add': {
       post: {
-        security:[{
-        bearerAuth:[]
-      }],
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['UserSettings'],
         description: 'Store user preferred settings',
         operationId: 'usersettings',
@@ -183,14 +202,15 @@ module.exports = {
     },
     '/settings/get': {
       get: {
-        security:[{
-        bearerAuth:[]
-      }],
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['UserSettings'],
         description: 'Get user preferred settings',
         operationId: 'usersettingsget',
 
-        
         responses: {
           200: {
             description: 'User settings object returned back',
@@ -207,7 +227,6 @@ module.exports = {
         description: 'Get paid users For Dev Purpose',
         operationId: 'userpaymentget',
 
-        
         responses: {
           200: {
             description: 'User payments object returned back',
@@ -220,9 +239,11 @@ module.exports = {
     },
     '/paystack/pay': {
       post: {
-          security:[{
-        bearerAuth:[]
-      }],
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Payment'],
         description: 'pay with paystack',
         operationId: 'paystack pay',
