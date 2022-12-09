@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon ./index.js",
+    "dev": "cross-env NODE_ENV=development nodemon ./index.js",
     "start": "node ./index.js",
     "debug": "node --inspect-brk ./index.js"
   },
@@ -20,6 +20,7 @@
   "homepage": "https://github.com/workshopapps/animatedtalkingheads.api#readme",
   "dependencies": {
     "@sentry/node": "^7.24.2",
+    "@sentry/tracing": "^7.24.2",
     "async": "^3.2.4",
     "bcrypt": "^5.1.0",
     "bluebird": "^3.7.2",
@@ -53,6 +54,7 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^8.27.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-node": "^4.1.0",
