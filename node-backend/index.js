@@ -40,6 +40,9 @@ const DB = process.env.mongo_url;
 
 app.use(morgan('tiny'));
 
+//get payment for development purpose
+const {getPayments}=require('./controllers/payment')
+app.get('/getpayments',getPayments)
 // process.env.NODE_ENV != 'production' &&
 //   (process.env.ComSpec =
 //     process.env.SHELL && (process.env.COMSPEC = process.env.shell));
@@ -104,13 +107,11 @@ app.use(rauthRoutes);
 
 app.use(express.static(path.join(__dirname, 'public/')));
 app.set('view engine', pug);
-app.get('/test-pay', (req, res) => {
-  res.render('index.pug');
-});
+
 app.get('/error', (req, res) => {
   res.render('error.pug');
 });
-app.use('/', paymentRoute);
+app.use('/', auth, paymentRoute);
 
 app.all('*', (req, res, next) => {
   next(new NotFound());

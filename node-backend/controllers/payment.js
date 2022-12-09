@@ -5,6 +5,7 @@ const _ = require('lodash');
 const {initializePayment, verifyPayment} = require('./paymentConfig')(request);
 const paymentRequest = (req, res) => {
 try{
+    req.body.email=req.decoded.email
     console.log(req.body)
     if(!req.body.amount&&!req.body.full_name&&!req.body.email){
         return res.json({message:"email, amount or name missing"})
@@ -72,7 +73,7 @@ const getReceipt = (req, res)=>{
     const id = req.params.id;
     Payment.findById(id).then((payment)=>{
         if(!payment){
-            //handle error when the paymeny is not found
+            //handle error when the payment is not found
             res.redirect('/error')
         }
         res.render('success.pug',{payment});
@@ -84,6 +85,17 @@ catch(error){
     res.json({error})
 }
 }
+const getPayments=async (req,res)=>{
+    try {
+        const transactions = await Payment.find({})
+        if(transactions<1){
+            return res.json({message:"no payments yet"})
+        }
+        res.json(transactions)
+    } catch (error) {
+        res.json({error})
+    }
+}
 
-module.exports={paymentRequest, verifyRequest, getReceipt}
+module.exports={paymentRequest, verifyRequest, getReceipt, getPayments}
 
