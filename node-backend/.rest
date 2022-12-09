@@ -1,3 +1,26 @@
+GET http://localhost:4000/getpayments
+###
+
+GET http://localhost:4000/settings/get
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZmF1bEBnbWFpbC5jb20iLCJpYXQiOjE2NzA0OTc5MDQsImV4cCI6MTY3MDc1NzEwNH0.gQPUwmmHuQW7f7SEXkG5p4ypYHvdT2RwqEULDRWl10k
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZmF1bHRAZ21haWwuY29tIiwiaWF0IjoxNjcwNTAzNzQ3LCJleHAiOjE2NzA3NjI5NDd9.QldCjveVH5T1ELTcO3-XWpVJYaTqWdCN5ZRGI_kRwDA
+
+{
+  "youtube": true,
+  "twitter": false,
+  "facebook": true,
+  "googleDrive": false,
+  "oneDrive": false,
+  "dropBox": false,
+  "instagram": true,
+  "linkedIn": false   
+
+}
+
+
+
+###
 GET http://localhost:4000/podcasts/animated-videos
 user_id: 6388bf04bf67dd8d1a8eedfa
 ###
@@ -24,13 +47,12 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZmF1b
 ###
 POST http://localhost:4000/paystack/pay
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hdWFyYXNoZWxAZ21haWwuY29tIiwiaWQiOiI2MzkyNTY0OTlhOTFiOGIyY2M0ZWNjZDAiLCJpYXQiOjE2NzA1MzQ3MjksImV4cCI6MTY3MDc5MzkyOX0.6Ws6kWSeMjtOB7DLEm-xg-NkfOaYnweS4DW6SjQKgpk
 
 {
-    "email":"laurie143pelumi@gmail.com",
     "full_name":"Alo Odunayo",
-    "amount":700.2
+    "amount":100
 }
-
 ###
 POST http://localhost:4000/signup
 Content-Type: application/json

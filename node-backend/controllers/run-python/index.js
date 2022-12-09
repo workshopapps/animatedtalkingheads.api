@@ -86,6 +86,7 @@ worker.on('completed', async (job, returnvalue) => {
       `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation.mp4`
   );
   if (!fs.existsSync(originalFolder)) {
+    console.log('olol');
     await AnimatedVideo.findByIdAndUpdate(
       job.data.jobConfig.animated_video_id,
       { status: 'ERROR' }
@@ -123,7 +124,7 @@ worker.on('completed', async (job, returnvalue) => {
   );
 
   await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
-    video_path:
+    video_url:
       req.protocol +
       '://' +
       req.get('host') +
