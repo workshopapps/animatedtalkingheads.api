@@ -11,7 +11,7 @@ const checkUser = async (req, res, next) => {
       last_time_accessed: new Date().toISOString(),
     });
     req.headers.user_id = user._id;
-
+  
     return next();
   }
 

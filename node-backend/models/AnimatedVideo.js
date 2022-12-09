@@ -23,6 +23,9 @@ const animatedVideoSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  owner:{
+    type:String
+  }
 });
 
 const AnimatedVideo = mongoose.model('AnimatedVideo', animatedVideoSchema);

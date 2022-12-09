@@ -5,6 +5,8 @@ exports.getOneAnimatedVideo = async (req, res, next) => {
   try {
     const animatedVideoDoc = await AnimatedVideo.findOne({
       user_id: req.headers.user_id,
+      // to use this later after phasing out user_id
+      // owner:req.decoded.email
       _id: req.params.animatedVideoId,
     });
     if (!animatedVideoDoc) {
