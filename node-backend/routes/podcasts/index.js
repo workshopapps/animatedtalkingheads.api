@@ -19,6 +19,7 @@ const {
   getAllUserCreatedAnimatedVideos,
 } = require('../../controllers/animatedvideo.controller');
 const podcastRouter = express.Router();
+
 podcastRouter.post(
   '/:podcastId/generate-video',
   checkUser,

@@ -1,6 +1,4 @@
-
 const UserAuth = require('../models/UsersAuth');
-
 
 const jwt = require('jsonwebtoken');
 
@@ -38,8 +36,8 @@ const handleErrors = (err) => {
 };
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
-const createToken = (email,id) => {
-  return jwt.sign({ email,id }, 'thisShouldBeMovedToDotEnvLater', {
+const createToken = (email, id) => {
+  return jwt.sign({ email, id }, 'thisShouldBeMovedToDotEnvLater', {
     expiresIn: maxAge,
   });
 };
@@ -47,25 +45,26 @@ const createToken = (email,id) => {
 // controller actions
 module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
 
   try {
-    const checkIfExists= await UserAuth.findOne({email:req.body.email})
-    if (checkIfExists){
-      return res.json({message: 'Email already registered, Sign In'})
+    const checkIfExists = await UserAuth.findOne({ email: req.body.email });
+    if (checkIfExists) {
+      return res.json({ message: 'Email already registered, Sign In' });
     }
     const user = await UserAuth.create({ email, password });
-    const getUser= await UserAuth.findOne({email:req.body.email})
-    
+    const getUser = await UserAuth.findOne({ email: req.body.email });
+
     const token = createToken(email, getUser._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(201).json({ user: token });
   } catch (err) {
     if (err.code === 11000) {
-    err.message = 'Email already registered, Login';
-    // return ;
-  }
+      err.message = 'Email already registered, Login';
+      // return ;
+    }
 
-    res.status(400).json({ error:err.message });
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -80,7 +79,7 @@ module.exports.login_post = async (req, res) => {
   } catch (err) {
     console.log(err);
     const errors = handleErrors(err);
-    res.status(400).json({ error:err.message });
+    res.status(400).json({ error: err.message });
   }
 };
 
