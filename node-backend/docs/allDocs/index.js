@@ -2,20 +2,25 @@ module.exports = {
   paths: {
     '/podcasts/upload': {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Podcast'],
         description: 'Upload a podcast',
         operationId: 'uploadPodcast',
-        parameters: [
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, put in headers',
-          },
-        ],
+        // parameters: [
+        //   {
+        //     in: 'header',
+        //     name: 'user_id',
+        //     schema: {
+        //       type: 'string',
+        //     },
+        //     required: true,
+        //     description: 'ID of the user to use, put in headers',
+        //   },
+        // ],
         requestBody: {
           content: {
             'multipart/form-data': {
@@ -106,6 +111,11 @@ module.exports = {
     },
     '/podcasts/{podcastID}/generate-video': {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Podcast', 'AnimatedVideo'],
         description: 'Generate an animated video',
         operationId: 'GenerateVideo',
@@ -119,15 +129,15 @@ module.exports = {
             required: true,
             description: 'ID of the podcast to use',
           },
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, placed  in the headers',
-          },
+          // {
+          //   in: 'header',
+          //   name: 'user_id',
+          //   schema: {
+          //     type: 'string',
+          //   },
+          //   required: true,
+          //   description: 'ID of the user to use, placed  in the headers',
+          // },
         ],
         requestBody: {
           content: {

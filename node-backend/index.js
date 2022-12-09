@@ -112,7 +112,7 @@ app.use(express.json());
 app.use(cors());
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
-app.use('/podcasts', podcastRouter);
+app.use('/podcasts', auth, podcastRouter);
 app.use('/animated-videos', animatedVideoRouter);
 
 app.use('/auth', authRoutes);

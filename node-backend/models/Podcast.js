@@ -16,6 +16,9 @@ const podcastSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  owner:{
+    type:String,
+  }
 });
 const Podcast = mongoose.model('Podcast', podcastSchema);
 module.exports = Podcast;
