@@ -18,8 +18,11 @@ const NotFound = require('./utils/errors/NotFound');
 // sten-add auth0 router dir
 const auth0Router = require('./routes/auth0');
 
+
+//email
 const authRoutes = require('./routes/user/index');
 const rauthRoutes = require('./routes/emails/rindex');
+
 // const cookieParser = require('cookie-parser');
 // const path = require('path');
 const errorController = require('./controllers/error.controller');
@@ -91,6 +94,20 @@ app.use('/auth0', auth0Router); // sten-register auth0 url
 
 app.use(authRoutes);
 app.use(rauthRoutes);
+ /// contatct page
+app.post('/contact', (req, res) => {
+  const { email = '', name = '', message = '' } = req.body
+
+  mailer({ email, name, text: message }).then(() => {
+    console.log(`Sent the message "${message}" from <${name}> ${email}.`);
+    res.redirect('/#success');
+  }).catch((error) => {
+    console.log(`Failed to send the message "${message}" from <${name}> ${email} with the error ${error && error.message}`);
+    res.redirect('/#error');
+  })
+})
+
+
 
 ///// payment route
 
