@@ -270,28 +270,6 @@ module.exports = {
         },
       },
     },
-    '/auth/logout': {
-      get: {
-        tags: ['Authentication'],
-        description: 'Log out user',
-        operationId: 'logOutUser',
-        parameters: [
-          {
-            schema: {
-              $ref: '#/components/schemas/Authentication',
-            },
-          },
-        ],
-        responses: {
-          201: {
-            description: 'Logged out Successfully',
-          },
-          500: {
-            description: 'Server error',
-          },
-        },
-      },
-    },
 
     '/auth/login': {
       post: {
@@ -317,6 +295,31 @@ module.exports = {
         },
       },
     },
+
+    '/auth/logout': {
+      get: {
+        tags: ['Authentication'],
+        description: 'Log out user',
+        operationId: 'logOutUser',
+        parameters: [
+          {
+            schema: {
+              $ref: '#/components/schemas/Authentication',
+            },
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Logged out Successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
+    
     '/rauth/forgotpassword': {
       post: {
         tags: ['Password'],
@@ -341,6 +344,33 @@ module.exports = {
         },
       },
     },
+    
+        
+    '/rauth/contact': {
+      post: {
+        tags: ['Contact'],
+        description: 'contact us',
+        operationId: 'contantUs',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Contact',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Successfuly contacted',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
     '/avatars': {
       get: {
         tags: ['Avatars'],
