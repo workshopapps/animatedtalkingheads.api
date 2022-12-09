@@ -1,5 +1,6 @@
 const express = require('express');
 const Sentry = require('@sentry/node');
+const Tracing = require('@sentry/tracing');
 const path = require('path');
 const pug = require('pug');
 const auth = require('./middlewares/authMiddleware');
@@ -27,22 +28,43 @@ const errorController = require('./controllers/error.controller');
 
 const userSettingsRoute = require('./routes/protectedRoutes/userSettings');
 
-Sentry.init({
-  dsn: 'https://847f70043a354431a605fe554591ae6a@o4504282743635968.ingest.sentry.io/4504293110317056',
-});
+// DONT PUT ANYTHING BEFORE THIS!!!!!!!
 
 const app = express();
 
+Sentry.init({
+  dsn: 'https://847f70043a354431a605fe554591ae6a@o4504282743635968.ingest.sentry.io/4504293110317056',
+  integrations: [
+    // enable HTTP calls tracing
+    new Sentry.Integrations.Http({ tracing: true }),
+    // enable Express.js middleware tracing
+    new Tracing.Integrations.Express({
+      // to trace all requests to the default router
+      app,
+      // alternatively, you can specify the routes you want to trace:
+      // router: someRouter,
+    }),
+  ],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+});
+
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
+
+app.use(Sentry.Handlers.tracingHandler());
+
+// WRITE YOUR CODE AFTER THIS!!!!!!
 
 const DB = process.env.mongo_url;
 
 app.use(morgan('tiny'));
 
 //get payment for development purpose
-const {getPayments}=require('./controllers/payment')
-app.get('/getpayments',getPayments)
+const { getPayments } = require('./controllers/payment');
+app.get('/getpayments', getPayments);
 // process.env.NODE_ENV != 'production' &&
 //   (process.env.ComSpec =
 //     process.env.SHELL && (process.env.COMSPEC = process.env.shell));
