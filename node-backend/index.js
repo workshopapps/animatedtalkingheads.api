@@ -128,7 +128,7 @@ app.use('/auth0', auth0Router); // sten-register auth0 url
 app.use(authRoutes);
 app.use(rauthRoutes);
  /// contatct page
-app.post('/contact', (req, res) => {
+/* app.post('/contact', (req, res) => {
   const { email = '', name = '', message = '' } = req.body
 
   mailer({ email, name, text: message }).then(() => {
@@ -138,7 +138,7 @@ app.post('/contact', (req, res) => {
     console.log(`Failed to send the message "${message}" from <${name}> ${email} with the error ${error && error.message}`);
     res.redirect('/#error');
   })
-})
+}) */
 
 
 
