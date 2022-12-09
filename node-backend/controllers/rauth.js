@@ -6,39 +6,6 @@ const nodemailer = require("nodemailer");
 const Email = require('../utils/email');
 const crypto = require('crypto');
 
-/* const sendResetPasswordMail = async(email, token) => {
-
-  try {
-    const transporter = nodemailer.createTransport({  
-        host: "smtp.mailtrap.io",
-        port: 2525,
-        auth: {
-            user: "385347a8cac45c",
-            pass: "318b8146500b7e"
-        }
-    });
-    const mailOptions = {
-      from: 'name <tivicky98@gmail.com>',
-      to: email,
-      subject: 'For Reset Password',
-      html:'<p> Hii '+email+', Please copy the link and <a href="http://127.0.0.1:4000/auth/resetPassword?token='+token+'"> reset your password</a>'
-    }
-    await transporter.sendMail(mailOptions, (error, info)=> {
-      if(error){
-        return console.log("Error in sending mail", error)
-      }
-      else{
-          console.log('Email sent: ' + info.response)
-      } 
-  });
-    } catch (error) {
-      res.status(400).send({success:false,msg:"ch"});
-    }
-
-} */
-// module.exports.forgetpassword_post = async (req, res) => {
-//   console.log('forget password')
-// };
 // handle errors
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -82,27 +49,7 @@ const createToken = (email) => {
   });
 };
 
-/* const createSendToken = (user, statusCode, req, res) => {
-    const token = createToken(user._id);
 
-    res.cookie('jwt', token,  {
-        expires: new DataTransfer(
-            Date.now() + maxAge *24 * 60 * 60  *1000
-        ),
-        nttponly: true,
-        secure: req.secure | req.headers['x-forwarded-proto'] === 'https'
-    });
-     // Remove password from output
-  user.password = undefined;
-
-  res.status(statusCode).json({
-    status: 'success',
-    token,
-    data: {
-      user
-    }
-  });
-}; */
 
 
 // controller actions
@@ -135,11 +82,6 @@ module.exports.signup_post = async (req, res) => {
     const resetToken = user.createPasswordResetToken();
     await user.save({validateBeforeSave: false});
 
-        /* const randomString = randomstring.generate();
-        const userData = await User.updateOne({email:email},{$set:{token:randomString}})
-        sendResetPasswordMail(user.email, randomString);
-        res.status(200).send({success:true, msg:"Please check your inbox of mail and reset your password."}) */
-    
         const resetURL = `${req.protocol}://${req.get(
             'host'
         )}/rauth/resetpassword/${resetToken}`;
