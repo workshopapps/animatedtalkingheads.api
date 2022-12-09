@@ -23,15 +23,18 @@ class EyeFilter:
         self.animation_frame_length = animation_frame_length
         self.avatar_map = avatar_map
         self.animation_frames = None
-        self.blinking_sequences = self.get_eyes_blinking()  # sad
-        self.looking_sequences = self.get_eyes_looking()  # look
+        self.blinking_sequences = self.blinking()  # sad
+        self.lookleft_sequences = self.lookleft()  # look #proper to be impleneted
+        self.lookright_sequences = self.lookright() #to be implemented
+        self.lookup_sequences = self.lookup() #to be implemented
+        self.lookdown_sequences = self.lookdown() #to be implemented
         self._compose_animation_schema()
 
     @property
     def speaker_labels(self):
         return list(self.avatar_map.keys())
 
-    def get_eyes_blinking(self):
+    def blinking(self):
         """
         function to get filepath sequence for blinking
         """
@@ -40,7 +43,7 @@ class EyeFilter:
             speaker: sorted(
                 [
                     Path(file)
-                    for file in os.scandir(self.avatar_map[speaker] / "eyes/sad")
+                    for file in os.scandir(self.avatar_map[speaker] / "eyes/sad") #"eyes/blinking"
                     if file.is_file()
                 ],
                 key=lambda x: str(x.name).split(".")[0].split("_")[1],
@@ -48,22 +51,75 @@ class EyeFilter:
             for speaker in self.speaker_labels
         }
 
-    def get_eyes_looking(self):
+    def lookleft(self):
         """
-        function to get filepath sequence for looking around
+        function to get filepath sequence for looking left
         """
         # files for looking around
         return {
             speaker: sorted(
                 [
                     Path(file)
-                    for file in os.scandir(self.avatar_map[speaker] / "eyes/look")
+                    for file in os.scandir(self.avatar_map[speaker] / "eyes/look") #"eyes/lookleft"
                     if file.is_file()
                 ],
                 key=lambda x: str(x.name).split(".")[0].split("_")[1],
             )
             for speaker in self.speaker_labels
         }
+
+    def lookright(self):
+        """
+        function to get filepath sequence for looking right
+        """
+        # files for looking around
+        return {
+            speaker: sorted(
+                [
+                    Path(file)
+                    for file in os.scandir(self.avatar_map[speaker] / "eyes/look") #"eyes/lookright"
+                    if file.is_file()
+                ],
+                key=lambda x: str(x.name).split(".")[0].split("_")[1],
+            )
+            for speaker in self.speaker_labels
+        }
+
+    def lookup(self):
+        """
+        function to get filepath sequence for looking up
+        """
+        # files for looking around
+        return {
+            speaker: sorted(
+                [
+                    Path(file)
+                    for file in os.scandir(self.avatar_map[speaker] / "eyes/look") #"eyes/lookup"
+                    if file.is_file()
+                ],
+                key=lambda x: str(x.name).split(".")[0].split("_")[1],
+            )
+            for speaker in self.speaker_labels
+        }
+
+    def lookdown(self):
+        """
+        function to get filepath sequence for looking down
+        """
+        # files for looking around
+        return {
+            speaker: sorted(
+                [
+                    Path(file)
+                    for file in os.scandir(self.avatar_map[speaker] / "eyes/look") #"eyes/lookdown"
+                    if file.is_file()
+                ],
+                key=lambda x: str(x.name).split(".")[0].split("_")[1],
+            )
+            for speaker in self.speaker_labels
+        }
+   
+
 
     def _compose_animation_schema(self):
         """
@@ -81,9 +137,16 @@ class EyeFilter:
 
         randomnumbers = [1, 2, 3, 4]
         randomblinks = [72, 120, 168, 240]
+        left = self.lookleft_sequences 
+        right = self.lookright_sequences
+        up = self.lookup_sequences
+        down = self.lookdown_sequences
+        #randomeyemovemnt = [left, right, down, up] to be implented
+        randomeyemovemnt = [left]
         for avatar_id in self.speaker_labels:
             counter = 1
             blinktime = random.choice(randomblinks)
+            eyemovement = random.choice(randomeyemovemnt)
             while counter < self.animation_frame_length + 1:
 
                 if random.choice(randomnumbers) == 1 and counter % blinktime == 0:
@@ -97,15 +160,15 @@ class EyeFilter:
                         self.animation_frames[str(loop_index)][avatar_id] = blink_image
                     counter += len(self.blinking_sequences[avatar_id])
 
-                    # look around
+                    # eye movement
                     for index, look_image in enumerate(
-                        self.looking_sequences[avatar_id]
+                        eyemovement[avatar_id]
                     ):
                         loop_index = counter + index
                         if loop_index > self.animation_frame_length:
                             break
                         self.animation_frames[str(loop_index)][avatar_id] = look_image
-                    counter += len(self.looking_sequences[avatar_id])
+                    counter += len(eyemovement[avatar_id])
 
                 elif counter % blinktime == 0:
                     # just blinking
