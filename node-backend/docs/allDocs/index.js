@@ -270,32 +270,6 @@ module.exports = {
         },
       },
     },
-
-    '/auth/forgetpassword': {
-      post: {
-        tags: ['Authentication'],
-        description: 'Clear user password',
-        operationId: 'clearUserPassword',
-        requestBody: {
-          content: {
-            'application/json': {
-              schema: {
-                $ref: '#/components/schemas/Authentication',
-              },
-            },
-          },
-        },
-        responses: {
-          201: {
-            description: 'password cleared successfully',
-          },
-          500: {
-            description: 'Server error',
-          },
-        },
-      },
-    },
-
     '/auth/logout': {
       get: {
         tags: ['Authentication'],
