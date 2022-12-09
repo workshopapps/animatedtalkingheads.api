@@ -64,7 +64,6 @@ class BackgroundFilter:
                 self.interval.append(interval)
                 if interval >= 1440:
                     break
-        print(self.interval)
         
 
 
