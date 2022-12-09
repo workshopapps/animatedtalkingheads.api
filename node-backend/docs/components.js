@@ -32,7 +32,7 @@ module.exports = {
     contact_name:{
       type: 'string',
       description: 'name of someone contacting',
-      example: 'shegz Olode',
+      example: 'shegz',
     },
     contact_email:{
       type: 'string',
