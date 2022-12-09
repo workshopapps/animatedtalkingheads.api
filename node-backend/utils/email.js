@@ -50,10 +50,10 @@ async send(template, subject) {
     
 }
 
-/* async sendVideo() {
+ async sendVideo() {
     await this.send('video', 'your video link is here');
   }
- */
+ 
   async sendPasswordReset() {
     await this.send(
       'passwordReset',
