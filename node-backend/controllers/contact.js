@@ -20,7 +20,7 @@ module.exports.contact = async (req, res) => {
   res.send({success:true,msg:"message sent"});
 
   }catch(err){
-      res.send({success:false,msg:"check"})
+      res.send({success:false,msg:"message not sent"})
    };
  console.log(name, email, message)
 }
