@@ -144,7 +144,7 @@ module.exports.signup_post = async (req, res) => {
             'host'
         )}/rauth/resetpassword/${resetToken}`;
         await new Email(user, resetURL).sendPasswordReset();
-        console.log(user.password);
+        //console.log(user.password);
 
         res.status(200).json({
             status: 'success',
@@ -190,7 +190,7 @@ module.exports.resetpassword = async(req, res) => {
         const token = createToken(user._id);
         //res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
         res.status(200).json({ user: token });
-        console.log(user.password);
+        //console.log(user.password);
     }
     }catch (error) {
       res.status(400).send({success:false, msg:error.message});
