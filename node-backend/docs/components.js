@@ -29,6 +29,21 @@ module.exports = {
       description: 'Email used to register',
       example: 'example@gmail.com',
     },
+    contact_name:{
+      type: 'string',
+      description: 'name of someone contacting',
+      example: 'shegz',
+    },
+    contact_email:{
+      type: 'string',
+      description: 'email of someone contacting',
+      example: 'shegz@gmail.com',
+    },
+    contact_message:{
+      type: 'string',
+      description:'message',
+      example: 'Hi there i am testing',
+    },
 
     auth_email: {
       type: 'string',
@@ -184,6 +199,20 @@ module.exports = {
           },
           password: {
             $ref: '#/components/auth_password',
+          },
+        },
+      },
+      Contact: {
+        type: 'object',
+        properties: {
+          name: {
+            $ref: '#/components/contact_name',
+          },
+          email: {
+            $ref: '#/components/contact_email',
+          },
+          message: {
+            $ref: '#/components/contact_message',
           },
         },
       },

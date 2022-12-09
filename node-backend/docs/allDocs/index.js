@@ -2,20 +2,25 @@ module.exports = {
   paths: {
     '/podcasts/upload': {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Podcast'],
         description: 'Upload a podcast',
         operationId: 'uploadPodcast',
-        parameters: [
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, put in headers',
-          },
-        ],
+        // parameters: [
+        //   {
+        //     in: 'header',
+        //     name: 'user_id',
+        //     schema: {
+        //       type: 'string',
+        //     },
+        //     required: true,
+        //     description: 'ID of the user to use, put in headers',
+        //   },
+        // ],
         requestBody: {
           content: {
             'multipart/form-data': {
@@ -106,6 +111,11 @@ module.exports = {
     },
     '/podcasts/{podcastID}/generate-video': {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Podcast', 'AnimatedVideo'],
         description: 'Generate an animated video',
         operationId: 'GenerateVideo',
@@ -119,15 +129,15 @@ module.exports = {
             required: true,
             description: 'ID of the podcast to use',
           },
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, placed  in the headers',
-          },
+          // {
+          //   in: 'header',
+          //   name: 'user_id',
+          //   schema: {
+          //     type: 'string',
+          //   },
+          //   required: true,
+          //   description: 'ID of the user to use, placed  in the headers',
+          // },
         ],
         requestBody: {
           content: {
@@ -291,28 +301,6 @@ module.exports = {
         },
       },
     },
-    '/auth/logout': {
-      get: {
-        tags: ['Authentication'],
-        description: 'Log out user',
-        operationId: 'logOutUser',
-        parameters: [
-          {
-            schema: {
-              $ref: '#/components/schemas/Authentication',
-            },
-          },
-        ],
-        responses: {
-          201: {
-            description: 'Logged out Successfully',
-          },
-          500: {
-            description: 'Server error',
-          },
-        },
-      },
-    },
 
     '/auth/login': {
       post: {
@@ -338,6 +326,31 @@ module.exports = {
         },
       },
     },
+
+    '/auth/logout': {
+      get: {
+        tags: ['Authentication'],
+        description: 'Log out user',
+        operationId: 'logOutUser',
+        parameters: [
+          {
+            schema: {
+              $ref: '#/components/schemas/Authentication',
+            },
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Logged out Successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
+    
     '/rauth/forgotpassword': {
       post: {
         tags: ['Password'],
@@ -362,6 +375,33 @@ module.exports = {
         },
       },
     },
+    
+        
+    '/rauth/contact': {
+      post: {
+        tags: ['Contact'],
+        description: 'contact us',
+        operationId: 'contantUs',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Contact',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Successfuly contacted',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
     '/avatars': {
       get: {
         tags: ['Avatars'],

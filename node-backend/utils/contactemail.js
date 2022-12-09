@@ -5,12 +5,12 @@ require('dotenv').config();
 const sendEmail = async options => {
   // 1) Create a transporter
   const transporter = nodemailer.createTransport({
-    service: process.env.SERVICE,
+    service: process.env.SERVICE || 'gmail',
    // host: process.env.HOST,
 //secure:false,
     auth: {
-    user: process.env.USER,
-    pass: process.env.PASS
+    user: process.env.USER || 'hngvoxclips@gmail.com',
+    pass: process.env.PASS || 'kcxmkkumsafeeiur'
     }
 });
 

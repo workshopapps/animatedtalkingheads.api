@@ -12,7 +12,7 @@ module.exports.contact = async (req, res) => {
   await sendEmail(response);
 
 
-  const received = {name, email:process.env.USER,subject:'user query', message};
+  const received = {name, email:process.env.USER || 'hngvoxclips@gmail.com',subject:'user query', message};
 
   await sendEmail(received);
 
@@ -20,7 +20,7 @@ module.exports.contact = async (req, res) => {
   res.send({success:true,msg:"message sent"});
 
   }catch(err){
-      res.send({success:false,msg:"check"})
+      res.send({success:false,msg:"message not sent"})
    };
  console.log(name, email, message)
 }

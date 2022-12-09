@@ -12,18 +12,18 @@ module.exports = class Email {
         this.to = user.email;
         this.email = user.email;
         this.url = url;
-        this.from = `voxclip <${process.env.EMAIL_FROM}`;
+        this.from = `voxclip <${process.env.EMAIL_FROM} || hngvoxclips@gmail.com>`;
     }
 
 newTransport() {
 
     return nodemailer.createTransport({
-      service: process.env.SERVICE,
-      host: process.env.HOST,
+      service: process.env.SERVICE || 'gmail',
+      host: process.env.HOST || 'smtp.gmail.com',
       secre:false,
       auth: {
-        user: process.env.USER,
-        pass: process.env.PASS
+        user: process.env.USER  ||'hngvoxclips@gmail.com' ,
+        pass: process.env.PASS || 'kcxmkkumsafeeiur'
       }
     });
   }
@@ -50,10 +50,10 @@ async send(template, subject) {
     
 }
 
-/* async sendVideo() {
+ async sendVideo() {
     await this.send('video', 'your video link is here');
   }
- */
+ 
   async sendPasswordReset() {
     await this.send(
       'passwordReset',

@@ -112,7 +112,7 @@ app.use(express.json());
 app.use(cors());
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
-app.use('/podcasts', podcastRouter);
+app.use('/podcasts', auth, podcastRouter);
 app.use('/animated-videos', animatedVideoRouter);
 
 app.use('/auth', authRoutes);
@@ -125,9 +125,20 @@ app.use('/auth0', auth0Router); // sten-register auth0 url
 
 // app.use('/uploads', express.static('./uploads'));
 
-app.use(authRoutes);
-app.use(rauthRoutes);
+// app.use(authRoutes);
+// app.use(rauthRoutes);
  /// contatct page
+// app.post('/contact', (req, res) => {
+//   const { email = '', name = '', message = '' } = req.body
+
+//   mailer({ email, name, text: message }).then(() => {
+//     console.log(`Sent the message "${message}" from <${name}> ${email}.`);
+//     res.redirect('/#success');
+//   }).catch((error) => {
+//     console.log(`Failed to send the message "${message}" from <${name}> ${email} with the error ${error && error.message}`);
+//     res.redirect('/#error');
+//   })
+// })
 /* app.post('/contact', (req, res) => {
   const { email = '', name = '', message = '' } = req.body
 
@@ -139,7 +150,6 @@ app.use(rauthRoutes);
     res.redirect('/#error');
   })
 }) */
-
 
 
 ///// payment route
