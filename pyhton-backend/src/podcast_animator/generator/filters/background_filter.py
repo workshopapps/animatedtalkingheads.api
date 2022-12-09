@@ -1,53 +1,119 @@
 from pathlib import Path
 from PIL.Image import Image as img_obj
 from PIL import Image
+import random
+
 
 
 class BackgroundFilter:
-    """ Interface class
+    """ 
+        Interface class
         defines architecture to modify a feature for selected frame of animation
         This class adds to the canvas of every instance, the selected background 
         with dynamic features
 
         author: @Jimi
         
-        argd: 
+        args: 
         
         background_dir(Path) = A path to the directory of the selected background
         animation_frame_length(int) = The total number of frames used to generate 
-        the video (i.e 24fps)
+        the video (i.e 24fps)  
+          
+    """
 
     
-    """
     def __init__(self, background_dir: Path, animation_frame_length: int):
+    
+        """
+        Setting initial values for class variables and calling methods
+        to give value to the class variables with None value
+        """
+        
         self.directory_path = background_dir
         self.animation_frame_length = animation_frame_length
         self.animation_frames = None
-        self.bg_sq_files = None                                                   #Initially Setting self.animation frame to None 
-        self.interval = 500                                                     #Setting the interval. At every <self.interval> frames the background animation sequnce will be loaded  
-        self.bg_sq()                                                           #This calls a method that stores a list in self.bg_sq_files
-        self._compose_animation_schema()                                      #This calls a method that stores a list in self.animationframes
+        self.bg_sq_files = None
+        self.interval = []
+        self.sq_interval_rand()
+        self.bg_sq()                                                           
+        self._compose_animation_schema()                                      
+        
 
-    def bg_sq(self):                                                    #This method stores a list containing the dynamic sequence of the background animation, inside the class variable 'self.bq_sq_files' 
+    
+    def sq_interval_rand(self):
+        
+        """The sq_interval_`rand method takes only the self parameter 
+            to access the class variables. The function of this method
+            is to populate the list self.interval with numbers in hundreds
+            based on the the animation frame length. animation frame lengths
+            of at most 1,400 frames will be given a smaller list than 
+            animation framelentgh with more.
+        """
+        
+        param = self.animation_frame_length//100
+        if param <= 14:
+            for i in range(1, param+1):
+                interval = 3*100*i
+                self.interval.append(interval)
+                if (interval//100) >= param:
+                    break
+        else:
+            for i in range(1, param+1):
+                interval = 3*100*i
+                self.interval.append(interval)
+                if interval >= 1440:
+                    break
+        print(self.interval)
+        
+
+
+    def bg_sq(self):
+        
+        """This method stores a list containing the dynamic sequence of
+            the background animation, inside the class variable 'self.bq_sq_files
+        """                                                     
+        
         self.bg_sq_files =[]
         self.directory_path = self.directory_path/"animation"
         for files in self.directory_path.iterdir():
             self.bg_sq_files.append(files)
 
-    def _compose_animation_schema(self):                                #This method stores a dictionary of the format {frame_id: frame_image} in self.animation_frames 
+
+    
+    def _compose_animation_schema(self):                                 
+        
+        """This method stores a dictionary of the format {frame_id: frame_image}
+            in self.animation_frames
+        """
+        
         self.animation_frames = {}
         counter = 0 
-        while counter < len(range(1, self.animation_frame_length+1)):       
-            if counter%self.interval==0:                                        #Checks for the interval to load in the dynamic sequence
-                for i in range(len(self.bg_sq_files)):     
+        interval = 100
+        while counter <= self.animation_frame_length:
+            if counter%interval==0:                            #Checks for the interval to load in the dynamic sequence
+                for i in range(len(self.bg_sq_files)): 
+                    if i + counter > self.animation_frame_length:
+                        break    
                     self.animation_frames.update({str(i+counter): self.bg_sq_files[i]})
                 counter+=len(self.bg_sq_files)
+                interval = random.choice(self.interval)         #Generating a random value from list of intervals  
                 
-            else:                                                                                       #Uses the default background image when the interval has not been reached
+            else:               #Uses the default background image when the interval has not been reached
                 self.animation_frames.update({str(counter): self.directory_path.parent / "default.png"})
                 counter+=1
+    
+    
+     
+    def add_to_canvas(self, frame_data: tuple[int | img_obj]) -> img_obj:             
         
-    def add_to_canvas(self, frame_data: tuple[int | img_obj]) -> img_obj:                   #This method adds it to the canvas and returns the canvas as a filtered object
+        """This method adds it to the canvas and returns the canvas as a filtered object
+
+        Returns:
+            frane_idex (int): id of each frame
+            canvas (any): the compilation of all frames generated by this filter class 
+        """
+              
         frame_index, canvas = frame_data
         background_path = self.animation_frames[str(frame_index)]
         bg_image = Image.open(background_path)
