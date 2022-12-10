@@ -1,4 +1,4 @@
-const UserAuth = require('../models/UsersAuth');
+const User = require('../models/User');
 
 const jwt = require('jsonwebtoken');
 
@@ -48,12 +48,12 @@ module.exports.signup_post = async (req, res) => {
   console.log(req.body);
 
   try {
-    const checkIfExists = await UserAuth.findOne({ email: req.body.email });
+    const checkIfExists = await User.findOne({ email: req.body.email });
     if (checkIfExists) {
       return res.json({ message: 'Email already registered, Sign In' });
     }
-    const user = await UserAuth.create({ email, password });
-    const getUser = await UserAuth.findOne({ email: req.body.email });
+    const user = await User.create({ email, password });
+    const getUser = await User.findOne({ email: req.body.email });
 
     const token = createToken(email, getUser._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
@@ -72,7 +72,7 @@ module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await UserAuth.login(email, password);
+    const user = await User.login(email, password);
     const token = createToken(email);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
     res.status(200).json({ user: token });
@@ -91,15 +91,15 @@ module.exports.logout_get = (req, res) => {
 // module.exports.forgetpassword_post = async (req, res) => {
 //   const { email, password } = req.body;
 //   try {
-//     const user = await UserAuth.update(
+//     const user = await User.update(
 //       { email, password },
 //       {
 //         $set: { password: password },
 //       }
 //     );
-//     const token = createToken(UserAuth._id);
+//     const token = createToken(User._id);
 //     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-//     res.status(201).json({ user: UserAuth._id });
+//     res.status(201).json({ user: User._id });
 //   } catch (err) {
 //     const errors = handleErrors(err);
 //     res.status(400).json({ errors });

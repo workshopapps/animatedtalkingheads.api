@@ -11,14 +11,10 @@ const podcastSchema = new Schema({
     required: true,
   },
   user_id: {
-    required: true,
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  owner:{
-    type:String,
-  }
 });
 const Podcast = mongoose.model('Podcast', podcastSchema);
 module.exports = Podcast;

@@ -6,7 +6,7 @@ const ApiError = require('../utils/errors/ApiError');
 const NotFound = require('../utils/errors/NotFound');
 const runPythonScript = require('./run-python');
 const AnimatedVideo = require('../models/AnimatedVideo');
-const UserAuth = require('../models/UsersAuth')
+const User = require('../models/User');
 function randomIntFromInterval() {
   // min and max included
   let val = Math.floor(Math.random() * (13 - 1 + 1) + 1);
@@ -20,8 +20,8 @@ function randomIntFromInterval() {
 }
 
 exports.generateAnimatedVideos = async (req, res, next) => {
-  console.log(req.decoded.email)
-  const fetchedUser = await UserAuth.findOne({email:req.decoded.email})
+  console.log(req.decoded.email);
+  const fetchedUser = await User.findOne({ email: req.decoded.email });
   let animatedVideoDoc = await AnimatedVideo.findById(
     req.headers.animated_video_id
   );
@@ -37,7 +37,7 @@ exports.generateAnimatedVideos = async (req, res, next) => {
   const podcastDoc = await Podcast.findById(req.params.podcastId);
   const metaJson = {
     audio_path: podcastDoc.file_path,
-    audio_url: 'podcastDoc.file_url',
+    audio_url: podcastDoc.file_url,
     avatar_map: {
       A: '01',
       B: '02',
@@ -45,6 +45,8 @@ exports.generateAnimatedVideos = async (req, res, next) => {
     bg_path: req.body.bg_path || randomIntFromInterval(),
     dir_id: animatedVideoDoc.id,
   };
+
+  console.log(metaJson);
 
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
@@ -73,7 +75,7 @@ exports.generateAnimatedVideos = async (req, res, next) => {
 };
 
 exports.podcastuploader = async (req, res, next) => {
-  console.log(req.body.ext);
+  console.log(req.headers.user_id);
   const user_file_path = (
     '/uploads/podcasts/' +
     req.headers.user_id +
@@ -84,10 +86,11 @@ exports.podcastuploader = async (req, res, next) => {
     user_file_path + req.headers.user_id + '-' + Date.now() + fileExt;
 
   save_file_directory = save_file_directory.replaceAll(' ', '');
-  console.log(save_file_directory);
+
   //find user with email decoded from token
-   const fetchedUser = await UserAuth.findOne({email:req.decoded.email})
-   //use the found user id as user_id
+  const fetchedUser = await User.findById(req.headers.user_id);
+  console.log(fetchedUser);
+  //use the found user id as user_id
   let podcast = await Podcast.create({
     user_id: fetchedUser._id,
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,
@@ -116,7 +119,7 @@ exports.podcastuploader = async (req, res, next) => {
 
 exports.getOnePodcast = async (req, res, next) => {
   try {
-    const fetchedUser = await UserAuth.findOne({email:req.decoded.email})
+    const fetchedUser = await User.findOne({ email: req.decoded.email });
     const podcast = await Podcast.findOne({
       _id: req.params.podcastId,
       user_id: fetchedUser._id,
@@ -135,7 +138,7 @@ exports.getOnePodcast = async (req, res, next) => {
 
 exports.getAllUserUploadedPodcast = async (req, res, next) => {
   try {
-    const fetchedUser = await UserAuth.findOne({email:req.decoded.email})
+    const fetchedUser = await User.findOne({ email: req.decoded.email });
     const podcasts = await Podcast.find({
       user_id: fetchedUser._id,
       // to use this later after phasing out user_id

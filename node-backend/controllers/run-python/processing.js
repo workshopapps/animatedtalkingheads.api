@@ -28,6 +28,7 @@ module.exports = async ({ data: { jobConfig } }) => {
         resolve({ success: true, jobConfig });
       });
     } catch (err) {
+      console.error(err);
       reject({ err });
     }
   });

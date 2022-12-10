@@ -10,28 +10,25 @@ const {
   getOneAnimatedVideo,
   getAllUserCreatedAnimatedVideos,
 } = require('../../controllers/animatedvideo.controller');
+const auth = require('../../middlewares/authMiddleware');
 const animatedVideoRouter = express.Router();
 
-animatedVideoRouter.get(
-  '/:animatedVideoId',
-  checkUser,
-  async (req, res, next) => {
-    try {
-      const animatedVideoDoc = await AnimatedVideo.findOne({
-        user_id: req.headers.user_id,
-        _id: req.params.animatedVideoId,
-      });
-      if (!animatedVideoDoc) {
-        return next(new NotFound());
-      }
-      res.json(animatedVideoDoc);
-    } catch (err) {
-      next(err);
+animatedVideoRouter.get('/:animatedVideoId', auth, async (req, res, next) => {
+  try {
+    const animatedVideoDoc = await AnimatedVideo.findOne({
+      user_id: req.headers.user_id,
+      _id: req.params.animatedVideoId,
+    });
+    if (!animatedVideoDoc) {
+      return next(new NotFound());
     }
+    res.json(animatedVideoDoc);
+  } catch (err) {
+    next(err);
   }
-);
+});
 
-animatedVideoRouter.get('/', checkUser, async (req, res, next) => {
+animatedVideoRouter.get('/', async (req, res, next) => {
   try {
     const animatedVideoDocs = await AnimatedVideo.find({
       user_id: req.headers.user_id,
