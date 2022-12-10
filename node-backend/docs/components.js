@@ -24,6 +24,11 @@ module.exports = {
       description: 'The id of the user token',
       example: '637747b42342eb4566c90133',
     },
+    newPassword: {
+      type: 'string',
+      description: 'The id of the user token',
+      example: 'thisismynewpassword',
+    },
     user_id: {
       type: 'string',
       description: 'The id of the user customizing avatar',
@@ -144,6 +149,14 @@ module.exports = {
         properties: {
           token: {
             $ref: '#/components/token',
+          },
+        },
+      },
+      newPassword: {
+        type: 'object',
+        properties: {
+          token: {
+            $ref: '#/components/newPassword',
           },
         },
       },
