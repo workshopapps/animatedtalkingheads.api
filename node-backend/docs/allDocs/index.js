@@ -121,7 +121,6 @@ module.exports = {
             name: 'podcastID',
             schema: {
               type: 'string',
-            
             },
             required: true,
             description: 'ID of the podcast to use',
@@ -144,21 +143,21 @@ module.exports = {
                 properties: {
                   bg_path: {
                     type: 'string',
-                    example:'01',
+                    example: '01',
                     description: 'background image, Use `01` for now',
                   },
-                  avater: {
+                  avatar_map: {
                     type: 'object',
                     properties: {
-                      a: {
+                      A: {
                         type: 'string',
-                        example:'03',
+                        example: '03',
                         description:
                           'id for the avatar you want to use. Use `01` for now',
                       },
-                      b: {
+                      B: {
                         type: 'string',
-                        example:'01',
+                        example: '01',
                         description:
                           'id for the avatar you want to use. Use `02` for now',
                       },
@@ -350,7 +349,6 @@ module.exports = {
       },
     },
 
-    
     '/rauth/forgotpassword': {
       post: {
         tags: ['Password'],
@@ -375,8 +373,7 @@ module.exports = {
         },
       },
     },
-    
-        
+
     '/rauth/contact': {
       post: {
         tags: ['Contact'],
