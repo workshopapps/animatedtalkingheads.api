@@ -374,6 +374,36 @@ module.exports = {
       },
     },
 
+<<<<<<< HEAD
+=======
+    '/resetpassword/{:token}':{
+      patch:{
+        tags: ['Reset'],
+        description: 'Reset Password',
+        operationId: 'ResetPassword',
+        parameters: [
+          {
+            token: 'token',
+            in: 'newPassword',
+            schema: {
+              $ref: '#/components/schemas/token',
+            },
+            required: true,
+            description: 'New password',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Password reset successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    
+>>>>>>> 34e1b1410dc14acf3146ef06aae9f2cc5120db16
     '/rauth/contact': {
       post: {
         tags: ['Contact'],
