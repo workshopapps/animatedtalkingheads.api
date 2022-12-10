@@ -30,7 +30,7 @@ class WordFilter:
         self.avatar_map = avatar_map
         self.font = ImageFont.load_default()
         self.animation_frames = None
-        self.animation_offset = 3
+        self.animation_offset = 2
         self._compose_animation_schema()
 
     @property
