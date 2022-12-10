@@ -19,11 +19,17 @@ module.exports = {
         'The file_path can point the dir containing user preffered avatar background',
       example: '.assets/scenery/background1.png',
     },
+    token: {
+      type: 'string',
+      description: 'The id of the user token',
+      example: '637747b42342eb4566c90133',
+    },
     user_id: {
       type: 'string',
       description: 'The id of the user customizing avatar',
       example: '637747b42342eb4566c90133',
     },
+    
     forgot_email: {
       type: 'string',
       description: 'Email used to register',
@@ -133,6 +139,14 @@ module.exports = {
           },
         },
       },
+      token: {
+        type: 'object',
+        properties: {
+          token: {
+            $ref: '#/components/token',
+          },
+        },
+      },
       Payment: {
         type: 'object',
         properties: {
@@ -145,6 +159,7 @@ module.exports = {
           
         },
       },
+      
       UserSettings:{
         type:'object',
         properties:{
