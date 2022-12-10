@@ -1,3 +1,4 @@
+# PICKING AVATARS FOR META.JSON
 > **Warning**
 > avatars 3,6,9,12,15,18 are center images -> they have NOT BEEN IMPLEMENTED PROPERLY(do not use)
 
