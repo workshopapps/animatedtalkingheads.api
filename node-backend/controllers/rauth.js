@@ -1,6 +1,6 @@
-const User = require("../models/UsersAuth");
+const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const nodemailer = require("nodemailer");
+const nodemailer = require('nodemailer');
 //const randomstring = require("randomstring");
 //const res = require("express/lib/response");
 const Email = require('../utils/email');
@@ -71,13 +71,12 @@ const handleErrors = (err) => {
   }
 
   return errors;
-}
-
+};
 
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (email) => {
-  return jwt.sign({ email },  process.env.JWT_SECRET, {
+  return jwt.sign({ email }, process.env.JWT_SECRET, {
     expiresIn: maxAge,
   });
 };
@@ -104,96 +103,91 @@ const createToken = (email) => {
   });
 }; */
 
-
 // controller actions
 module.exports.signup_post = async (req, res) => {
-    const { email, password } = req.body;
-  
-    try {
-      const user = await User.create({ email, password });
-      await user.save()
-      const token = createToken(user._id);
-      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-      res.status(201).json({ user: user._id });
-    }
-    catch(err) {
-      const errors = handleErrors(err);
-      res.status(400).json({ errors });
-    }
-   
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.create({ email, password });
+    await user.save();
+    const token = createToken(user._id);
+    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(201).json({ user: user._id });
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
   }
-  module.exports.forgotpassword = async (req, res) => {
+};
+module.exports.forgotpassword = async (req, res) => {
+  //const { email, password } = req.body;
 
-    //const { email, password } = req.body;
-    
-      const email = req.body.email;
-      const user = await User.findOne({email:req.body.email});
-      try {
-      if(!user){
-        res.status(200).send({success:true, msg:"This email does not exits."})
-    }else{  
-    const resetToken = user.createPasswordResetToken();
-    await user.save({validateBeforeSave: false});
+  const email = req.body.email;
+  const user = await User.findOne({ email: req.body.email });
+  try {
+    if (!user) {
+      res
+        .status(200)
+        .send({ success: true, msg: 'This email does not exits.' });
+    } else {
+      const resetToken = user.createPasswordResetToken();
+      await user.save({ validateBeforeSave: false });
 
-        /* const randomString = randomstring.generate();
+      /* const randomString = randomstring.generate();
         const userData = await User.updateOne({email:email},{$set:{token:randomString}})
         sendResetPasswordMail(user.email, randomString);
         res.status(200).send({success:true, msg:"Please check your inbox of mail and reset your password."}) */
-    
-        const resetURL = `${req.protocol}://${req.get(
-            'host'
-        )}/rauth/resetpassword/${resetToken}`;
-        await new Email(user, resetURL).sendPasswordReset();
-        //console.log(user.password);
 
-        res.status(200).json({
-            status: 'success',
-            message: 'Token sent to email!'
-          });
-        }
-   /*    const user = await User.update({ email, password }, {
+      const resetURL = `${req.protocol}://${req.get(
+        'host'
+      )}/rauth/resetpassword/${resetToken}`;
+      await new Email(user, resetURL).sendPasswordReset();
+      //console.log(user.password);
+
+      res.status(200).json({
+        status: 'success',
+        message: 'Token sent to email!',
+      });
+    }
+    /*    const user = await User.update({ email, password }, {
    $set: { password: password}
   });
       const token = createToken(user._id);
       res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
       res.status(201).json({ user: user._id }); */
-    }
-    catch(err) {
-      const errors = handleErrors(err);
-      res.status(400).json({ errors });
-    }
+  } catch (err) {
+    const errors = handleErrors(err);
+    res.status(400).json({ errors });
   }
-module.exports.resetpassword = async(req, res) => {
-    try {
-        // 1) Get user based on the token
-        const hashedToken = crypto
-        .createHash('sha256')
-        .update(req.params.token)
-        .digest('hex');
-        //console.log(user, passwordResetToken, hashedToken);
-        const user = await User.findOne({
-        passwordResetToken: hashedToken,
-        passwordResetExpires: { $gt: Date.now() }
-        });
-        
+};
+module.exports.resetpassword = async (req, res) => {
+  try {
+    // 1) Get user based on the token
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(req.params.token)
+      .digest('hex');
+    //console.log(user, passwordResetToken, hashedToken);
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: Date.now() },
+    });
 
-        // 2) If token has not expired, and there is user, set the new password
-        if (!user) {
-            res.status(400).send({success:false, msg:"Invalid token."})
-        }else{
-        user.password = req.body.password;
-        //user.passwordConfirm = req.body.passwordConfirm;
-        user.passwordResetToken = undefined;
-        user.passwordResetExpires = undefined;
-        await user.save();
+    // 2) If token has not expired, and there is user, set the new password
+    if (!user) {
+      res.status(400).send({ success: false, msg: 'Invalid token.' });
+    } else {
+      user.password = req.body.password;
+      //user.passwordConfirm = req.body.passwordConfirm;
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+      await user.save();
 
-        const token = createToken(user._id);
-        //res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-        res.status(200).json({ user: token });
-        //console.log(user.password);
+      const token = createToken(user._id);
+      //res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+      res.status(200).json({ user: token });
+      //console.log(user.password);
     }
-    }catch (error) {
-      res.status(400).send({success:false, msg:error.message});
-    }
-}
-
+  } catch (error) {
+    res.status(400).send({ success: false, msg: error.message });
+  }
+};

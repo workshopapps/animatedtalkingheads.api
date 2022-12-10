@@ -78,9 +78,10 @@ worker.on('failed', async (job, err) => {
 worker.on('resumed', (job) => {
   console.log({ resumed: { job, err } });
 });
+
 worker.on('completed', async (job, returnvalue) => {
   // Do something with the return value.
-  console.log({ job, returnvalue });
+  console.log({ lol: 'olo', job, returnvalue });
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation.mp4`
