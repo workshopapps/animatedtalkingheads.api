@@ -89,7 +89,7 @@ class BackgroundFilter:
         self.animation_frames = {}
         counter = 0 
         interval = 100
-        while counter <= self.animation_frame_length:
+        while counter <= self.animation_frame_length + 10:
             if counter%interval==0:                            #Checks for the interval to load in the dynamic sequence
                 for i in range(len(self.bg_sq_files)): 
                     if i + counter > self.animation_frame_length:

@@ -30,7 +30,7 @@ class WordFilter:
         self.avatar_map = avatar_map
         self.font = ImageFont.load_default()
         self.animation_frames = None
-        self.animation_offset = 3
+        self.animation_offset = 2
         self._compose_animation_schema()
 
     @property
@@ -61,7 +61,7 @@ class WordFilter:
         """
         self.animation_frames = {
             str(frame_number): {avatar_id: [] for avatar_id in self.speaker_labels}
-            for frame_number in range(1, self.animation_frame_length + 1)
+            for frame_number in range(-3, self.animation_frame_length + 10)
         }
 
         g2p_obj = G2p()

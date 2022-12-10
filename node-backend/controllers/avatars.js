@@ -1,9 +1,9 @@
 const Avatars = require('../models/Avatar')
-const ClothType = require('../models/ClothType')
-const HairType = require('../models/HairType')
-const SkinType = require('../models/SkinType')
-const PodcastSchema = require('../models/Podcast')
-const UserSchema = require('../models/User')
+// const ClothType = require('../models/ClothType')
+// const HairType = require('../models/HairType')
+// const SkinType = require('../models/SkinType')
+// const PodcastSchema = require('../models/Podcast')
+const UserAuth = require('../models/UsersAuth')
 
 
 const addAvatar = async (req, res) => {
