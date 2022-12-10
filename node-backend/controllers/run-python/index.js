@@ -23,7 +23,7 @@ worker.on('error', async (job) => {
   console.log('err', job);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation.mp4`
+      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
   );
   if (!fs.existsSync(originalFolder)) {
     console.log('olol');
