@@ -21,10 +21,10 @@ Left avatar  | Right avatar
 - light skin black man
 
 ## avatar 10, 11, 12
-- white woman
-
-## avatar 13, 14, 15
 - dark skin black woman
 
-## avatar 16, 17, 18
+## avatar 13, 14, 15
 - light skin black woman
+
+## avatar 16, 17, 18
+- white woman
