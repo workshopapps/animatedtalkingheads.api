@@ -8,21 +8,25 @@ const process = require('process');
 
 const queue = new Queue('animated-video', {
   connection: new Redis(
-    `rediss://red-ce81h2kgqg4canlv287g:CGf3WrF2EhTlSgI2dg1E16WfkNlwVp4l@oregon-redis.render.com:6379`
+    'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
   ),
 });
 const processorFile = path.join(__dirname, 'processing.js');
 
 const worker = new Worker(queue.name, processorFile, {
   connection: new Redis(
-    `rediss://red-ce81h2kgqg4canlv287g:CGf3WrF2EhTlSgI2dg1E16WfkNlwVp4l@oregon-redis.render.com:6379`
+    'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
   ),
 });
 worker.on('error', async (job) => {
+  throw job;
+  console.error(job);
+
   // Do something with the return value.
+  console.log('err', job);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation.mp4`
+      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
   );
   if (!fs.existsSync(originalFolder)) {
     console.log('olol');
@@ -46,7 +50,7 @@ worker.on('error', async (job) => {
     originalFolder,
     path.resolve(
       path.dirname(process.cwd() + '/') +
-        `/node-backend/data/uploads/${job.data.jobConfig.animated_video_id}/animation.mp4`
+        `/node-backend/uploads/${job.data.jobConfig.animated_video_id}/animation.mp4`
     ),
     () => {
       fs.unlink(job.data.jobConfig.animatedVideoFolderPath, (err) => {
@@ -64,20 +68,15 @@ worker.on('error', async (job) => {
 
   await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
     video_url:
-      req.protocol +
-      '://' +
-      req.get('host') +
+      job.data.jobConfig.reqHost +
       `/uploads/` +
       `${job.data.jobConfig.animated_video_id}/animation.mp4`,
     status: 'COMPLETED',
   });
 });
-worker.on('error', (err) => {
-  console.log({ error: { err } });
-});
 
 worker.on('failed', async (job, err) => {
-  console.log(err);
+  console.log('failed', err);
   // Do something with the return value.
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
@@ -131,6 +130,7 @@ worker.on('failed', async (job, err) => {
 });
 
 worker.on('completed', async (job, returnvalue) => {
+  console.log('completed', job);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation.mp4`
@@ -146,7 +146,7 @@ worker.on('completed', async (job, returnvalue) => {
 
   const savedAnimatedVideoPath = path.resolve(
     path.dirname(process.cwd() + '/') +
-      `/node-backend/data/uploads/${job.data.jobConfig.animated_video_id}`
+      `/node-backend/uploads/${job.data.jobConfig.animated_video_id}`
   );
 
   if (!fs.existsSync(savedAnimatedVideoPath)) {
@@ -157,14 +157,18 @@ worker.on('completed', async (job, returnvalue) => {
     originalFolder,
     path.resolve(
       path.dirname(process.cwd() + '/') +
-        `/node-backend/data/uploads/${job.data.jobConfig.animated_video_id}/animation.mp4`
+        `/node-backend/uploads/${job.data.jobConfig.animated_video_id}/animation.mp4`
     ),
     () => {
-      fs.unlink(job.data.jobConfig.animatedVideoFolderPath, (err) => {
-        if (err) {
-          throw err;
+      fs.rmdir(
+        job.data.jobConfig.animatedVideoFolderPath,
+        { recursive: true, force: true },
+        (err) => {
+          if (err) {
+            throw err;
+          }
         }
-      });
+      );
       fs.unlink(job.data.jobConfig.meta_json_file, (err) => {
         if (err) {
           throw err;
@@ -175,9 +179,7 @@ worker.on('completed', async (job, returnvalue) => {
 
   await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
     video_url:
-      req.protocol +
-      '://' +
-      req.get('host') +
+      job.data.jobConfig.reqHost +
       `/uploads/` +
       `${job.data.jobConfig.animated_video_id}/animation.mp4`,
     status: 'COMPLETED',
@@ -185,7 +187,7 @@ worker.on('completed', async (job, returnvalue) => {
 });
 
 const runPythonScript = async (jobConfig) => {
-  const res = await queue.add(jobConfig.animated_video_id, { jobConfig }, {});
+  const res = await queue.add(jobConfig.animated_video_id, { jobConfig });
 };
 
 module.exports = runPythonScript;

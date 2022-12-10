@@ -28,14 +28,12 @@ animatedVideoRouter.get('/:animatedVideoId', auth, async (req, res, next) => {
   }
 });
 
-animatedVideoRouter.get('/', async (req, res, next) => {
+animatedVideoRouter.get('/', auth, async (req, res, next) => {
   try {
     const animatedVideoDocs = await AnimatedVideo.find({
       user_id: req.headers.user_id,
     });
-    console.log({
-      user_id: req.headers.user_id,
-    });
+
     if (!animatedVideoDocs.length) {
       return next(new NotFound());
     }

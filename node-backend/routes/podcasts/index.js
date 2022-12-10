@@ -45,7 +45,7 @@ podcastRouter.post(
 );
 
 podcastRouter.post('/:podcastId/generate-video', auth, generateAnimatedVideos);
-podcastRouter.get('/', getAllUserUploadedPodcast);
+podcastRouter.get('/', auth, getAllUserUploadedPodcast);
 podcastRouter.get('/getpodcasts', getPodcast);
 
 podcastRouter.get('/:podcastId', getOnePodcast);
