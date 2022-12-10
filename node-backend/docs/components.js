@@ -134,14 +134,7 @@ module.exports = {
           },
         },
       },
-      token: {
-        type: 'object',
-        properties: {
-          token: {
-            $ref: '#/components/token',
-          },
-        },
-      },
+     
       Payment: {
         type: 'object',
         properties: {
