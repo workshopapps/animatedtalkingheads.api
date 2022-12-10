@@ -175,7 +175,7 @@ class WordFilter:
             if speaker_word:
 
                 self._draw_word(speaker_word, canvas, subtitle_offset, speaker)
-            subtitle_offset -= 0.1
+            subtitle_offset += 7
         return frame_index, canvas
 
     def _draw_word(
@@ -211,8 +211,8 @@ class WordFilter:
         )  # Getting the vales of the text size
 
         x, y = (
-            0.5 * (width - w),
-            offset * height - h,
+            offset * 0.1 * (width - w),
+            0.9 * height - h,
         )  # Using text size and offset values to calculate position on the image
         draw.text(
             (x, y), f"Speaker_{speaker}: {caption_new}", font=self.font
