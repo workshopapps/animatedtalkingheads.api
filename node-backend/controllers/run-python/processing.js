@@ -2,8 +2,8 @@ const { PythonShell } = require('python-shell');
 const path = require('path');
 
 const pythonExeFile = (process.env.NODE_ENV = 'development'
-  ? '/venv/Scripts/python.exe'
-  : '/venv/bin/python3.10');
+  ? '/pyhton-backend/venv/Scripts/python.exe'
+  : '/pyhton-backend/venv/bin/python3.10');
 module.exports = async ({ data: { jobConfig } }) => {
   let options = {
     mode: 'text',
