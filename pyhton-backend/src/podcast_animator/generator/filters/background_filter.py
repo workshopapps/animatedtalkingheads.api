@@ -69,14 +69,17 @@ class BackgroundFilter:
 
     def bg_sq(self):
         
-        """This method stores a list containing the dynamic sequence of
-            the background animation, inside the class variable 'self.bq_sq_files
+        """This method stores lists containing the dynamic sequence of
+            the background animation, inside the class variable 'self.bq_sq_files'
         """                                                     
         
-        self.bg_sq_files =[]
-        self.directory_path = self.directory_path/"animation"
-        for files in self.directory_path.iterdir():
-            self.bg_sq_files.append(files)
+        self.bg_sq_files = {}
+        animation_path_1 = self.directory_path/"animation_01"
+        animation_path_2 = self.directory_path/"animation_02"
+        animation_sq_1 = [files for files in animation_path_1.iterdir()]
+        animation_sq_2 = [files for files in animation_path_2.iterdir()]
+        self.bg_sq_files["01"]=animation_sq_1
+        self.bg_sq_files["02"]=animation_sq_2
 
 
     
@@ -89,18 +92,23 @@ class BackgroundFilter:
         self.animation_frames = {}
         counter = 0 
         interval = 100
-        while counter <= self.animation_frame_length + 10:
-            if counter%interval==0:                            #Checks for the interval to load in the dynamic sequence
-                for i in range(len(self.bg_sq_files)): 
+        while counter <= self.animation_frame_length:
+            if counter%interval==0:                            #Checks for the interval to load in a different sequence
+                for i in range(len(self.bg_sq_files["02"])): 
                     if i + counter > self.animation_frame_length:
                         break    
-                    self.animation_frames.update({str(i+counter): self.bg_sq_files[i]})
+                    self.animation_frames.update({str(i+counter): self.bg_sq_files["02"][i]})
                 counter+=len(self.bg_sq_files)
                 interval = random.choice(self.interval)         #Generating a random value from list of intervals  
                 
-            else:               #Uses the default background image when the interval has not been reached
-                self.animation_frames.update({str(counter): self.directory_path.parent / "default.png"})
-                counter+=1
+            else:               #Uses the default background animation sequesnce when the interval has not been reached
+                for i in range(len(self.bg_sq_files["01"])): 
+                    if i + counter > self.animation_frame_length:
+                        break    
+                    self.animation_frames.update({str(i+counter): self.bg_sq_files["01"][i]})
+                counter+=len(self.bg_sq_files)
+                # self.animation_frames.update({str(counter): self.directory_path.parent / "default.png"})
+                # counter+=1
     
     
      
