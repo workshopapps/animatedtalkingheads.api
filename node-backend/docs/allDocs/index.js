@@ -374,10 +374,8 @@ module.exports = {
       },
     },
 
-<<<<<<< HEAD
-=======
-    '/resetpassword/{:token}':{
-      patch:{
+    '/resetpassword/{:token}': {
+      patch: {
         tags: ['Reset'],
         description: 'Reset Password',
         operationId: 'ResetPassword',
@@ -402,8 +400,7 @@ module.exports = {
         },
       },
     },
-    
->>>>>>> 34e1b1410dc14acf3146ef06aae9f2cc5120db16
+
     '/rauth/contact': {
       post: {
         tags: ['Contact'],
