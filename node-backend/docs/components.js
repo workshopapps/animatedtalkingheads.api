@@ -24,11 +24,7 @@ module.exports = {
       description: 'The id of the user customizing avatar',
       example: '637747b42342eb4566c90133',
     },
-    token: {
-      type: 'string',
-      description: 'The id of the user token',
-      example: '637747b42342eb4566c90133',
-    },
+    
     forgot_email: {
       type: 'string',
       description: 'Email used to register',
