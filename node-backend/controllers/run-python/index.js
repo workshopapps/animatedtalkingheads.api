@@ -19,6 +19,7 @@ const worker = new Worker(queue.name, processorFile, {
   ),
 });
 worker.on('error', async (job) => {
+  throw job;
   console.error(job);
 
   // Do something with the return value.
