@@ -28,3 +28,12 @@ Left avatar  | Right avatar
 
 ## avatar 16, 17, 18
 - white woman
+
+
+
+# PICKING BACKGROUNDS FOR META.JSON
+>There are static backgrounds and dynamic backgrounds. The static backgrounds are single images named according thier ID's. Dynamic bckgrounds are in folders and also named according to their ID's. This means static backgrounds should not have the same ID's as Dynamic backgrounds to avoid having the wrong results in videos.
+
+##### Available dynamic backgrounds
+- **background_01** : Birds flying across the meadow
+- **background_02** : Leaves falling in the forest
