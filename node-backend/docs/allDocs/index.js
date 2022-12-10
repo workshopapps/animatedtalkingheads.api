@@ -48,6 +48,11 @@ module.exports = {
     },
     '/animated-videos/{animatedVideoId}': {
       get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['AnimatedVideo'],
         description: 'Get an animated video',
         operationId: 'AnimatedPodcast',
@@ -61,15 +66,6 @@ module.exports = {
             required: true,
             description:
               'ID of the animated video you want to view its progress ',
-          },
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, put in headers',
           },
         ],
         responses: {
@@ -125,6 +121,7 @@ module.exports = {
             name: 'podcastID',
             schema: {
               type: 'string',
+            
             },
             required: true,
             description: 'ID of the podcast to use',
@@ -147,6 +144,7 @@ module.exports = {
                 properties: {
                   bg_path: {
                     type: 'string',
+                    example:'01',
                     description: 'background image, Use `01` for now',
                   },
                   avater: {
@@ -154,11 +152,13 @@ module.exports = {
                     properties: {
                       a: {
                         type: 'string',
+                        example:'03',
                         description:
                           'id for the avatar you want to use. Use `01` for now',
                       },
                       b: {
                         type: 'string',
+                        example:'01',
                         description:
                           'id for the avatar you want to use. Use `02` for now',
                       },
