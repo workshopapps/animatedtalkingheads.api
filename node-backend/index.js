@@ -55,7 +55,7 @@ Sentry.init({
 
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
-
+console.log(__dirname);
 app.use(Sentry.Handlers.tracingHandler());
 
 // WRITE YOUR CODE AFTER THIS!!!!!!
@@ -150,6 +150,7 @@ app.use(rauthRoutes);
 ///// payment route
 
 app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static(path.join(process.cwd(), '/pyhton-backend/data/')));
 app.set('view engine', pug);
 
 app.get('/error', (req, res) => {
