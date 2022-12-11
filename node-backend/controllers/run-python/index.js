@@ -133,7 +133,7 @@ worker.on('completed', async (job, returnvalue) => {
   console.log('completed', job);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation.mp4`
+      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
   );
   if (!fs.existsSync(originalFolder)) {
     console.log('olol');
@@ -157,7 +157,7 @@ worker.on('completed', async (job, returnvalue) => {
     originalFolder,
     path.resolve(
       path.dirname(process.cwd() + '/') +
-        `/node-backend/uploads/${job.data.jobConfig.animated_video_id}/animation.mp4`
+        `/node-backend/uploads/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
     ),
     () => {
       fs.rmdir(
@@ -181,7 +181,7 @@ worker.on('completed', async (job, returnvalue) => {
     video_url:
       job.data.jobConfig.reqHost +
       `/uploads/` +
-      `${job.data.jobConfig.animated_video_id}/animation.mp4`,
+      `${job.data.jobConfig.animated_video_id}/animation_sound.mp4`,
     status: 'COMPLETED',
   });
 });
