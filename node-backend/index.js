@@ -63,8 +63,8 @@ app.use(Sentry.Handlers.tracingHandler());
 const DB = process.env.mongo_url;
 
 app.use(morgan('tiny'));
-process.cwd().includes('omiebi') && (process.env.NODE_ENV = 'production');
 console.log(process.env.NODE_ENV);
+process.cwd().includes('omiebi') && (process.env.NODE_ENV = 'production');
 //get payment for development purpose
 const { getPayments } = require('./controllers/payment');
 app.get('/getpayments', getPayments);
