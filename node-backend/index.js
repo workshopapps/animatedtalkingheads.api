@@ -59,6 +59,11 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
 // WRITE YOUR CODE AFTER THIS!!!!!!
+app.use((req, res, next) => {
+  process.env.reqHost = req.protocol + '://' + req.get('host');
+
+  next();
+});
 
 const DB = process.env.mongo_url;
 
