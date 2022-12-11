@@ -17,7 +17,12 @@ module.exports = async ({ data: { jobConfig } }) => {
 
     args: [jobConfig.meta_json_file],
   };
-
+  console.log(
+    path.resolve(
+      path.dirname(process.cwd() + '/') +
+        '/pyhton-backend/src/podcast_animator/'
+    ) + 'start.py'
+  );
   return new Promise(function (resolve, reject) {
     try {
       return PythonShell.run('start.py', options, function (err, res) {
