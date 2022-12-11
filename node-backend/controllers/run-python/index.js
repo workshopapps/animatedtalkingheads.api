@@ -94,23 +94,25 @@ worker.on('completed', async (job, returnvalue) => {
   );
   captureMessage(job.id);
   console.log('completed', job);
+
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
   );
+  console.log(originalFolder);
   if (!fs.existsSync(originalFolder)) {
-    console.log('olol');
+    console.log(originalFolder);
     await AnimatedVideo.findByIdAndUpdate(job.id, { status: 'ERROR' });
     return;
   }
 
-  const savedAnimatedVideoPath = path.resolve(
-    path.dirname(process.cwd() + '/') + `/node-backend/uploads/${job.id}`
-  );
+  // const savedAnimatedVideoPath = path.resolve(
+  //   path.dirname(process.cwd() + '/') + `/node-backend/uploads/${job.id}`
+  // );
 
-  if (!fs.existsSync(savedAnimatedVideoPath)) {
-    fs.mkdirSync(savedAnimatedVideoPath);
-  }
+  // if (!fs.existsSync(savedAnimatedVideoPath)) {
+  //   fs.mkdirSync(savedAnimatedVideoPath);
+  // }
 
   fs.unlink(metaJsonFilePath, (err) => {
     if (err) {
@@ -131,6 +133,7 @@ const runPythonScript = async (jobConfig) => {
     { jobConfig },
     { jobId: jobConfig.animated_video_id }
   );
+  console.log(res);
 };
 
 module.exports = runPythonScript;
