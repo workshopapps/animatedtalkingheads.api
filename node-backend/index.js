@@ -47,7 +47,7 @@ Sentry.init({
       // router: someRouter,
     }),
   ],
-
+  maxValueLength: 700,
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,
