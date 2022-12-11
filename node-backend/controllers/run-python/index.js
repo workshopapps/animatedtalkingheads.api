@@ -20,7 +20,7 @@ const worker = new Worker(queue.name, processorFile, {
   ),
 });
 worker.on('error', async (job) => {
-  console.error(job);
+  console.error('error', job);
   captureMessage(JSON.stringify(job));
   // Do something with the return value.
   console.log('err', job);
@@ -60,12 +60,14 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
+  console.log('failed');
   captureMessage(JSON.stringify(err));
   // Do something with the return value.
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
   );
+  console.log(originalFolder);
   if (!fs.existsSync(originalFolder)) {
     await AnimatedVideo.findByIdAndUpdate(
       job.data.jobConfig.animated_video_id,
