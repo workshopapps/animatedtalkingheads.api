@@ -103,12 +103,14 @@ if (!fs.existsSync('./uploads/podcasts')) {
 }
 
 // app configs.
+app.options('*', cors());
+app.use(cors());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 // app.use(authRoutes);
 
 app.use(express.json());
-app.use(cors());
+
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/podcasts', podcastRouter);

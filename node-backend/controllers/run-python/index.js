@@ -5,6 +5,7 @@ const fs = require('fs');
 const AnimatedVideo = require('../../models/AnimatedVideo');
 const move = require('./move-file');
 const process = require('process');
+const { captureMessage } = require('@sentry/node');
 
 const queue = new Queue('animated-video', {
   connection: new Redis(
@@ -19,9 +20,8 @@ const worker = new Worker(queue.name, processorFile, {
   ),
 });
 worker.on('error', async (job) => {
-  throw job;
   console.error(job);
-
+  captureMessage(JSON.stringify(job));
   // Do something with the return value.
   console.log('err', job);
   const originalFolder = path.resolve(
@@ -76,7 +76,7 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
-  console.log('failed', err);
+  captureMessage(JSON.stringify(err));
   // Do something with the return value.
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
