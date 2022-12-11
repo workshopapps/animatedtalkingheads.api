@@ -130,6 +130,10 @@ worker.on('failed', async (job, err) => {
 });
 
 worker.on('completed', async (job, returnvalue) => {
+  const metaJsonFilePath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/test_data/${job.id}.json`
+  );
   captureMessage(job.id);
   console.log('completed', job);
   const originalFolder = path.resolve(
@@ -162,7 +166,7 @@ worker.on('completed', async (job, returnvalue) => {
           throw err;
         }
       });
-      fs.unlink(job.id, (err) => {
+      fs.unlink(metaJsonFilePath, (err) => {
         if (err) {
           throw err;
         }
@@ -178,7 +182,11 @@ worker.on('completed', async (job, returnvalue) => {
 });
 
 const runPythonScript = async (jobConfig) => {
-  const res = await queue.add(jobConfig.animated_video_id, { jobConfig });
+  const res = await queue.add(
+    jobConfig.animated_video_id,
+    { jobConfig },
+    { jobId: jobConfig.animated_video_id }
+  );
 };
 
 module.exports = runPythonScript;
