@@ -1,18 +1,17 @@
 # PICKING AVATARS FOR META.JSON
-> **Warning**
-> avatars 3,6,9,12,15,18 are center images -> they have NOT BEEN IMPLEMENTED PROPERLY(do not use)
+
 
 > **note**
 > no single digits use 01 instead of 1
 
-Left avatar  | Right avatar
-------------- | -------------
-01  | 02
-04 |05
-07| 08
-10| 11
-13| 14
-16|17
+Left avatar  | Right avatar | Center avatar
+------------- | ------------- | -------------
+01  | 02 | 03 
+04 |05 | 06
+07| 08 | 09
+10| 11 | 12
+13| 14 | 15
+16|17 | 18
 
 ## avatar 01 , 02 , 03
 - white man
