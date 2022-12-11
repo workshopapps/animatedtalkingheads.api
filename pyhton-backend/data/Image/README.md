@@ -14,21 +14,27 @@ Left avatar  | Right avatar | Center avatar
 16|17 | 18
 
 ## avatar 01 , 02 , 03
+![Avatars-41Avatars (1)](https://user-images.githubusercontent.com/64972836/206910110-b1e17bcc-4ad6-4a7e-bd3b-d229e0c07157.png)
 - white man
 
 ## avatar 04 , 05 , 06
+![Avatars-48Avatars (1)](https://user-images.githubusercontent.com/64972836/206910158-81f80d78-01b8-4f14-b320-4b561a0ec3fc.png)
 - dark skin black man
 
 ## avatar 07, 08 , 09
+![Avatars-38Avatars (1)](https://user-images.githubusercontent.com/64972836/206910236-a652fd1e-0156-42f1-ba9c-f9d9583aa7da.png)
 - light skin black man
 
 ## avatar 10, 11, 12
+![Avatars-07Avatars (1)](https://user-images.githubusercontent.com/64972836/206910249-0acfc86d-d4a1-4515-a06c-96ef9ef76647.png)
 - dark skin black woman
 
 ## avatar 13, 14, 15
+![Group 61Avatars (1)](https://user-images.githubusercontent.com/64972836/206910259-1ff86f72-bcae-45b9-bd69-a37632343db0.png)
 - light skin black woman
 
 ## avatar 16, 17, 18
+![Avatars-01Avatars (1)](https://user-images.githubusercontent.com/64972836/206910270-f5594054-65e8-4508-aa81-73b476524ff8.png)
 - white woman
 
 
