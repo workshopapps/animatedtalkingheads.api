@@ -137,7 +137,7 @@ worker.on('completed', async (job, returnvalue) => {
 
   captureMessage(job.id);
   console.log(job, 'completed');
-  console.log(lis);
+  captureMessage(lis);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
