@@ -67,51 +67,55 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
-  console.log(err);
-  const originalFolder = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
-  );
-  const metaJsonFilePath = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/test_data/${job.id}.json`
-  );
-  const testFolder = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.id}/`
-  );
-
-  const lis = readdirSync(testFolder);
-
-  console.log('faile');
-
-  console.log(lis);
-  console.log(err.message);
-  console.log(err.stack);
-
-  captureMessage(err.stack);
-
-  // Do something with the return value.
-
-  if (!fs.existsSync(originalFolder)) {
-    await AnimatedVideo.findByIdAndUpdate(
-      job.data.jobConfig.animated_video_id,
-      { status: 'ERROR' }
+  console.log('err');
+  try {
+    const originalFolder = path.resolve(
+      path.dirname(process.cwd() + '/') +
+        `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
     );
-    return;
-  }
+    const metaJsonFilePath = path.resolve(
+      path.dirname(process.cwd() + '/') +
+        `/pyhton-backend/test_data/${job.id}.json`
+    );
+    const testFolder = path.resolve(
+      path.dirname(process.cwd() + '/') +
+        `/pyhton-backend/data/user_data/${job.id}/`
+    );
 
-  fs.unlink(metaJsonFilePath, (err) => {
-    if (err) {
-      throw err;
+    const lis = readdirSync(testFolder);
+
+    console.log('faile');
+
+    console.log(lis);
+    console.log(err.message);
+    console.log(err.stack);
+
+    captureMessage(err.stack);
+
+    // Do something with the return value.
+
+    if (!fs.existsSync(originalFolder)) {
+      await AnimatedVideo.findByIdAndUpdate(
+        job.data.jobConfig.animated_video_id,
+        { status: 'ERROR' }
+      );
+      return;
     }
-  });
 
-  await AnimatedVideo.findByIdAndUpdate(job.id, {
-    video_url:
-      process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
-    status: 'COMPLETED',
-  });
+    fs.unlink(metaJsonFilePath, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+
+    await AnimatedVideo.findByIdAndUpdate(job.id, {
+      video_url:
+        process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
+      status: 'COMPLETED',
+    });
+  } catch (err) {
+    console.log('ERR');
+  }
 });
 
 worker.on('completed', async (job, returnvalue) => {
