@@ -6,6 +6,7 @@ const AnimatedVideo = require('../../models/AnimatedVideo');
 const move = require('./move-file');
 const process = require('process');
 const { captureMessage } = require('@sentry/node');
+const { readdirSync } = require('fs');
 
 const queue = new Queue('animated-video', {
   connection: new Redis(
@@ -66,20 +67,31 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
+  const originalFolder = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
+  );
+  const metaJsonFilePath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/test_data/${job.id}.json`
+  );
+  const testFolder = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/data/user_data/${job.id}/`
+  );
+
+  const lis = readdirSync(testFolder);
+
   console.log('faile');
 
-  console.log(job.id);
+  console.log(lis);
   console.log(err.message);
   console.log(err.stack);
 
   captureMessage(err.stack);
 
   // Do something with the return value.
-  const originalFolder = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
-  );
-  console.log(originalFolder);
+
   if (!fs.existsSync(originalFolder)) {
     await AnimatedVideo.findByIdAndUpdate(
       job.data.jobConfig.animated_video_id,
@@ -88,13 +100,13 @@ worker.on('failed', async (job, err) => {
     return;
   }
 
-  fs.unlink(job.data.jobConfig.meta_json_file, (err) => {
+  fs.unlink(metaJsonFilePath, (err) => {
     if (err) {
       throw err;
     }
   });
 
-  await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
+  await AnimatedVideo.findByIdAndUpdate(job.id, {
     video_url:
       process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
     status: 'COMPLETED',
