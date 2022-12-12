@@ -67,6 +67,7 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
+  console.log(err);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
