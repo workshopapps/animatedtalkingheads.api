@@ -43,5 +43,36 @@ Left avatar  | Right avatar | Center avatar
 >There are static backgrounds and dynamic backgrounds. The static backgrounds are single images named according thier ID's. Dynamic bckgrounds are in folders and also named according to their ID's. This means static backgrounds should not have the same ID's as Dynamic backgrounds to avoid having the wrong results in videos.
 
 ##### Available dynamic backgrounds
+
 - **background_01** : Birds flying across the meadow
+
 - **background_02** : Leaves falling in the forest
+
+
+##### Available static backgrounds
+
+- **background_03** : Green sky forest
+
+- **background_04** : Snowy mountain
+
+- **background_05** : The canyons
+
+- **background_06** : The pyramids
+
+- **background_07** : Astronauts in space
+
+- **background_08** : Collapsible chairs at the balcony
+
+- **background_09** : Collapsible chairs at the fence
+
+- **background_10** : Clutch studio 1
+
+- **background_11** : Clutch studio 2
+
+- **background_12** : Clutch studio 3
+
+- **background_13** : Clutch studio 4
+
+- **background_14** : Collapsible chairs with the dried trees
+
+- **background_15** : Cloudy forest
