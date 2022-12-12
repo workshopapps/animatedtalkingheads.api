@@ -12,6 +12,11 @@ const queue = new Queue('animated-video', {
     'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
   ),
 });
+// new Redis(
+//   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
+// ).flushdb(()=>{
+//   console.log('olol')
+// })
 
 const processorFile = path.join(__dirname, 'processing.js');
 
@@ -66,7 +71,9 @@ worker.on('failed', async (job, err) => {
   console.log(err.name);
   console.log(err.message);
   console.log(err.stack);
-  captureMessage(err);
+
+  captureMessage({ name: err.name, message: err.message, stack: err.stack });
+
   // Do something with the return value.
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
