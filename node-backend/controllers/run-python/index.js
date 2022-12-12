@@ -120,6 +120,13 @@ worker.on('completed', async (job, returnvalue) => {
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${job.id}.json`
   );
+  const testFolder = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/data/user_data/${job.id}/`
+  );
+
+  const lis = readdirSync(testFolder);
+  captureMessage(lis);
   captureMessage(job.id);
   console.log('completed', job);
 
