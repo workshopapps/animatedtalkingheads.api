@@ -72,7 +72,7 @@ worker.on('failed', async (job, err) => {
   console.log(err.message);
   console.log(err.stack);
 
-  captureMessage({ name: err.name, message: err.message, stack: err.stack });
+  captureMessage(err.message);
 
   // Do something with the return value.
   const originalFolder = path.resolve(
