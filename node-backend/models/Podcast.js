@@ -6,6 +6,9 @@ const podcastSchema = new Schema({
     type: String,
     required: true,
   },
+  file_name: {
+    type: String,
+  },
   file_url: {
     type: String,
     required: true,
@@ -15,6 +18,7 @@ const podcastSchema = new Schema({
     ref: 'User',
     required: true,
   },
-});
+},
+{timestamps:true});
 const Podcast = mongoose.model('Podcast', podcastSchema);
 module.exports = Podcast;

@@ -1,5 +1,26 @@
 module.exports = {
   paths: {
+    '/podcasts': {
+      get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Podcast'],
+        description: 'get all podcast a user has ever uploaded',
+        operationId: 'getAllPodcast',
+        
+        responses: {
+          200: {
+            description: 'Returns an array of all user podcasts',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
     '/podcasts/upload': {
       post: {
         security: [
@@ -31,6 +52,12 @@ module.exports = {
                     type: 'string',
                     format: 'binary',
                   },
+                file_name: {
+                      type: 'string',
+                      example: 'My podcast on Donald trump',
+                      description:
+                          'The podcast name that would be displayed on the dashboard',
+                      },
                 },
               },
             },
