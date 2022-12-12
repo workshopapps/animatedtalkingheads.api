@@ -20,8 +20,9 @@ function randomIntFromInterval() {
 }
 
 exports.generateAnimatedVideos = async (req, res, next) => {
-  console.log(req.decoded.email);
+  // console.log(req.decoded.email);
   const fetchedUser = await User.findOne({ email: req.decoded.email });
+  console.log(typeof(fetchedUser._id))
   let animatedVideoDoc = await AnimatedVideo.findById(
     req.headers.animated_video_id
   );
