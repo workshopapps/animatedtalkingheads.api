@@ -66,7 +66,7 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
-  console.log('failed');
+  console.log('faile');
 
   console.log(err.name);
   console.log(err.message);
