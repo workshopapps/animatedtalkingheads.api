@@ -12,6 +12,7 @@ const queue = new Queue('animated-video', {
     'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
   ),
 });
+
 const processorFile = path.join(__dirname, 'processing.js');
 
 const worker = new Worker(queue.name, processorFile, {
@@ -61,6 +62,10 @@ worker.on('error', async (job) => {
 
 worker.on('failed', async (job, err) => {
   console.log('failed');
+
+  console.log(err.name);
+  console.log(err.message);
+  console.log(err.stack);
   captureMessage(err);
   // Do something with the return value.
   const originalFolder = path.resolve(
