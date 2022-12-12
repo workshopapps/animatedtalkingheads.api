@@ -29,41 +29,44 @@ const worker = new Worker(queue.name, processorFile, {
 worker.on('error', async (job) => {
   console.error(job, 'error');
   captureMessage(JSON.stringify(job));
-  // Do something with the return value.
-  console.log(job, 'err');
-  const originalFolder = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
-  );
-  if (!fs.existsSync(originalFolder)) {
-    console.log('olol');
-    await AnimatedVideo.findByIdAndUpdate(
-      job.data.jobConfig.animated_video_id,
-      { status: 'ERROR' }
-    );
-    return;
-  }
-
-  const savedAnimatedVideoPath = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/node-backend/uploads/${job.data.jobConfig.animated_video_id}`
-  );
-
-  if (!fs.existsSync(savedAnimatedVideoPath)) {
-    fs.mkdirSync(savedAnimatedVideoPath);
-  }
-
-  fs.unlink(job.data.jobConfig.animatedVideoFolderPath, (err) => {
-    if (err) {
-      throw err;
-    }
-  });
-
   await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
-    video_url:
-      process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
-    status: 'COMPLETED',
+    status: 'ERROR',
   });
+  // Do something with the return value.
+  // console.log(job, 'err');
+  // const originalFolder = path.resolve(
+  //   path.dirname(process.cwd() + '/') +
+  //     `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
+  // );
+  // if (!fs.existsSync(originalFolder)) {
+  //   console.log('olol');
+  //   await AnimatedVideo.findByIdAndUpdate(
+  //     job.data.jobConfig.animated_video_id,
+  //     { status: 'ERROR' }
+  //   );
+  //   return;
+  // }
+
+  // const savedAnimatedVideoPath = path.resolve(
+  //   path.dirname(process.cwd() + '/') +
+  //     `/node-backend/uploads/${job.data.jobConfig.animated_video_id}`
+  // );
+
+  // if (!fs.existsSync(savedAnimatedVideoPath)) {
+  //   fs.mkdirSync(savedAnimatedVideoPath);
+  // }
+
+  // fs.unlink(job.data.jobConfig.animatedVideoFolderPath, (err) => {
+  //   if (err) {
+  //     throw err;
+  //   }
+  // });
+
+  // await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
+  //   video_url:
+  //     process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
+  //   status: 'COMPLETED',
+  // });
 });
 
 worker.on('failed', async (job, err) => {
