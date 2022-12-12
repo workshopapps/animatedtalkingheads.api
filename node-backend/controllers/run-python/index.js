@@ -176,7 +176,6 @@ const runPythonScript = async (jobConfig) => {
     { jobConfig },
     { jobId: jobConfig.animated_video_id }
   );
-  console.log(res);
 };
 
 module.exports = runPythonScript;
