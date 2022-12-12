@@ -117,6 +117,7 @@ worker.on('failed', async (job, err) => {
       status: 'COMPLETED',
     });
   } catch (err) {
+    captureMessage(err);
     console.log('ERR');
   }
 });
