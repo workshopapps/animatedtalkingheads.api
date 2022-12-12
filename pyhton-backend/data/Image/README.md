@@ -65,53 +65,35 @@ Left avatar  | Right avatar | Center avatar
 
 ##### Available static backgrounds
 
-- **background_03** : Green sky forest
+- ## **background_03** : Green sky forest
+![Green_sky_forest](https://user-images.githubusercontent.com/71768696/206945982-59ffc4c1-5d70-41cc-86d0-9645c6c2c2d3.png) <br>
 
-![Green_sky_forest](https://user-images.githubusercontent.com/71768696/206945982-59ffc4c1-5d70-41cc-86d0-9645c6c2c2d3.png)
+- ## **background_04** : Snowy mountain
+![Snowy_mountain](https://user-images.githubusercontent.com/71768696/206946008-6ccc3e18-33ef-42d3-aae4-129abf0a57de.png) <br>
 
+- ## **background_05** : The canyons
 
+![The_canyons](https://user-images.githubusercontent.com/71768696/206946061-c4935e8d-7bec-46fc-8295-af1f970d120c.png) <br>
 
-- **background_04** : Snowy mountain
+- ## **background_06** : The pyramids
 
-![Snowy_mountain](https://user-images.githubusercontent.com/71768696/206946008-6ccc3e18-33ef-42d3-aae4-129abf0a57de.png)
+![The_pyramids](https://user-images.githubusercontent.com/71768696/206946121-f2841ea3-2d9c-490a-b959-8fa86a6798fe.png) <br>
 
+- ## **background_07** : Astronauts in space
 
-
-
-- **background_05** : The canyons
-
-![The_canyons](https://user-images.githubusercontent.com/71768696/206946061-c4935e8d-7bec-46fc-8295-af1f970d120c.png)
-
-
-
+![Astronauts_in_space](https://user-images.githubusercontent.com/71768696/206946153-044bd2b9-2689-4c4e-85e5-335274a9c20b.png) <br>
 
 
-- **background_06** : The pyramids
+-  ## **background_08** : Collapsible chairs at the balcony
 
-![The_pyramids](https://user-images.githubusercontent.com/71768696/206946121-f2841ea3-2d9c-490a-b959-8fa86a6798fe.png)
-
-
-
-
-
-- **background_07** : Astronauts in space
-
-![Astronauts_in_space](https://user-images.githubusercontent.com/71768696/206946153-044bd2b9-2689-4c4e-85e5-335274a9c20b.png)
-
-
-
-
-
-- **background_08** : Collapsible chairs at the balcony
-
-![Collapsible_chairs_at_the_balcony](https://user-images.githubusercontent.com/71768696/206946178-b7261019-286c-4435-939a-b9decc5f9293.png)
+![Collapsible_chairs_at_the_balcony](https://user-images.githubusercontent.com/71768696/206946178-b7261019-286c-4435-939a-b9decc5f9293.png) <br>
 
 
 
 
 - **background_09** : Collapsible chairs at the fence
 
-![Collapsible_chairs_at_the_fence](https://user-images.githubusercontent.com/71768696/206946196-8ea96f15-40a0-442a-870d-fbc18da8e343.png)
+![Collapsible_chairs_at_the_fence](https://user-images.githubusercontent.com/71768696/206946196-8ea96f15-40a0-442a-870d-fbc18da8e343.png) <br>
 
 
 
