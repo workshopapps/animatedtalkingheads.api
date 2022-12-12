@@ -25,6 +25,7 @@ const worker = new Worker(queue.name, processorFile, {
   connection: new Redis(
     'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
   ),
+  concurrency: 2,
 });
 worker.on('error', async (job) => {
   console.error(job, 'error');
