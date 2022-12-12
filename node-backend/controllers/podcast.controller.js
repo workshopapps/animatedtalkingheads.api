@@ -93,6 +93,7 @@ exports.podcastuploader = async (req, res, next) => {
   //use the found user id as user_id
   let podcast = await Podcast.create({
     user_id: fetchedUser._id,
+    file_name:req.body.file_name,
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,
     file_path: path.resolve(process.cwd(), '.' + save_file_directory),
   });

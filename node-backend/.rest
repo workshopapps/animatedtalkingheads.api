@@ -1,5 +1,9 @@
-GET http://localhost:4000/getpayments
+GET http://localhost:4000/podcasts
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hdWFyYXNoZWxAZ21haWwuY29tIiwiaWF0IjoxNjcwNzg5NTk1LCJleHAiOjE2NzEwNDg3OTV9.bBww384YqATVwTdg_AhEHkGQhFGN1ZnncqHJGtjqozw
 ###
+
+
+
 
 GET http://localhost:4000/settings/get
 Content-Type: application/json
