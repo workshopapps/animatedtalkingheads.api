@@ -6,12 +6,19 @@ const AnimatedVideo = require('../../models/AnimatedVideo');
 const move = require('./move-file');
 const process = require('process');
 const { captureMessage } = require('@sentry/node');
+const { readdirSync } = require('fs');
 
 const queue = new Queue('animated-video', {
   connection: new Redis(
     'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
   ),
 });
+// new Redis(
+//   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
+// ).flushdb(()=>{
+//   console.log('olol')
+// })
+
 const processorFile = path.join(__dirname, 'processing.js');
 
 const worker = new Worker(queue.name, processorFile, {
@@ -60,14 +67,32 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
-  console.log('failed');
-  captureMessage(JSON.stringify(err));
-  // Do something with the return value.
+  console.log(err);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
+      `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
   );
-  console.log(originalFolder);
+  const metaJsonFilePath = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/test_data/${job.id}.json`
+  );
+  const testFolder = path.resolve(
+    path.dirname(process.cwd() + '/') +
+      `/pyhton-backend/data/user_data/${job.id}/`
+  );
+
+  const lis = readdirSync(testFolder);
+
+  console.log('faile');
+
+  console.log(lis);
+  console.log(err.message);
+  console.log(err.stack);
+
+  captureMessage(err.stack);
+
+  // Do something with the return value.
+
   if (!fs.existsSync(originalFolder)) {
     await AnimatedVideo.findByIdAndUpdate(
       job.data.jobConfig.animated_video_id,
@@ -76,13 +101,13 @@ worker.on('failed', async (job, err) => {
     return;
   }
 
-  fs.unlink(job.data.jobConfig.meta_json_file, (err) => {
+  fs.unlink(metaJsonFilePath, (err) => {
     if (err) {
       throw err;
     }
   });
 
-  await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
+  await AnimatedVideo.findByIdAndUpdate(job.id, {
     video_url:
       process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
     status: 'COMPLETED',
@@ -90,6 +115,7 @@ worker.on('failed', async (job, err) => {
 });
 
 worker.on('completed', async (job, returnvalue) => {
+  console.log('completed');
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${job.id}.json`
