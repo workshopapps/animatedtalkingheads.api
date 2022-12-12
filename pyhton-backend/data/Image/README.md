@@ -44,8 +44,10 @@ Left avatar  | Right avatar | Center avatar
 
 ##### Available dynamic backgrounds
 
+![Birds_flying_across_the_meadow](https://user-images.githubusercontent.com/71768696/206945589-c354038b-2674-4a23-b94d-42310dbb65ca.gif)
 - **background_01** : Birds flying across the meadow
 
+![Leaves_falling_in_the_forest](https://user-images.githubusercontent.com/71768696/206945678-82d23db4-7e9c-4c06-bf6f-250034574875.gif)
 - **background_02** : Leaves falling in the forest
 
 
