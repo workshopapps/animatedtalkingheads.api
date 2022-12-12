@@ -15,9 +15,9 @@ const queue = new Queue('animated-video', {
 });
 // new Redis(
 //   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
-// ).flushdb(()=>{
-//   console.log('olol')
-// })
+// ).flushdb(() => {
+//   console.log('olol');
+// });
 
 const processorFile = path.join(__dirname, 'processing.js');
 
@@ -27,51 +27,103 @@ const worker = new Worker(queue.name, processorFile, {
   ),
 });
 worker.on('error', async (job) => {
-  console.error('error', job);
+  console.error(job, 'error');
   captureMessage(JSON.stringify(job));
-  // Do something with the return value.
-  console.log('err', job);
-  const originalFolder = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
-  );
-  if (!fs.existsSync(originalFolder)) {
-    console.log('olol');
-    await AnimatedVideo.findByIdAndUpdate(
-      job.data.jobConfig.animated_video_id,
-      { status: 'ERROR' }
-    );
-    return;
-  }
-
-  const savedAnimatedVideoPath = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/node-backend/uploads/${job.data.jobConfig.animated_video_id}`
-  );
-
-  if (!fs.existsSync(savedAnimatedVideoPath)) {
-    fs.mkdirSync(savedAnimatedVideoPath);
-  }
-
-  fs.unlink(job.data.jobConfig.animatedVideoFolderPath, (err) => {
-    if (err) {
-      throw err;
-    }
-  });
-
   await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
-    video_url:
-      process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
-    status: 'COMPLETED',
+    status: 'ERROR',
   });
+  // Do something with the return value.
+  // console.log(job, 'err');
+  // const originalFolder = path.resolve(
+  //   path.dirname(process.cwd() + '/') +
+  //     `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
+  // );
+  // if (!fs.existsSync(originalFolder)) {
+  //   console.log('olol');
+  //   await AnimatedVideo.findByIdAndUpdate(
+  //     job.data.jobConfig.animated_video_id,
+  //     { status: 'ERROR' }
+  //   );
+  //   return;
+  // }
+
+  // const savedAnimatedVideoPath = path.resolve(
+  //   path.dirname(process.cwd() + '/') +
+  //     `/node-backend/uploads/${job.data.jobConfig.animated_video_id}`
+  // );
+
+  // if (!fs.existsSync(savedAnimatedVideoPath)) {
+  //   fs.mkdirSync(savedAnimatedVideoPath);
+  // }
+
+  // fs.unlink(job.data.jobConfig.animatedVideoFolderPath, (err) => {
+  //   if (err) {
+  //     throw err;
+  //   }
+  // });
+
+  // await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
+  //   video_url:
+  //     process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
+  //   status: 'COMPLETED',
+  // });
 });
 
 worker.on('failed', async (job, err) => {
-  console.log(err);
-  const originalFolder = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
-  );
+  console.log('err');
+  try {
+    const originalFolder = path.resolve(
+      path.dirname(process.cwd() + '/') +
+        `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
+    );
+    const metaJsonFilePath = path.resolve(
+      path.dirname(process.cwd() + '/') +
+        `/pyhton-backend/test_data/${job.id}.json`
+    );
+    const testFolder = path.resolve(
+      path.dirname(process.cwd() + '/') +
+        `/pyhton-backend/data/user_data/${job.id}/`
+    );
+
+    const lis = readdirSync(testFolder);
+
+    console.log('faile');
+
+    console.log(lis);
+    console.log(err.message);
+    console.log(err.stack);
+
+    captureMessage(err.stack);
+
+    // Do something with the return value.
+
+    if (!fs.existsSync(originalFolder)) {
+      await AnimatedVideo.findByIdAndUpdate(
+        job.data.jobConfig.animated_video_id,
+        { status: 'ERROR' }
+      );
+      return;
+    }
+
+    fs.unlink(metaJsonFilePath, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+
+    await AnimatedVideo.findByIdAndUpdate(job.id, {
+      video_url:
+        process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
+      status: 'COMPLETED',
+    });
+  } catch (err) {
+    captureMessage(err);
+    console.log('ERR');
+  }
+});
+
+worker.on('completed', async (job, returnvalue) => {
+  console.log('completed');
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${job.id}.json`
@@ -83,46 +135,9 @@ worker.on('failed', async (job, err) => {
 
   const lis = readdirSync(testFolder);
 
-  console.log('faile');
-
-  console.log(lis);
-  console.log(err.message);
-  console.log(err.stack);
-
-  captureMessage(err.stack);
-
-  // Do something with the return value.
-
-  if (!fs.existsSync(originalFolder)) {
-    await AnimatedVideo.findByIdAndUpdate(
-      job.data.jobConfig.animated_video_id,
-      { status: 'ERROR' }
-    );
-    return;
-  }
-
-  fs.unlink(metaJsonFilePath, (err) => {
-    if (err) {
-      throw err;
-    }
-  });
-
-  await AnimatedVideo.findByIdAndUpdate(job.id, {
-    video_url:
-      process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
-    status: 'COMPLETED',
-  });
-});
-
-worker.on('completed', async (job, returnvalue) => {
-  console.log('completed');
-  const metaJsonFilePath = path.resolve(
-    path.dirname(process.cwd() + '/') +
-      `/pyhton-backend/test_data/${job.id}.json`
-  );
   captureMessage(job.id);
-  console.log('completed', job);
-
+  console.log(job, 'completed');
+  captureMessage(lis);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
