@@ -30,7 +30,7 @@ worker.on('error', async (job) => {
   console.error('error', job);
   captureMessage(JSON.stringify(job));
   // Do something with the return value.
-  console.log('err', job);
+  console.log(job, 'err');
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.data.jobConfig.animated_video_id}/animation_sound.mp4`
