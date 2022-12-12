@@ -61,7 +61,7 @@ worker.on('error', async (job) => {
 
 worker.on('failed', async (job, err) => {
   console.log('failed');
-  captureMessage(JSON.stringify(err));
+  captureMessage(err);
   // Do something with the return value.
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
