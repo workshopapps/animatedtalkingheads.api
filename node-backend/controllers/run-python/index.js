@@ -15,9 +15,9 @@ const queue = new Queue('animated-video', {
 });
 // new Redis(
 //   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
-// ).flushdb(()=>{
-//   console.log('olol')
-// })
+// ).flushdb(() => {
+//   console.log('olol');
+// });
 
 const processorFile = path.join(__dirname, 'processing.js');
 
@@ -27,7 +27,7 @@ const worker = new Worker(queue.name, processorFile, {
   ),
 });
 worker.on('error', async (job) => {
-  console.error('error', job);
+  console.error(job, 'error');
   captureMessage(JSON.stringify(job));
   // Do something with the return value.
   console.log(job, 'err');
