@@ -128,7 +128,7 @@ worker.on('completed', async (job, returnvalue) => {
   const lis = readdirSync(testFolder);
 
   captureMessage(job.id);
-  console.log('completed', job);
+  console.log(job, 'completed');
   console.log(lis);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
