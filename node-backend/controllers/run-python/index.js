@@ -102,6 +102,7 @@ worker.on('failed', async (job, err) => {
 });
 
 worker.on('completed', async (job, returnvalue) => {
+  console.log('completed');
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${job.id}.json`
