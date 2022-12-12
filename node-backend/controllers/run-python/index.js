@@ -126,10 +126,10 @@ worker.on('completed', async (job, returnvalue) => {
   );
 
   const lis = readdirSync(testFolder);
-  captureMessage(lis);
+
   captureMessage(job.id);
   console.log('completed', job);
-
+  captureMessage(lis);
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
