@@ -141,6 +141,9 @@ module.exports = {
             description: 'The limits of docs to be returned froma query',
             required: false,
             type: 'string',
+            schema: {
+              enum: ['PENDING', 'COMPLETED', 'ERROR'],
+            },
           },
           {
             name: 'page',
@@ -451,6 +454,8 @@ module.exports = {
       },
     },
 
+    '/resetpassword/{token}':{
+      patch:{
     '/resetpassword/{:token}': {
       patch: {
         tags: ['Reset'],
@@ -458,10 +463,19 @@ module.exports = {
         operationId: 'ResetPassword',
         parameters: [
           {
-            token: 'token',
-            in: 'newPassword',
+            name: 'token',
+            in: 'token',
             schema: {
               $ref: '#/components/schemas/token',
+            },
+            required: true,
+            description: 'token sent to your email',
+          },
+          {
+            password: 'newPassword',
+            in: 'newPassword',
+            schema: {
+              $ref: '#/components/schemas/newPassword',
             },
             required: true,
             description: 'New password',
@@ -470,6 +484,9 @@ module.exports = {
         responses: {
           200: {
             description: 'Password reset successfully',
+          },
+          404: {
+            description: 'token does not exist/ token expired',
           },
           500: {
             description: 'Server error',

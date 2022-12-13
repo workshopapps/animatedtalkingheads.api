@@ -99,6 +99,9 @@ mongoose.set('toObject', {
 const PORT = process.env.PORT || 4000;
 
 const fs = require('fs');
+const User = require('./models/User');
+const Email = require('./utils/email');
+const AnimatedVideo = require('./models/AnimatedVideo');
 
 if (!fs.existsSync('./uploads')) {
   fs.mkdirSync('./uploads');
