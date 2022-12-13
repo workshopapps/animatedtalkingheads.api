@@ -22,7 +22,7 @@ function randomIntFromInterval() {
 exports.generateAnimatedVideos = async (req, res, next) => {
   // console.log(req.decoded.email);
   const fetchedUser = await User.findOne({ email: req.decoded.email });
-  console.log(typeof(fetchedUser._id))
+  console.log(typeof fetchedUser._id);
   let animatedVideoDoc = await AnimatedVideo.findById(
     req.headers.animated_video_id
   );
@@ -94,7 +94,7 @@ exports.podcastuploader = async (req, res, next) => {
   //use the found user id as user_id
   let podcast = await Podcast.create({
     user_id: fetchedUser._id,
-    file_name:req.body.file_name,
+    file_name: req.body.file_name,
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,
     file_path: path.resolve(process.cwd(), '.' + save_file_directory),
   });
@@ -140,12 +140,18 @@ exports.getOnePodcast = async (req, res, next) => {
 
 exports.getAllUserUploadedPodcast = async (req, res, next) => {
   try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.page) || 20;
+    const skip = (page - 1) * limit;
+
     const fetchedUser = await User.findOne({ email: req.decoded.email });
     const podcasts = await Podcast.find({
       user_id: fetchedUser._id,
       // to use this later after phasing out user_id
       // owner:req.decoded.email
-    });
+    })
+      .limit(limit)
+      .skip(skip);
 
     // if (podcast.length < ) {
     //   next(new NotFound());

@@ -7,6 +7,8 @@ const move = require('./move-file');
 const process = require('process');
 const { captureMessage } = require('@sentry/node');
 const { readdirSync } = require('fs');
+const Email = require('../../utils/email');
+const User = require('../../models/User');
 
 const queue = new Queue('animated-video', {
   connection: new Redis(
@@ -47,7 +49,6 @@ worker.on('error', async (job) => {
   //   );
   //   return;
   // }
-
 
   // const savedAnimatedVideoPath = path.resolve(
   //   path.dirname(process.cwd() + '/') +
@@ -119,10 +120,8 @@ worker.on('failed', async (job, err) => {
       status: 'COMPLETED',
     });
   } catch (err) {
-
     captureMessage(err);
     console.log('ERR');
-
   }
 });
 
@@ -169,11 +168,19 @@ worker.on('completed', async (job, returnvalue) => {
     }
   });
 
-  await AnimatedVideo.findByIdAndUpdate(job.id, {
+  const animatedVid = await AnimatedVideo.findByIdAndUpdate(job.id, {
     video_url:
       process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
     status: 'COMPLETED',
   });
+
+  const user = await User.findById(animatedVid.user_id);
+
+  const sendEmail = new Email(
+    { ...user, email: 'adetunmbikenny@gmail.com' },
+    animatedVid.video_url
+  );
+  await sendEmail.sendVideo();
 });
 
 const runPythonScript = async (jobConfig) => {
@@ -182,7 +189,6 @@ const runPythonScript = async (jobConfig) => {
     { jobConfig },
     { jobId: jobConfig.animated_video_id }
   );
-
 };
 
 module.exports = runPythonScript;

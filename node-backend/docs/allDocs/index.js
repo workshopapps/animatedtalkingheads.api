@@ -10,7 +10,23 @@ module.exports = {
         tags: ['Podcast'],
         description: 'get all podcast a user has ever uploaded',
         operationId: 'getAllPodcast',
-        
+        parameters: [
+          {
+            name: 'limit',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'page',
+            in: 'query',
+            description:
+              'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
+            required: false,
+            type: 'string',
+          },
+        ],
         responses: {
           200: {
             description: 'Returns an array of all user podcasts',
@@ -52,12 +68,12 @@ module.exports = {
                     type: 'string',
                     format: 'binary',
                   },
-                file_name: {
-                      type: 'string',
-                      example: 'My podcast on Donald trump',
-                      description:
-                          'The podcast name that would be displayed on the dashboard',
-                      },
+                  file_name: {
+                    type: 'string',
+                    example: 'My podcast on Donald trump',
+                    description:
+                      'The podcast name that would be displayed on the dashboard',
+                  },
                 },
               },
             },
@@ -113,13 +129,26 @@ module.exports = {
         operationId: 'ViewAllAnimatedVideo',
         parameters: [
           {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, put in headers',
+            name: 'limit',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'status',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'page',
+            in: 'query',
+            description:
+              'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
+            required: false,
+            type: 'string',
           },
         ],
         responses: {

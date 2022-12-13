@@ -20,9 +20,19 @@ exports.getOneAnimatedVideo = async (req, res, next) => {
 
 exports.getAllUserCreatedAnimatedVideos = async (req, res, next) => {
   try {
-    const animatedVideoDocs = await AnimatedVideo.find({
+    const status = req.query.status;
+
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.page) || 20;
+    const skip = (page - 1) * limit;
+    const query = {
       user_id: req.header.user_id,
-    });
+    };
+
+    status && (query['status'] = status);
+    const animatedVideoDocs = await AnimatedVideo.find(query)
+      .limit(limit)
+      .skip(skip);
     if (!animatedVideoDocs.length) {
       return next(new NotFound());
     }
