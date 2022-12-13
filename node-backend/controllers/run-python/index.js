@@ -16,7 +16,7 @@ const queue = new Queue('animated-video', {
 // new Redis(
 //   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
 // ).flushdb(() => {
-//   console.log('olol');
+//   console.log('queue cleared');
 // });
 
 const processorFile = path.join(__dirname, 'processing.js');
