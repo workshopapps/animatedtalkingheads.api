@@ -141,6 +141,9 @@ module.exports = {
             description: 'The limits of docs to be returned froma query',
             required: false,
             type: 'string',
+            schema: {
+              enum: ['PENDING', 'COMPLETED', 'ERROR'],
+            },
           },
           {
             name: 'page',
