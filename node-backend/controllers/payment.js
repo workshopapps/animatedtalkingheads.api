@@ -59,7 +59,7 @@ const verifyRequest= (req,res) => {
             if(!payment){
                 return res.json({message:"something happened"});
             }
-            res.redirect('/receipt/'+payment._id);
+            res.status(201).json(payment);
         }).catch((e)=>{
             res.json({message:e});
         })
@@ -96,6 +96,17 @@ const getPayments=async (req,res)=>{
         res.json({error})
     }
 }
+const getUserPayment=async (req,res)=>{
+    try {
+        const transaction = await Payment.find({email:req.decoded.email})
+        if(!transaction){
+            return res.json({message:"no payments yet"})
+        }
+        res.json(transaction)
+    } catch (error) {
+        res.json({error})
+    }
+}
 
-module.exports={paymentRequest, verifyRequest, getReceipt, getPayments}
+module.exports={paymentRequest, verifyRequest, getReceipt, getPayments, getUserPayment}
 
