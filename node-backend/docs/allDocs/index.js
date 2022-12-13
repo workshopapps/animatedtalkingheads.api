@@ -257,6 +257,27 @@ module.exports = {
         },
       },
     },
+    '/subscription': {
+      get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Payment'],
+        description: 'Get a user payment',
+        operationId: 'specificuserpaymentget',
+
+        responses: {
+          200: {
+            description: 'An Array of User payments object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
     '/getpayments': {
       get: {
         tags: ['Payment'],

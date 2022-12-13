@@ -150,13 +150,13 @@ app.use(rauthRoutes);
 ///// payment route
 
 app.use(express.static(path.join(__dirname, 'public/')));
-app.use(express.static(path.join(process.cwd(), '/pyhton-backend/data/')));
+app.use(express.static(path.join(process.cwd(), '../pyhton-backend/data/')));
 app.set('view engine', pug);
 
 app.get('/error', (req, res) => {
   res.render('error.pug');
 });
-app.use('/', auth, paymentRoute);
+app.use('/', paymentRoute);
 
 app.all('*', (req, res, next) => {
   next(new NotFound());

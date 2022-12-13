@@ -16,7 +16,7 @@ const queue = new Queue('animated-video', {
 // new Redis(
 //   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
 // ).flushdb(() => {
-//   console.log('olol');
+//   console.log('queue cleared');
 // });
 
 const processorFile = path.join(__dirname, 'processing.js');
@@ -25,9 +25,10 @@ const worker = new Worker(queue.name, processorFile, {
   connection: new Redis(
     'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
   ),
+  concurrency: 2,
 });
 worker.on('error', async (job) => {
-  console.error(job, 'error');
+  console.error('error line 30');
   captureMessage(JSON.stringify(job));
   await AnimatedVideo.findByIdAndUpdate(job.data.jobConfig.animated_video_id, {
     status: 'ERROR',
@@ -46,6 +47,7 @@ worker.on('error', async (job) => {
   //   );
   //   return;
   // }
+
 
   // const savedAnimatedVideoPath = path.resolve(
   //   path.dirname(process.cwd() + '/') +
@@ -70,7 +72,7 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
-  console.log('err');
+  console.log('error line 70');
   try {
     const originalFolder = path.resolve(
       path.dirname(process.cwd() + '/') +
@@ -87,7 +89,7 @@ worker.on('failed', async (job, err) => {
 
     const lis = readdirSync(testFolder);
 
-    console.log('faile');
+    console.log('failed line 87');
 
     console.log(lis);
     console.log(err.message);
@@ -117,13 +119,15 @@ worker.on('failed', async (job, err) => {
       status: 'COMPLETED',
     });
   } catch (err) {
+
     captureMessage(err);
     console.log('ERR');
+
   }
 });
 
 worker.on('completed', async (job, returnvalue) => {
-  console.log('completed');
+  console.log('completed line 122');
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${job.id}.json`
@@ -136,8 +140,10 @@ worker.on('completed', async (job, returnvalue) => {
   const lis = readdirSync(testFolder);
 
   captureMessage(job.id);
+
   console.log(job, 'completed');
   captureMessage(lis);
+
   const originalFolder = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`
@@ -176,7 +182,7 @@ const runPythonScript = async (jobConfig) => {
     { jobConfig },
     { jobId: jobConfig.animated_video_id }
   );
-  console.log(res);
+
 };
 
 module.exports = runPythonScript;
