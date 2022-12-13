@@ -3,7 +3,7 @@ const User = require('../models/User');
 
 const auth = async (req, res, next) => {
   try {
-    console.log('auth start');
+    // console.log('auth start');
     const { authorization } = req.headers;
     if (!authorization || !authorization.startsWith('Bearer')) {
       return res
@@ -11,14 +11,14 @@ const auth = async (req, res, next) => {
         .json({ message: 'Unauthorized!! supply Bearer token' });
     }
     const token = authorization.split(' ')[1];
-    console.log(token);
+    // console.log(token);
 
     const payload = jwt.verify(token, 'thisShouldBeMovedToDotEnvLater');
-    console.log(payload);
+    // console.log(payload);
     const userId = await User.findOne({ email: payload.email });
     req.headers.user_id = userId.id;
     req.decoded = { email: payload.email, id: payload.id };
-    console.log('auth end, next');
+    // console.log('auth end, calling next...');
     next();
   } catch (error) {
     console.log('auth error');
