@@ -156,7 +156,7 @@ app.set('view engine', pug);
 app.get('/error', (req, res) => {
   res.render('error.pug');
 });
-app.use('/', auth, paymentRoute);
+app.use('/', paymentRoute);
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
