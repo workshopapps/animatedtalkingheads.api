@@ -454,8 +454,6 @@ module.exports = {
       },
     },
 
-    '/resetpassword/{token}':{
-      patch:{
     '/resetpassword/{:token}': {
       patch: {
         tags: ['Reset'],
@@ -463,19 +461,10 @@ module.exports = {
         operationId: 'ResetPassword',
         parameters: [
           {
-            name: 'token',
-            in: 'token',
-            schema: {
-              $ref: '#/components/schemas/token',
-            },
-            required: true,
-            description: 'token sent to your email',
-          },
-          {
-            password: 'newPassword',
+            token: 'token',
             in: 'newPassword',
             schema: {
-              $ref: '#/components/schemas/newPassword',
+              $ref: '#/components/schemas/token',
             },
             required: true,
             description: 'New password',
@@ -484,9 +473,6 @@ module.exports = {
         responses: {
           200: {
             description: 'Password reset successfully',
-          },
-          404: {
-            description: 'token does not exist/ token expired',
           },
           500: {
             description: 'Server error',

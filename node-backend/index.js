@@ -55,7 +55,6 @@ Sentry.init({
 
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
-console.log(__dirname);
 app.use(Sentry.Handlers.tracingHandler());
 
 // WRITE YOUR CODE AFTER THIS!!!!!!
@@ -68,7 +67,6 @@ app.use((req, res, next) => {
 const DB = process.env.mongo_url;
 
 app.use(morgan('tiny'));
-console.log(process.env.NODE_ENV);
 process.cwd().includes('omiebi') && (process.env.NODE_ENV = 'production');
 //get payment for development purpose
 const { getPayments } = require('./controllers/payment');
