@@ -1,9 +1,10 @@
 const { PythonShell } = require('python-shell');
 const path = require('path');
 
-const pythonExeFile = (process.env.NODE_ENV = 'development'
-  ? '/venv/Scripts/python.exe'
-  : '/venv/bin/python3.10');
+const pythonExeFile =
+  process.env.NODE_ENV == 'development'
+    ? '/pyhton-backend/venv/Scripts/python.exe'
+    : '/pyhton-backend/.venv/bin/python3.10';
 module.exports = async ({ data: { jobConfig } }) => {
   let options = {
     mode: 'text',
@@ -24,10 +25,12 @@ module.exports = async ({ data: { jobConfig } }) => {
           console.error(err);
           reject({ err });
         }
+
         console.log(res);
         resolve({ success: true, jobConfig });
       });
     } catch (err) {
+      console.error(err);
       reject({ err });
     }
   });

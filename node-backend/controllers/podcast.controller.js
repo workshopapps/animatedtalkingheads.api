@@ -6,7 +6,7 @@ const ApiError = require('../utils/errors/ApiError');
 const NotFound = require('../utils/errors/NotFound');
 const runPythonScript = require('./run-python');
 const AnimatedVideo = require('../models/AnimatedVideo');
-
+const User = require('../models/User');
 function randomIntFromInterval() {
   // min and max included
   let val = Math.floor(Math.random() * (13 - 1 + 1) + 1);
@@ -20,22 +20,24 @@ function randomIntFromInterval() {
 }
 
 exports.generateAnimatedVideos = async (req, res, next) => {
-  // console.log(req)
+  // console.log(req.decoded.email);
+  const fetchedUser = await User.findOne({ email: req.decoded.email });
+  console.log(typeof fetchedUser._id);
   let animatedVideoDoc = await AnimatedVideo.findById(
     req.headers.animated_video_id
   );
   if (!animatedVideoDoc) {
     animatedVideoDoc = await AnimatedVideo.create({
       podcast_id: req.params.podcastId,
-      user_id: req.headers.user_id,
+      user_id: fetchedUser._id,
+      // to use this later after phasing out user_id
+      // owner:req.decoded.email
     });
   }
 
   const podcastDoc = await Podcast.findById(req.params.podcastId);
   const metaJson = {
-    audio_path: path.resolve(
-      'C:\\Users\\Hi\\Documents\\hng9\\animatedtalkingheads.api\\node-backend\\uploads\\podcasts\\6388bf04bf67dd8d1a8eedfa\\6388bf04bf67dd8d1a8eedfa-1670082921265-sample2.mp3'
-    ),
+    audio_path: podcastDoc.file_path,
     audio_url: podcastDoc.file_url,
     avatar_map: {
       A: '01',
@@ -44,12 +46,13 @@ exports.generateAnimatedVideos = async (req, res, next) => {
     bg_path: req.body.bg_path || randomIntFromInterval(),
     dir_id: animatedVideoDoc.id,
   };
+
   console.log(metaJson);
+
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${animatedVideoDoc._id}.json`
   );
-  // C:\\Users\\Hi\\Documents\\hng9\\animatedtalkingheads.api\\node-backend\\uploads\\podcasts\\6388bf04bf67dd8d1a8eedfa\\6388bf04bf67dd8d1a8eedfa-1670082921265-sample2.mp3
   const animatedVideoFolderPath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/data/user_data/${animatedVideoDoc._id}`
@@ -73,7 +76,7 @@ exports.generateAnimatedVideos = async (req, res, next) => {
 };
 
 exports.podcastuploader = async (req, res, next) => {
-  console.log(req.body.ext);
+  console.log(req.headers.user_id);
   const user_file_path = (
     '/uploads/podcasts/' +
     req.headers.user_id +
@@ -84,9 +87,14 @@ exports.podcastuploader = async (req, res, next) => {
     user_file_path + req.headers.user_id + '-' + Date.now() + fileExt;
 
   save_file_directory = save_file_directory.replaceAll(' ', '');
-  console.log(save_file_directory);
+
+  //find user with email decoded from token
+  const fetchedUser = await User.findById(req.headers.user_id);
+  console.log(fetchedUser);
+  //use the found user id as user_id
   let podcast = await Podcast.create({
-    user_id: req.headers.user_id,
+    user_id: fetchedUser._id,
+    file_name: req.body.file_name,
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,
     file_path: path.resolve(process.cwd(), '.' + save_file_directory),
   });
@@ -99,7 +107,7 @@ exports.podcastuploader = async (req, res, next) => {
   } catch (err) {
     podcast = await Podcast.findOneAndDelete({
       id: podcast._id,
-      user_id: req.headers.user_id,
+      user_id: req.fetchedUser._id,
     });
     console.error(err);
     return next(
@@ -113,9 +121,12 @@ exports.podcastuploader = async (req, res, next) => {
 
 exports.getOnePodcast = async (req, res, next) => {
   try {
+    const fetchedUser = await User.findOne({ email: req.decoded.email });
     const podcast = await Podcast.findOne({
       _id: req.params.podcastId,
-      user_id: req.headers.user_id,
+      user_id: fetchedUser._id,
+      // to use this later after phasing out user_id
+      // owner:req.decoded.email
     });
 
     if (!podcast) {
@@ -129,9 +140,18 @@ exports.getOnePodcast = async (req, res, next) => {
 
 exports.getAllUserUploadedPodcast = async (req, res, next) => {
   try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.page) || 20;
+    const skip = (page - 1) * limit;
+
+    const fetchedUser = await User.findOne({ email: req.decoded.email });
     const podcasts = await Podcast.find({
-      user_id: req.headers.user_id,
-    });
+      user_id: fetchedUser._id,
+      // to use this later after phasing out user_id
+      // owner:req.decoded.email
+    })
+      .limit(limit)
+      .skip(skip);
 
     // if (podcast.length < ) {
     //   next(new NotFound());

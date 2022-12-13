@@ -12,7 +12,7 @@ module.exports.contact = async (req, res) => {
   await sendEmail(response);
 
 
-  const received = {name, email:process.env.USER,subject:'user query', message};
+  const received = {name, email:process.env.USER || 'hngvoxclips@gmail.com',subject:'user query', message};
 
   await sendEmail(received);
 

@@ -1,21 +1,63 @@
 module.exports = {
   paths: {
+    '/podcasts': {
+      get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Podcast'],
+        description: 'get all podcast a user has ever uploaded',
+        operationId: 'getAllPodcast',
+        parameters: [
+          {
+            name: 'limit',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'page',
+            in: 'query',
+            description:
+              'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
+            required: false,
+            type: 'string',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Returns an array of all user podcasts',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
     '/podcasts/upload': {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Podcast'],
         description: 'Upload a podcast',
         operationId: 'uploadPodcast',
-        parameters: [
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, put in headers',
-          },
-        ],
+        // parameters: [
+        //   {
+        //     in: 'header',
+        //     name: 'user_id',
+        //     schema: {
+        //       type: 'string',
+        //     },
+        //     required: true,
+        //     description: 'ID of the user to use, put in headers',
+        //   },
+        // ],
         requestBody: {
           content: {
             'multipart/form-data': {
@@ -25,6 +67,12 @@ module.exports = {
                   podcast: {
                     type: 'string',
                     format: 'binary',
+                  },
+                  file_name: {
+                    type: 'string',
+                    example: 'My podcast on Donald trump',
+                    description:
+                      'The podcast name that would be displayed on the dashboard',
                   },
                 },
               },
@@ -43,6 +91,11 @@ module.exports = {
     },
     '/animated-videos/{animatedVideoId}': {
       get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['AnimatedVideo'],
         description: 'Get an animated video',
         operationId: 'AnimatedPodcast',
@@ -56,15 +109,6 @@ module.exports = {
             required: true,
             description:
               'ID of the animated video you want to view its progress ',
-          },
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, put in headers',
           },
         ],
         responses: {
@@ -85,13 +129,26 @@ module.exports = {
         operationId: 'ViewAllAnimatedVideo',
         parameters: [
           {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, put in headers',
+            name: 'limit',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'status',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'page',
+            in: 'query',
+            description:
+              'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
+            required: false,
+            type: 'string',
           },
         ],
         responses: {
@@ -106,6 +163,11 @@ module.exports = {
     },
     '/podcasts/{podcastID}/generate-video': {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Podcast', 'AnimatedVideo'],
         description: 'Generate an animated video',
         operationId: 'GenerateVideo',
@@ -119,15 +181,15 @@ module.exports = {
             required: true,
             description: 'ID of the podcast to use',
           },
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, placed  in the headers',
-          },
+          // {
+          //   in: 'header',
+          //   name: 'user_id',
+          //   schema: {
+          //     type: 'string',
+          //   },
+          //   required: true,
+          //   description: 'ID of the user to use, placed  in the headers',
+          // },
         ],
         requestBody: {
           content: {
@@ -137,18 +199,21 @@ module.exports = {
                 properties: {
                   bg_path: {
                     type: 'string',
+                    example: '01',
                     description: 'background image, Use `01` for now',
                   },
-                  avater: {
+                  avatar_map: {
                     type: 'object',
                     properties: {
-                      a: {
+                      A: {
                         type: 'string',
+                        example: '03',
                         description:
                           'id for the avatar you want to use. Use `01` for now',
                       },
-                      b: {
+                      B: {
                         type: 'string',
+                        example: '01',
                         description:
                           'id for the avatar you want to use. Use `02` for now',
                       },
@@ -214,6 +279,27 @@ module.exports = {
         responses: {
           200: {
             description: 'User settings object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/subscription': {
+      get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Payment'],
+        description: 'Get a user payment',
+        operationId: 'specificuserpaymentget',
+
+        responses: {
+          200: {
+            description: 'An Array of User payments object returned back',
           },
           500: {
             description: 'Server error',
@@ -340,7 +426,6 @@ module.exports = {
       },
     },
 
-    
     '/rauth/forgotpassword': {
       post: {
         tags: ['Password'],
@@ -365,8 +450,34 @@ module.exports = {
         },
       },
     },
-    
-        
+
+    '/resetpassword/{:token}': {
+      patch: {
+        tags: ['Reset'],
+        description: 'Reset Password',
+        operationId: 'ResetPassword',
+        parameters: [
+          {
+            token: 'token',
+            in: 'newPassword',
+            schema: {
+              $ref: '#/components/schemas/token',
+            },
+            required: true,
+            description: 'New password',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Password reset successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
     '/rauth/contact': {
       post: {
         tags: ['Contact'],

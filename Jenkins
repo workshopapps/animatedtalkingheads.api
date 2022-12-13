@@ -22,7 +22,8 @@ pipeline {
 
 			steps {
                 
-				sh "sudo cp -fr ${WORKSPACE}/animatedtalkingheads.api/node-backend/* /home/omiebi/voxclips/backend"
+				sh "sudo cp -fr ${WORKSPACE}/animatedtalkingheads.api/node-backend/* /home/omiebi/animatedtalkingheads.api/node-backend/"
+				sh "sudo cp -fr ${WORKSPACE}/animatedtalkingheads.api/pyhton-backend/* /home/omiebi/animatedtalkingheads.api/pyhton-backend/"
 				sh "sudo systemctl restart voxclips_api.service"
 			} 
 	    }

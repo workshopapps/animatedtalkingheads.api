@@ -18,18 +18,8 @@ const {
   getOneAnimatedVideo,
   getAllUserCreatedAnimatedVideos,
 } = require('../../controllers/animatedvideo.controller');
+const auth = require('../../middlewares/authMiddleware');
 const podcastRouter = express.Router();
-podcastRouter.post(
-  '/:podcastId/generate-video',
-  checkUser,
-  generateAnimatedVideos
-);
-podcastRouter.get('/', checkUser, getAllUserUploadedPodcast);
-podcastRouter.get('/getpodcasts', getPodcast);
-
-podcastRouter.get('/:podcastId', checkUser, getOnePodcast);
-
-podcastRouter.delete('/:podcastid', podcastIdMiddleware, deletePodcast);
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('audio')) {
@@ -48,11 +38,19 @@ const upload = multer({
 });
 podcastRouter.post(
   '/upload',
-  checkUser,
+  auth,
   upload.single('podcast'),
   schemaMiddleware(podcastSchema),
   podcastuploader
 );
+
+podcastRouter.post('/:podcastId/generate-video', auth, generateAnimatedVideos);
+podcastRouter.get('/', auth, getAllUserUploadedPodcast);
+podcastRouter.get('/getpodcasts', getPodcast);
+
+podcastRouter.get('/:podcastId', getOnePodcast);
+
+podcastRouter.delete('/:podcastid', podcastIdMiddleware, deletePodcast);
 
 podcastRouter.get('/download', (req, res) => {
   const { file_path } = req.body;

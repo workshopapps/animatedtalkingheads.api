@@ -20,7 +20,6 @@ const NotFound = require('./utils/errors/NotFound');
 // sten-add auth0 router dir
 const auth0Router = require('./routes/auth0');
 
-
 //email
 const authRoutes = require('./routes/user/index');
 const rauthRoutes = require('./routes/emails/rindex');
@@ -48,7 +47,7 @@ Sentry.init({
       // router: someRouter,
     }),
   ],
-
+  maxValueLength: 700,
   // We recommend adjusting this value in production, or using tracesSampler
   // for finer control
   tracesSampleRate: 1.0,
@@ -56,15 +55,21 @@ Sentry.init({
 
 // The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
-
+console.log(__dirname);
 app.use(Sentry.Handlers.tracingHandler());
 
 // WRITE YOUR CODE AFTER THIS!!!!!!
+app.use((req, res, next) => {
+  process.env.reqHost = req.protocol + '://' + req.get('host');
+
+  next();
+});
 
 const DB = process.env.mongo_url;
 
 app.use(morgan('tiny'));
-
+console.log(process.env.NODE_ENV);
+process.cwd().includes('omiebi') && (process.env.NODE_ENV = 'production');
 //get payment for development purpose
 const { getPayments } = require('./controllers/payment');
 app.get('/getpayments', getPayments);
@@ -104,12 +109,14 @@ if (!fs.existsSync('./uploads/podcasts')) {
 }
 
 // app configs.
+app.options('*', cors());
+app.use(cors());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 // app.use(authRoutes);
 
 app.use(express.json());
-app.use(cors());
+
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/podcasts', podcastRouter);
@@ -125,20 +132,9 @@ app.use('/auth0', auth0Router); // sten-register auth0 url
 
 // app.use('/uploads', express.static('./uploads'));
 
-// app.use(authRoutes);
-// app.use(rauthRoutes);
- /// contatct page
-// app.post('/contact', (req, res) => {
-//   const { email = '', name = '', message = '' } = req.body
-
-//   mailer({ email, name, text: message }).then(() => {
-//     console.log(`Sent the message "${message}" from <${name}> ${email}.`);
-//     res.redirect('/#success');
-//   }).catch((error) => {
-//     console.log(`Failed to send the message "${message}" from <${name}> ${email} with the error ${error && error.message}`);
-//     res.redirect('/#error');
-//   })
-// })
+app.use(authRoutes);
+app.use(rauthRoutes);
+/// contatct page
 /* app.post('/contact', (req, res) => {
   const { email = '', name = '', message = '' } = req.body
 
@@ -151,16 +147,16 @@ app.use('/auth0', auth0Router); // sten-register auth0 url
   })
 }) */
 
-
 ///// payment route
 
 app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static(path.join(process.cwd(), '../pyhton-backend/data/')));
 app.set('view engine', pug);
 
 app.get('/error', (req, res) => {
   res.render('error.pug');
 });
-app.use('/', auth, paymentRoute);
+app.use('/', paymentRoute);
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
