@@ -30,6 +30,7 @@ const worker = new Worker(queue.name, processorFile, {
   concurrency: 2,
 });
 worker.on('error', async (job) => {
+  console.log(job.message);
   captureMessage(job);
 });
 

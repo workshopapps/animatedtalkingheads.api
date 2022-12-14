@@ -22,7 +22,6 @@ function randomIntFromInterval() {
 exports.generateAnimatedVideos = async (req, res, next) => {
   // console.log(req.decoded.email);
   const fetchedUser = await User.findOne({ email: req.decoded.email });
-  console.log(typeof fetchedUser._id);
   let animatedVideoDoc = await AnimatedVideo.findById(
     req.headers.animated_video_id
   );
@@ -43,8 +42,6 @@ exports.generateAnimatedVideos = async (req, res, next) => {
     bg_path: req.body.bg_path || randomIntFromInterval(),
     dir_id: animatedVideoDoc.id,
   };
-
-  console.log(metaJson);
 
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
