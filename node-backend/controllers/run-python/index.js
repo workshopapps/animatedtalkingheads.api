@@ -9,12 +9,9 @@ const { captureMessage } = require('@sentry/node');
 const { readdirSync } = require('fs');
 const Email = require('../../utils/email');
 const User = require('../../models/User');
+const redisConnection = require('../../utils/redis');
 
-const queue = new Queue('animated-video', {
-  connection: new Redis(
-    'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
-  ),
-});
+const queue = new Queue('animated-video', redisConnection);
 // new Redis(
 //   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
 // ).flushdb(() => {
@@ -24,9 +21,7 @@ const queue = new Queue('animated-video', {
 const processorFile = path.join(__dirname, 'processing.js');
 
 const worker = new Worker(queue.name, processorFile, {
-  connection: new Redis(
-    'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
-  ),
+  redisConnection,
   concurrency: 2,
 });
 worker.on('error', async (job) => {
@@ -67,7 +62,7 @@ worker.on('failed', async (job, err) => {
       }
     });
 
-    await AnimatedVideo.findByIdAndUpdate(job.id, {
+    const animatedVid = await AnimatedVideo.findByIdAndUpdate(job.id, {
       video_url:
         process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`,
       status: 'COMPLETED',

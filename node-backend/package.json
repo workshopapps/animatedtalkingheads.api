@@ -21,6 +21,7 @@
   "dependencies": {
     "@sentry/node": "^7.24.2",
     "@sentry/tracing": "^7.24.2",
+    "@sinclair/typebox": "^0.25.13",
     "async": "^3.2.4",
     "bcrypt": "^5.1.0",
     "bluebird": "^3.7.2",
