@@ -109,12 +109,10 @@ worker.on('completed', async (job, returnvalue) => {
 
   const user = await User.findById(animatedVid.user_id);
 
-  console.log('vid', animatedVid);
-
-  console.log('user', user);
-  console.log('url', animatedVid.id);
-
-  const sendEmail = new Email({ ...user }, animatedVid.video_url);
+  const sendEmail = new Email(
+    { ...user },
+    process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`
+  );
   try {
     await sendEmail.sendVideo();
   } catch (err) {
