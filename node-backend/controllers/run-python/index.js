@@ -30,6 +30,7 @@ const worker = new Worker(queue.name, processorFile, {
   concurrency: 2,
 });
 worker.on('error', async (job) => {
+  console.log(job.message);
   captureMessage(job);
 });
 
@@ -109,8 +110,15 @@ worker.on('completed', async (job, returnvalue) => {
 
   const user = await User.findById(animatedVid.user_id);
 
-  const sendEmail = new Email({ ...user }, animatedVid.video_url);
-  await sendEmail.sendVideo();
+  const sendEmail = new Email(
+    { ...user },
+    process.env.reqHost + `/user_data/` + `${job.id}/animation_sound.mp4`
+  );
+  try {
+    await sendEmail.sendVideo();
+  } catch (err) {
+    captureMessage(err);
+  }
 });
 
 const runPythonScript = async (jobConfig) => {
