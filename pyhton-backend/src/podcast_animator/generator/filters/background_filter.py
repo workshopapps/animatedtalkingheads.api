@@ -81,7 +81,6 @@ class BackgroundFilter:
         animation_sq_2 = [files for files in animation_path_2.iterdir()]
         self.bg_sq_files["01"]=animation_sq_1
         self.bg_sq_files["02"]=animation_sq_2
-        print(self.bg_sq_files)
 
     
     def _compose_animation_schema(self):                                 
