@@ -1,17 +1,14 @@
 const { Queue, Worker, Job } = require('bullmq');
-const Redis = require('ioredis').default;
 const path = require('path');
 const fs = require('fs');
 const AnimatedVideo = require('../../models/AnimatedVideo');
-const move = require('./move-file');
 const process = require('process');
 const { captureMessage } = require('@sentry/node');
-const { readdirSync } = require('fs');
 const Email = require('../../utils/email');
 const User = require('../../models/User');
 const redisConnection = require('../../utils/redis');
 
-const queue = new Queue('animated-video', redisConnection);
+const queue = new Queue('animated-video', { ...redisConnection });
 // new Redis(
 //   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
 // ).flushdb(() => {
@@ -21,7 +18,8 @@ const queue = new Queue('animated-video', redisConnection);
 const processorFile = path.join(__dirname, 'processing.js');
 
 const worker = new Worker(queue.name, processorFile, {
-  redisConnection,
+  ...redisConnection,
+
   concurrency: 2,
 });
 worker.on('error', async (job) => {
@@ -43,6 +41,10 @@ worker.on('failed', async (job, err) => {
       path.dirname(process.cwd() + '/') +
         `/pyhton-backend/data/user_data/${job.id}/`
     );
+
+    fs.rmdir(testFolder, { recursive: true, force: true }, (error) => {
+      throw error;
+    });
 
     captureMessage(err.stack);
 
