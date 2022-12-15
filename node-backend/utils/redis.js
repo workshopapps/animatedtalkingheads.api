@@ -1,3 +1,4 @@
+const Redis = require('ioredis');
 const redisConnection = {
   connection: new Redis(
     process.env.NODE_ENV == 'production'

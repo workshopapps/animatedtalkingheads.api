@@ -7,17 +7,6 @@ const NotFound = require('../utils/errors/NotFound');
 const runPythonScript = require('./run-python');
 const AnimatedVideo = require('../models/AnimatedVideo');
 const User = require('../models/User');
-function randomIntFromInterval() {
-  // min and max included
-  let val = Math.floor(Math.random() * (13 - 1 + 1) + 1);
-  val = String(val);
-  if (val < 10) {
-    val = 0 + val;
-    return val;
-  }
-
-  return val;
-}
 
 exports.generateAnimatedVideos = async (req, res, next) => {
   // console.log(req.decoded.email);
@@ -39,7 +28,7 @@ exports.generateAnimatedVideos = async (req, res, next) => {
     audio_path: podcastDoc.file_path,
     audio_url: podcastDoc.file_url,
     avatar_map: req.body.avatar_map,
-    bg_path: req.body.bg_path || randomIntFromInterval(),
+    bg_path: req.body.bg_path,
     dir_id: animatedVideoDoc.id,
   };
 
@@ -70,7 +59,6 @@ exports.generateAnimatedVideos = async (req, res, next) => {
 };
 
 exports.podcastuploader = async (req, res, next) => {
-  console.log(req.headers.user_id);
   const user_file_path = (
     '/uploads/podcasts/' +
     req.headers.user_id +
@@ -84,7 +72,7 @@ exports.podcastuploader = async (req, res, next) => {
 
   //find user with email decoded from token
   const fetchedUser = await User.findById(req.headers.user_id);
-  console.log(fetchedUser);
+
   //use the found user id as user_id
   let podcast = await Podcast.create({
     user_id: fetchedUser._id,
@@ -152,6 +140,24 @@ exports.getAllUserUploadedPodcast = async (req, res, next) => {
     // }
     res.json(podcasts);
   } catch (err) {
+    next(err);
+  }
+};
+
+exports.deletePodcast = async (req, res, next) => {
+  try {
+    let podcast = await Podcast.findById({
+      _id: req.params.podcastId,
+      user_id: req.headers.user_id,
+    });
+    if (!podcast) next(new NotFound());
+    fs.unlink(podcast.file_path, (err) => {
+      throw err;
+    });
+    await podcast.remove();
+    res.status(204).send();
+  } catch (err) {
+    console.log(err);
     next(err);
   }
 };

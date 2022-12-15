@@ -1,6 +1,7 @@
 const AnimatedVideo = require('../models/AnimatedVideo');
 const NotFound = require('../utils/errors/NotFound');
-
+const fs = require('fs');
+const path = require('path');
 exports.getOneAnimatedVideo = async (req, res, next) => {
   try {
     const animatedVideoDoc = await AnimatedVideo.findOne({
@@ -39,6 +40,29 @@ exports.getAllUserCreatedAnimatedVideos = async (req, res, next) => {
     res.json('animatedVideoDocs');
   } catch (err) {
     console.log('err');
+    next(err);
+  }
+};
+
+exports.deleteAnimatedVideo = async (req, res, next) => {
+  try {
+    let animatedVideoDoc = await AnimatedVideo.findOne({
+      _id: req.params.animatedVideoId,
+      user_id: req.headers.user_id,
+    });
+    if (!animatedVideoDoc) next(new NotFound());
+    const animatedVideoFolder = path.resolve(
+      process.cwd() +
+        '/' +
+        `/pyhton-backend/data/user_data/${animatedVideoDoc.id}`
+    );
+    fs.rmdir(animatedVideoFolder, { recursive: true, force: true }, (err) => {
+      throw err;
+    });
+    await animatedVideoDoc.remove();
+    res.status(204).send();
+  } catch (err) {
+    console.error(err);
     next(err);
   }
 };

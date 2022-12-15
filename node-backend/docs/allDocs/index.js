@@ -698,7 +698,7 @@ module.exports = {
           },
         },
       },
-      '/podcast/{podcastid}': {
+      '/podcasts/{podcastid}': {
         delete: {
           tags: ['delete a podcast of user'],
           description: "delete user's podcast",
@@ -712,6 +712,50 @@ module.exports = {
               },
               required: true,
               description: 'podcast id',
+            },
+          ],
+          responses: {
+            200: {
+              description: 'user podcasts deleted',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Todo',
+                  },
+                },
+              },
+            },
+            404: {
+              description: 'Todo is not found',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Error',
+                    example: {
+                      message: "We can't find the todo",
+                      internal_code: 'Invalid id',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/animated-videos/{animatedVideoId}': {
+        delete: {
+          tags: ['delete a animated video of user'],
+          description: "delete animatedVideo's podcast",
+          operationId: 'animatedVideo',
+          parameters: [
+            {
+              name: 'animatedVideoId',
+              in: 'path',
+              schema: {
+                $ref: '#/components/schemas/id',
+              },
+              required: true,
+              description: 'animatedVideo id',
             },
           ],
           responses: {
