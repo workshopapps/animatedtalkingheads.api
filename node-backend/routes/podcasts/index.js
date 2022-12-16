@@ -11,7 +11,6 @@ const {
   generateAnimatedVideos,
   deletePodcast,
 } = require('../../controllers/podcast.controller');
-const getPodcast = require('../../controllers/podcastgetter');
 
 const {
   getOneAnimatedVideo,
@@ -53,7 +52,6 @@ podcastRouter.post(
   generateAnimatedVideos
 );
 podcastRouter.get('/', auth, getAllUserUploadedPodcast);
-podcastRouter.get('/getpodcasts', auth, getPodcast);
 
 podcastRouter.get('/:podcastId', auth, getOnePodcast);
 
