@@ -1,4 +1,3 @@
-from pathlib import Path
 from PIL.Image import Image as img_obj
 from PIL import Image
 
