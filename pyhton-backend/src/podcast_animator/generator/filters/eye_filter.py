@@ -24,8 +24,8 @@ class EyeFilter:
         self.avatar_map = avatar_map
         self.animation_frames = None
         self.blinking_sequences = self.blinking()  # sad
-        self.lookleft_sequences = self.lookleft() 
-        self.lookup_sequences = self.lookup() 
+        self.lookleft_sequences = self.lookleft()
+        self.lookup_sequences = self.lookup()
         self._compose_animation_schema()
 
     @property
@@ -41,7 +41,9 @@ class EyeFilter:
             speaker: sorted(
                 [
                     Path(file)
-                    for file in os.scandir(self.avatar_map[speaker] / "eyes/sad") #"eyes/blinking"
+                    for file in os.scandir(
+                        self.avatar_map[speaker] / "eyes/sad"
+                    )  # "eyes/blinking"
                     if file.is_file()
                 ],
                 key=lambda x: str(x.name).split(".")[0].split("_")[1],
@@ -58,7 +60,9 @@ class EyeFilter:
             speaker: sorted(
                 [
                     Path(file)
-                    for file in os.scandir(self.avatar_map[speaker] / "eyes/lookleft") #"eyes/lookleft"
+                    for file in os.scandir(
+                        self.avatar_map[speaker] / "eyes/lookleft"
+                    )  # "eyes/lookleft"
                     if file.is_file()
                 ],
                 key=lambda x: str(x.name).split(".")[0].split("_")[1],
@@ -98,9 +102,9 @@ class EyeFilter:
 
         randomnumbers = [1, 2, 3, 4]
         randomblinks = [72, 120, 168, 240]
-        left = self.lookleft_sequences 
+        left = self.lookleft_sequences
         up = self.lookup_sequences
-        randomeyemovemnt = [left,up]
+        randomeyemovemnt = [left, up]
         for avatar_id in self.speaker_labels:
             counter = 1
             blinktime = random.choice(randomblinks)
@@ -119,9 +123,7 @@ class EyeFilter:
                     counter += len(self.blinking_sequences[avatar_id])
 
                     # eye movement
-                    for index, look_image in enumerate(
-                        eyemovement[avatar_id]
-                    ):
+                    for index, look_image in enumerate(eyemovement[avatar_id]):
                         loop_index = counter + index
                         if loop_index > self.animation_frame_length:
                             break

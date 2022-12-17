@@ -5,6 +5,8 @@ const animatedVideoSchema = new Schema({
   video_url: {
     type: String,
   },
+
+  video_path: String,
   title: {
     type: String,
   },

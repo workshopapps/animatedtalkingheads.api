@@ -1,20 +1,27 @@
 //const User = require('../models/User');
 const sendEmail = require('./../utils/contactemail');
 
-
 module.exports.contact = async (req, res) => {
-  const {name, email, message} = req.body
+  const { name, email, message } = req.body;
 
- try{
+  try {
+    const response = {
+      name,
+      email,
+      subject: 'message received by customer care',
+      message: 'we will respond in 24hrs',
+    };
 
-  const response = {name, email, subject:'message received by customer care', message:'we will respond in 24hrs'};
+    await sendEmail(response);
 
-  await sendEmail(response);
+    const received = {
+      name,
+      email: process.env.USER || 'hngvoxclips@gmail.com',
+      subject: 'user query',
+      message,
+    };
 
-
-  const received = {name, email:process.env.USER || 'hngvoxclips@gmail.com',subject:'user query', message};
-
-  await sendEmail(received);
+    await sendEmail(received);
 
 
   res.send({success:true,msg:"message sent"});
@@ -22,5 +29,5 @@ module.exports.contact = async (req, res) => {
   }catch(err){
       res.send({success:false,msg:"message not sent"})
    };
- //console.log(name, email, message)
+ console.log(name, email, message)
 }

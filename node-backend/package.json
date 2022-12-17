@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon ./index.js",
+    "ts": "cross-env NODE_ENV=development node -r @swc-node/register ./index.ts",
     "start": "cross-env NODE_ENV=production node ./index.js",
     "debug": "node --inspect-brk ./index.js"
   },
@@ -21,6 +22,7 @@
   "dependencies": {
     "@sentry/node": "^7.24.2",
     "@sentry/tracing": "^7.24.2",
+    "@sinclair/typebox": "0.24.43",
     "async": "^3.2.4",
     "bcrypt": "^5.1.0",
     "bluebird": "^3.7.2",
@@ -35,7 +37,6 @@
     "g": "^2.0.1",
     "html-to-text": "^9.0.2",
     "ioredis": "5.2.4",
-    "joi": "^17.7.0",
     "jsonwebtoken": "^8.5.1",
     "mailtrap": "^3.0.1",
     "mongodb": "^4.12.1",
@@ -53,6 +54,7 @@
     "stripe": "^11.1.0",
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.6.0",
+    "typebox-express-middleware": "^0.0.2",
     "validator": "^13.7.0",
     "yarn": "^1.22.19"
   },

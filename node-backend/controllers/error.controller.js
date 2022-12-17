@@ -1,5 +1,8 @@
 const ApiError = require('./../utils/errors/ApiError');
+const Typebox = require('@sinclair/typebox');
 const { ValidationError, object } = require('joi');
+const { TypeboxError } = require('typebox-express-middleware');
+const { captureMessage } = require('@sentry/node');
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;
@@ -26,32 +29,12 @@ const handleJWTError = () =>
 const handleJWTExpiredError = () =>
   new ApiError('Your token has expired! Please log in again.', 401);
 
-const sendErrorDev = (err, req, res) => {
+const sendError = (err, req, res) => {
+  console.error('ERROR 💥', err);
+
   return res.status(err.statusCode).json({
     status: err.status,
-    ...err,
     message: err.message,
-    stack: err.stack,
-  });
-};
-
-const sendErrorProd = (err, req, res) => {
-  // A) API
-
-  // A) Operational, trusted error: send message to client
-  if (err.isOperational) {
-    return res.status(err.statusCode).json({
-      status: err.status,
-      message: err.message,
-    });
-  }
-  // B) Programming or other unknown error: don't leak error details
-  // 1) Log error
-  console.error('ERROR 💥', err);
-  // 2) Send generic message
-  return res.status(500).json({
-    status: 'error',
-    message: 'Something went very wrong!',
   });
 };
 
@@ -76,9 +59,13 @@ module.exports = (err, req, res, next) => {
   else if (error instanceof ValidationError)
     error = error.details.map((err) => err.message);
   else if (error.type === 'NotFound') error = error;
-  else {
+  else if (err.name == 'TypeboxError') {
+    error.message = error.errors;
+    error = error;
+  } else {
     error.message = 'Internal Server Error';
+    captureMessage(error);
   }
-  sendErrorProd(error, req, res);
+  sendError(error, req, res);
   // }
 };
