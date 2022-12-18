@@ -158,10 +158,14 @@ app.get('/error', (req, res) => {
 });
 app.use('/', paymentRoute);
 
+
+//use the dashboard
+const {router} = require('./controllers/run-python/index')
+app.use('/admin/queues',router)
 app.all('*', (req, res, next) => {
   next(new NotFound());
 });
-
+console.log(router)
 app.use(Sentry.Handlers.errorHandler());
 
 app.use(errorController);

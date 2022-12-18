@@ -7,12 +7,21 @@ const move = require('./move-file');
 const process = require('process');
 const { captureMessage } = require('@sentry/node');
 const { readdirSync } = require('fs');
+const { createBullBoard } = require('bull-board')
+const { BullMQAdapter } = require('bull-board/bullMQAdapter')
+
 
 const queue = new Queue('animated-video', {
   connection: new Redis(
     'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
   ),
 });
+
+const { router, setQueues, replaceQueues, addQueue, removeQueue } = createBullBoard([
+  new BullMQAdapter(queue),
+])
+
+
 // new Redis(
 //   'rediss://red-ceadi1en6mphc8t71nvg:qaMmuQ9hi80WccfE5ldZUIUYhisD5pME@oregon-redis.render.com:6379'
 // ).flushdb(() => {
@@ -176,4 +185,4 @@ const runPythonScript = async (jobConfig) => {
   console.log('line 176 ran')
 };
 
-module.exports = runPythonScript;
+module.exports = {runPythonScript, router};

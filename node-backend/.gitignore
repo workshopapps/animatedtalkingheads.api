@@ -1,6 +1,7 @@
 node_modules
 uploads/
-
+./backend-node/.rest
+.rest
 .env
 env
 ./backend-node/.env

@@ -4,7 +4,7 @@ const { writeFile, readFile } = require('fs/promises');
 const Podcast = require('./../models/Podcast');
 const ApiError = require('../utils/errors/ApiError');
 const NotFound = require('../utils/errors/NotFound');
-const runPythonScript = require('./run-python');
+const {runPythonScript} = require('./run-python');
 const AnimatedVideo = require('../models/AnimatedVideo');
 const User = require('../models/User');
 function randomIntFromInterval() {
