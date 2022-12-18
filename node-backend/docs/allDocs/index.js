@@ -10,7 +10,23 @@ module.exports = {
         tags: ['Podcast'],
         description: 'get all podcast a user has ever uploaded',
         operationId: 'getAllPodcast',
-        
+        parameters: [
+          {
+            name: 'limit',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'page',
+            in: 'query',
+            description:
+              'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
+            required: false,
+            type: 'string',
+          },
+        ],
         responses: {
           200: {
             description: 'Returns an array of all user podcasts',
@@ -52,12 +68,12 @@ module.exports = {
                     type: 'string',
                     format: 'binary',
                   },
-                file_name: {
-                      type: 'string',
-                      example: 'My podcast on Donald trump',
-                      description:
-                          'The podcast name that would be displayed on the dashboard',
-                      },
+                  file_name: {
+                    type: 'string',
+                    example: 'My podcast on Donald trump',
+                    description:
+                      'The podcast name that would be displayed on the dashboard',
+                  },
                 },
               },
             },
@@ -113,13 +129,29 @@ module.exports = {
         operationId: 'ViewAllAnimatedVideo',
         parameters: [
           {
-            in: 'header',
-            name: 'user_id',
+            name: 'limit',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'status',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
             schema: {
-              type: 'string',
+              enum: ['PENDING', 'COMPLETED', 'ERROR'],
             },
-            required: true,
-            description: 'ID of the user to use, put in headers',
+          },
+          {
+            name: 'page',
+            in: 'query',
+            description:
+              'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
+            required: false,
+            type: 'string',
           },
         ],
         responses: {
@@ -666,7 +698,7 @@ module.exports = {
           },
         },
       },
-      '/podcast/{podcastid}': {
+      '/podcasts/{podcastid}': {
         delete: {
           tags: ['delete a podcast of user'],
           description: "delete user's podcast",
@@ -680,6 +712,50 @@ module.exports = {
               },
               required: true,
               description: 'podcast id',
+            },
+          ],
+          responses: {
+            200: {
+              description: 'user podcasts deleted',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Todo',
+                  },
+                },
+              },
+            },
+            404: {
+              description: 'Todo is not found',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Error',
+                    example: {
+                      message: "We can't find the todo",
+                      internal_code: 'Invalid id',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/animated-videos/{animatedVideoId}': {
+        delete: {
+          tags: ['delete a animated video of user'],
+          description: "delete animatedVideo's podcast",
+          operationId: 'animatedVideo',
+          parameters: [
+            {
+              name: 'animatedVideoId',
+              in: 'path',
+              schema: {
+                $ref: '#/components/schemas/id',
+              },
+              required: true,
+              description: 'animatedVideo id',
             },
           ],
           responses: {

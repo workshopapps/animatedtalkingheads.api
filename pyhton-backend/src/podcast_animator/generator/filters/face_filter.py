@@ -1,4 +1,3 @@
-from pathlib import Path
 from PIL.Image import Image as img_obj
 from PIL import Image
 
@@ -16,7 +15,7 @@ class FaceFilter:
         self.avatar_map = avatar_map
 
     def _compose_animation_schema(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def add_to_canvas(self, frame_data: tuple[int | img_obj]) -> img_obj:
         frame_index, canvas = frame_data

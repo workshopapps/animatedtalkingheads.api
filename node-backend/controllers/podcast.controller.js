@@ -7,22 +7,10 @@ const NotFound = require('../utils/errors/NotFound');
 const {runPythonScript} = require('./run-python');
 const AnimatedVideo = require('../models/AnimatedVideo');
 const User = require('../models/User');
-function randomIntFromInterval() {
-  // min and max included
-  let val = Math.floor(Math.random() * (13 - 1 + 1) + 1);
-  val = String(val);
-  if (val < 10) {
-    val = 0 + val;
-    return val;
-  }
-
-  return val;
-}
 
 exports.generateAnimatedVideos = async (req, res, next) => {
   // console.log(req.decoded.email);
   const fetchedUser = await User.findOne({ email: req.decoded.email });
-  console.log(typeof(fetchedUser._id))
   let animatedVideoDoc = await AnimatedVideo.findById(
     req.headers.animated_video_id
   );
@@ -39,15 +27,10 @@ exports.generateAnimatedVideos = async (req, res, next) => {
   const metaJson = {
     audio_path: podcastDoc.file_path,
     audio_url: podcastDoc.file_url,
-    avatar_map: {
-      A: '01',
-      B: '02',
-    },
-    bg_path: req.body.bg_path || randomIntFromInterval(),
+    avatar_map: req.body.avatar_map,
+    bg_path: req.body.bg_path,
     dir_id: animatedVideoDoc.id,
   };
-
-  console.log(metaJson);
 
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
@@ -76,7 +59,6 @@ exports.generateAnimatedVideos = async (req, res, next) => {
 };
 
 exports.podcastuploader = async (req, res, next) => {
-  console.log(req.headers.user_id);
   const user_file_path = (
     '/uploads/podcasts/' +
     req.headers.user_id +
@@ -90,11 +72,11 @@ exports.podcastuploader = async (req, res, next) => {
 
   //find user with email decoded from token
   const fetchedUser = await User.findById(req.headers.user_id);
-  console.log(fetchedUser);
+
   //use the found user id as user_id
   let podcast = await Podcast.create({
     user_id: fetchedUser._id,
-    file_name:req.body.file_name,
+    file_name: req.body.file_name,
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,
     file_path: path.resolve(process.cwd(), '.' + save_file_directory),
   });
@@ -140,18 +122,42 @@ exports.getOnePodcast = async (req, res, next) => {
 
 exports.getAllUserUploadedPodcast = async (req, res, next) => {
   try {
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.page) || 20;
+    const skip = (page - 1) * limit;
+
     const fetchedUser = await User.findOne({ email: req.decoded.email });
     const podcasts = await Podcast.find({
       user_id: fetchedUser._id,
       // to use this later after phasing out user_id
       // owner:req.decoded.email
-    });
+    })
+      .limit(limit)
+      .skip(skip);
 
     // if (podcast.length < ) {
     //   next(new NotFound());
     // }
     res.json(podcasts);
   } catch (err) {
+    next(err);
+  }
+};
+
+exports.deletePodcast = async (req, res, next) => {
+  try {
+    let podcast = await Podcast.findById({
+      _id: req.params.podcastId,
+      user_id: req.headers.user_id,
+    });
+    if (!podcast) next(new NotFound());
+    fs.unlink(podcast.file_path, (err) => {
+      throw err;
+    });
+    await podcast.remove();
+    res.status(204).send();
+  } catch (err) {
+    console.log(err);
     next(err);
   }
 };
