@@ -23,17 +23,17 @@ const sendResetPasswordMail = async(email, token) => {
     }
     await transporter.sendMail(mailOptions, (error, info)=> {
       if(error){
-        return console.log("Error in sending mail", error)
+        return res.send("Error in sending mail", error)
       }
       else{
-          console.log('Email sent: ' + info.response)
+          res.send('Email sent: ' + info.response)
       } 
   });
     } catch (error) {
       res.status(400).send({success:false,msg:"ch"});
     }
 
-} */
+}
 // module.exports.forgetpassword_post = async (req, res) => {
 //   console.log('forget password')
 // };
@@ -89,7 +89,6 @@ const createToken = (email) => {
         nttponly: true,
         secure: req.secure | req.headers['x-forwarded-proto'] === 'https'
     });
-     // Remove password from output
   user.password = undefined;
 
   res.status(statusCode).json({
