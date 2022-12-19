@@ -1,20 +1,18 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-//const randomstring = require("randomstring");
-//const res = require("express/lib/response");
-const Email = require('../utils/email');
-const crypto = require('crypto');
+const nodemailer = require("nodemailer");
+const randomstring = require("randomstring");
+const res = require("express/lib/response")
 
-/* const sendResetPasswordMail = async(email, token) => {
+const sendResetPasswordMail = async(email, token) => {
 
   try {
     const transporter = nodemailer.createTransport({  
-        host: "smtp.mailtrap.io",
-        port: 2525,
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
         auth: {
-            user: "385347a8cac45c",
-            pass: "318b8146500b7e"
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
         }
     });
     const mailOptions = {
@@ -25,17 +23,17 @@ const crypto = require('crypto');
     }
     await transporter.sendMail(mailOptions, (error, info)=> {
       if(error){
-        return console.log("Error in sending mail", error)
+        return res.send("Error in sending mail", error)
       }
       else{
-          console.log('Email sent: ' + info.response)
+          res.send('Email sent: ' + info.response)
       } 
   });
     } catch (error) {
       res.status(400).send({success:false,msg:"ch"});
     }
 
-} */
+}
 // module.exports.forgetpassword_post = async (req, res) => {
 //   console.log('forget password')
 // };
@@ -91,7 +89,6 @@ const createToken = (email) => {
         nttponly: true,
         secure: req.secure | req.headers['x-forwarded-proto'] === 'https'
     });
-     // Remove password from output
   user.password = undefined;
 
   res.status(statusCode).json({
