@@ -1,5 +1,12 @@
 module.exports = {
   components: {
+    securitySchemes:{
+    bearerAuth:{
+      type:'http',
+      scheme: 'bearer',
+      bearerFormat:"JWT"
+    }
+  },
     head_file_path: {
       type: 'string',
       description:
@@ -12,15 +19,41 @@ module.exports = {
         'The file_path can point the dir containing user preffered avatar background',
       example: '.assets/scenery/background1.png',
     },
+    token: {
+      type: 'string',
+      description: 'The id of the user token',
+      example: '637747b42342eb4566c90133',
+    },
+    newPassword: {
+      type: 'string',
+      description: 'The id of the user token',
+      example: 'thisismynewpassword',
+    },
     user_id: {
       type: 'string',
       description: 'The id of the user customizing avatar',
       example: '637747b42342eb4566c90133',
     },
+    
     forgot_email: {
       type: 'string',
       description: 'Email used to register',
       example: 'example@gmail.com',
+    },
+    contact_name:{
+      type: 'string',
+      description: 'name of someone contacting',
+      example: 'shegz',
+    },
+    contact_email:{
+      type: 'string',
+      description: 'email of someone contacting',
+      example: 'shegz@gmail.com',
+    },
+    contact_message:{
+      type: 'string',
+      description:'message',
+      example: 'Hi there i am testing',
     },
 
     auth_email: {
@@ -48,6 +81,54 @@ module.exports = {
       description: 'The email of the user subscribing',
       example: 'johndefinitelynot-doe@gmail.com',
     },
+    youtube:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    twitter:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:true
+
+    },
+    facebook:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    googleDrive:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    oneDrive:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    dropBox:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
+    instagram:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:true
+
+    },
+    linkedIn:{
+      type:'boolean',
+      description:'do you want your videos linked to your social media?',
+      example:false
+
+    },
 
     schemas: {
       User: {
@@ -63,6 +144,22 @@ module.exports = {
           },
         },
       },
+      token: {
+        type: 'object',
+        properties: {
+          token: {
+            $ref: '#/components/token',
+          },
+        },
+      },
+      newPassword: {
+        type: 'object',
+        properties: {
+          token: {
+            $ref: '#/components/newPassword',
+          },
+        },
+      },
       Payment: {
         type: 'object',
         properties: {
@@ -72,11 +169,39 @@ module.exports = {
           full_name: {
             $ref: '#/components/full_name',
           },
-          email: {
-            $ref: '#/components/email',
-          },
+          
         },
       },
+      
+      UserSettings:{
+        type:'object',
+        properties:{
+          youtube: {
+            $ref: '#/components/youtube',
+          },
+          twitter: {
+            $ref: '#/components/twitter',
+          },
+          facebook: {
+            $ref: '#/components/facebook',
+          },
+          googleDrive: {
+            $ref: '#/components/googleDrive',
+          },
+          oneDrive: {
+            $ref: '#/components/oneDrive',
+          },
+          dropBox: {
+            $ref: '#/components/dropBox',
+          },
+          instagram: {
+            $ref: '#/components/instagram',
+          },
+          linkedIn: {
+            $ref: '#/components/linkedIn',
+          },
+      }
+    },
       Podcast: {
         type: 'object',
         properties: {
@@ -105,6 +230,20 @@ module.exports = {
           },
         },
       },
+      Contact: {
+        type: 'object',
+        properties: {
+          name: {
+            $ref: '#/components/contact_name',
+          },
+          email: {
+            $ref: '#/components/contact_email',
+          },
+          message: {
+            $ref: '#/components/contact_message',
+          },
+        },
+      },
       Password: {
         type: 'object',
         properties: {
@@ -127,16 +266,5 @@ module.exports = {
         },
       },
     },
-    // Error_Types: {
-    //   type: 'object',
-    //   properties: {
-    //     message: {
-    //       type: 'string',
-    //     },
-    //     internal_code: {
-    //       type: 'string',
-    //     },
-    //   },
-    // },
   },
 };

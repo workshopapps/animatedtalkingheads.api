@@ -1,78 +1,59 @@
 const nodemailer = require('nodemailer');
-const User = require('../models/User'); //get user email from user model
-const Email = require('email-templates');
+//const User = require('../models/User'); //get user email from user model
+const pug = require('pug');
+const { convert } = require('html-to-text');
+require('dotenv').config();
 
-const sendEmail = async options => {
+module.exports = class Email {
+  constructor(user, url) {
+    this.to = user.email;
+    this.email = user.email;
+    this.url = url;
+    this.from = `voxclip <${process.env.EMAIL_FROM} || hngvoxclips@gmail.com>`;
+  }
 
-    const transporter = nodemailer.createTransport({
-        host: "smtp.mailtrap.io",
-        port: 2525,
-        auth:{
-            user: '385347a8cac45c',
-            pass:'318b8146500b7e'
-        }
+  newTransport() {
+    return nodemailer.createTransport({
+      service: process.env.SERVICE || 'gmail',
+      host: process.env.HOST || 'smtp.gmail.com',
+      secre: false,
+      auth: {
+        user: process.env.USER || 'hngvoxclips@gmail.com',
+        pass: process.env.PASS || 'kcxmkkumsafeeiur',
+      },
+    });
+  }
+  async send(template, subject) {
+    // 1) Render HTML based on a pug template
+    console.log(this.url);
+    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+      email: this.email,
+      url: this.url,
+      subject,
     });
 
+    // 2) Define email options
     const mailOptions = {
-        from: 'name <tivicky98@gmail.com>',
-        to: options.email,
-        subject: options.subject ,
-        text: options.message,
-        /*  attachments: [{
-            filename: "${ User }.mp4",
-            path: file_path
-        }] */
+      from: this.from,
+      to: this.to,
+      subject,
+      html,
+      text: convert(html),
     };
 
-    await transporter.sendEmail(mailOptions, (error, info)=> {
-        if(error){
-            console.log("Error in sending mail", error)
-        }
-        else{
-            console.log('Email sent: ' + info.response)
-        } 
-    });
+    // 3) Create a transport and send email
+    await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendVideo() {
+    console.log(this.email);
+    await this.send('video', 'your video link is here');
+  }
+
+  async sendPasswordReset() {
+    await this.send(
+      'passwordReset',
+      'Your password reset token (valid for only 10 minutes)'
+    );
+  }
 };
-    
-
-    //const transporter = nodemailer.createTransport({
-/*         service:'gmail',
-        auth:{
-            user: process.env.EMAIL_USERNAME,
-            pass:process.env.EMAIL_PASSWORD
-        } */
-   /*  const email = new Email({
-        message: {
-        from: 'shegzyrey<withlove@voxclips.com>'
-        },
-        send: true,
-        preview: false,
-        transport: {    
-            host: "smtp.mailtrap.io",
-            port: 2525,
-            ssl: false,
-            tls: true,
-            auth: {
-                user: "385347a8cac45c",
-                pass: "318b8146500b7e"
-            }
-        }
-    });
-    const people = [
-        {firstName: 'ifihan', lastName: 'Jovialcore'},
-        {firstName: 'Naza', lastName: 'Chandan'}
-       ];
-    people.forEach((person) => {
-        email
-        .send({
-            template: 'animateVideo',
-            message: {
-            to: 'mentor <noreply@hng.com>'
-            },
-            locals: person
-        })
-        .then(console.log)
-        .catch(console.error);
-    }) */
-
-module.exports = sendEmail

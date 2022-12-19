@@ -1,11 +1,63 @@
 module.exports = {
   paths: {
+    '/podcasts': {
+      get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Podcast'],
+        description: 'get all podcast a user has ever uploaded',
+        operationId: 'getAllPodcast',
+        parameters: [
+          {
+            name: 'limit',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'page',
+            in: 'query',
+            description:
+              'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
+            required: false,
+            type: 'string',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Returns an array of all user podcasts',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
     '/podcasts/upload': {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Podcast'],
         description: 'Upload a podcast',
         operationId: 'uploadPodcast',
-
+        // parameters: [
+        //   {
+        //     in: 'header',
+        //     name: 'user_id',
+        //     schema: {
+        //       type: 'string',
+        //     },
+        //     required: true,
+        //     description: 'ID of the user to use, put in headers',
+        //   },
+        // ],
         requestBody: {
           content: {
             'multipart/form-data': {
@@ -15,6 +67,12 @@ module.exports = {
                   podcast: {
                     type: 'string',
                     format: 'binary',
+                  },
+                  file_name: {
+                    type: 'string',
+                    example: 'My podcast on Donald trump',
+                    description:
+                      'The podcast name that would be displayed on the dashboard',
                   },
                 },
               },
@@ -33,8 +91,13 @@ module.exports = {
     },
     '/animated-videos/{animatedVideoId}': {
       get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['AnimatedVideo'],
-        description: 'Animate a podcast',
+        description: 'Get an animated video',
         operationId: 'AnimatedPodcast',
         parameters: [
           {
@@ -44,16 +107,8 @@ module.exports = {
               type: 'string',
             },
             required: true,
-            description: 'ID of the podcast to use',
-          },
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, put in headers',
+            description:
+              'ID of the animated video you want to view its progress ',
           },
         ],
         responses: {
@@ -69,22 +124,39 @@ module.exports = {
     '/animated-videos/': {
       get: {
         tags: ['AnimatedVideo'],
-        description: 'Upload a podcast',
-        operationId: 'uploadPodcast',
+
+        description: 'view all animated videos ever created by a user',
+        operationId: 'ViewAllAnimatedVideo',
         parameters: [
           {
-            in: 'header',
-            name: 'user_id',
+            name: 'limit',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
+          },
+          {
+            name: 'status',
+            in: 'query',
+            description: 'The limits of docs to be returned froma query',
+            required: false,
+            type: 'string',
             schema: {
-              type: 'string',
+              enum: ['PENDING', 'COMPLETED', 'ERROR'],
             },
-            required: true,
-            description: 'ID of the user to use, put in headers',
+          },
+          {
+            name: 'page',
+            in: 'query',
+            description:
+              'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
+            required: false,
+            type: 'string',
           },
         ],
         responses: {
           201: {
-            description: 'Podcast created successfully',
+            description: 'Animated Video created successfully',
           },
           500: {
             description: 'Server error',
@@ -94,9 +166,14 @@ module.exports = {
     },
     '/podcasts/{podcastID}/generate-video': {
       post: {
-        tags: ['Podcast'],
-        description: 'Upload a podcast',
-        operationId: 'uploadPodcast',
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Podcast', 'AnimatedVideo'],
+        description: 'Generate an animated video',
+        operationId: 'GenerateVideo',
         parameters: [
           {
             in: 'path',
@@ -107,15 +184,15 @@ module.exports = {
             required: true,
             description: 'ID of the podcast to use',
           },
-          {
-            in: 'header',
-            name: 'user_id',
-            schema: {
-              type: 'string',
-            },
-            required: true,
-            description: 'ID of the user to use, placed  in the headers',
-          },
+          // {
+          //   in: 'header',
+          //   name: 'user_id',
+          //   schema: {
+          //     type: 'string',
+          //   },
+          //   required: true,
+          //   description: 'ID of the user to use, placed  in the headers',
+          // },
         ],
         requestBody: {
           content: {
@@ -123,16 +200,28 @@ module.exports = {
               schema: {
                 type: 'object',
                 properties: {
-                  audio_path: {
-                    type: 'string',
-                    required: true,
-                  },
-                  audio_url: {
-                    type: 'string',
-                    required: true,
-                  },
                   bg_path: {
                     type: 'string',
+                    example: '01',
+                    description: 'background image, Use `01` for now',
+                  },
+                  avatar_map: {
+                    type: 'object',
+                    properties: {
+                      A: {
+                        type: 'string',
+                        example: '03',
+                        description:
+                          'id for the avatar you want to use. Use `01` for now',
+                      },
+                      B: {
+                        type: 'string',
+                        example: '01',
+                        description:
+                          'id for the avatar you want to use. Use `02` for now',
+                      },
+                    },
+                    description: 'map of the avatar object',
                   },
                 },
               },
@@ -149,21 +238,114 @@ module.exports = {
         },
       },
     },
-     '/paystack/pay': {
+    '/settings/add': {
       post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['UserSettings'],
+        description: 'Store user preferred settings',
+        operationId: 'usersettings',
+
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/UserSettings',
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'User settings object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/settings/get': {
+      get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['UserSettings'],
+        description: 'Get user preferred settings',
+        operationId: 'usersettingsget',
+
+        responses: {
+          200: {
+            description: 'User settings object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/subscription': {
+      get: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Payment'],
+        description: 'Get a user payment',
+        operationId: 'specificuserpaymentget',
+
+        responses: {
+          200: {
+            description: 'An Array of User payments object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/getpayments': {
+      get: {
+        tags: ['Payment'],
+        description: 'Get paid users For Dev Purpose',
+        operationId: 'userpaymentget',
+
+        responses: {
+          200: {
+            description: 'User payments object returned back',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+    '/paystack/pay': {
+      post: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
         tags: ['Payment'],
         description: 'pay with paystack',
         operationId: 'paystack pay',
 
         requestBody: {
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Payment',
-                },
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Payment',
               },
             },
           },
+        },
         responses: {
           201: {
             description: 'redirecting to paystack',
@@ -173,117 +355,94 @@ module.exports = {
           },
         },
       },
-    }, 
-          '/auth/signup': {
-        post: {
-          tags: ['Authentication'],
-          description: 'create user account',
-          operationId: 'createUserAccount',
-          requestBody: {
-              content: {
-                'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Authentication',
-                  },
-                },
-              },
-            },
-          responses: {
-            201: {
-              description: 'User account Created Successfully',
-            },
-            500: {
-              description: 'Server error',
-            },
-          },
-        },
-      },
-
-      '/auth/forgetpassword': {
-        post: {
-          tags: ['Authentication'],
-          description: 'Clear user password',
-          operationId: 'clearUserPassword',
-          requestBody: {
-              content: {
-                'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Authentication',
-                  },
-                },
-              },
-            },
-          responses: {
-            201: {
-              description: 'password cleared successfully',
-            },
-            500: {
-              description: 'Server error',
-            },
-          },
-        },
-      },
-
-      '/auth/logout': {
-        get: {
-          tags: ['Authentication'],
-          description: 'Log out user',
-          operationId: 'logOutUser',
-          parameters: [
-          {
+    },
+    '/auth/signup': {
+      post: {
+        tags: ['Authentication'],
+        description: 'create user account',
+        operationId: 'createUserAccount',
+        requestBody: {
+          content: {
+            'application/json': {
               schema: {
-                  $ref: '#/components/schemas/Authentication',
+                $ref: '#/components/schemas/Authentication',
               },
-          }],
-          responses: {
-            201: {
-              description: 'Logged out Successfully',
-            },
-            500: {
-              description: 'Server error',
             },
           },
         },
+        responses: {
+          201: {
+            description: 'User account Created Successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
       },
+    },
 
-      '/auth/login': {
-        post: {
-          tags: ['Authentication'],
-          description: 'Log in user',
-          operationId: 'logInUser',
-          requestBody: {
-              content: {
-                'application/json': {
-                  schema: {
-                    $ref: '#/components/schemas/Authentication',
-                  },
-                },
+    '/auth/login': {
+      post: {
+        tags: ['Authentication'],
+        description: 'Log in user',
+        operationId: 'logInUser',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Authentication',
               },
-            },
-          responses: {
-            201: {
-              description: 'User logged in Successfully',
-            },
-            500: {
-              description: 'Server error',
             },
           },
         },
+        responses: {
+          201: {
+            description: 'User logged in Successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
       },
-       '/rauth/forgotpassword': {
+    },
+
+    '/auth/logout': {
+      get: {
+        tags: ['Authentication'],
+        description: 'Log out user',
+        operationId: 'logOutUser',
+        parameters: [
+          {
+            schema: {
+              $ref: '#/components/schemas/Authentication',
+            },
+          },
+        ],
+        responses: {
+          201: {
+            description: 'Logged out Successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
+    '/rauth/forgotpassword': {
       post: {
         tags: ['Password'],
         description: 'forget password',
         operationId: 'forgetPassword',
         requestBody: {
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/Password',
-                },
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Password',
               },
             },
           },
+        },
         responses: {
           200: {
             description: 'sent successfuly',
@@ -294,7 +453,60 @@ module.exports = {
         },
       },
     },
-'/avatars': {
+
+    '/resetpassword/{:token}': {
+      patch: {
+        tags: ['Reset'],
+        description: 'Reset Password',
+        operationId: 'ResetPassword',
+        parameters: [
+          {
+            token: 'token',
+            in: 'newPassword',
+            schema: {
+              $ref: '#/components/schemas/token',
+            },
+            required: true,
+            description: 'New password',
+          },
+        ],
+        responses: {
+          200: {
+            description: 'Password reset successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
+    '/rauth/contact': {
+      post: {
+        tags: ['Contact'],
+        description: 'contact us',
+        operationId: 'contantUs',
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/Contact',
+              },
+            },
+          },
+        },
+        responses: {
+          200: {
+            description: 'Successfuly contacted',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
+
+    '/avatars': {
       get: {
         tags: ['Avatars'],
         description: 'Get avatars',
@@ -313,7 +525,7 @@ module.exports = {
           },
         },
       },
-    
+
       '/avatars': {
         post: {
           tags: ['Avatars'],
@@ -486,7 +698,7 @@ module.exports = {
           },
         },
       },
-      '/podcast/{podcastid}': {
+      '/podcasts/{podcastid}': {
         delete: {
           tags: ['delete a podcast of user'],
           description: "delete user's podcast",
@@ -530,8 +742,50 @@ module.exports = {
           },
         },
       },
+      '/animated-videos/{animatedVideoId}': {
+        delete: {
+          tags: ['delete a animated video of user'],
+          description: "delete animatedVideo's podcast",
+          operationId: 'animatedVideo',
+          parameters: [
+            {
+              name: 'animatedVideoId',
+              in: 'path',
+              schema: {
+                $ref: '#/components/schemas/id',
+              },
+              required: true,
+              description: 'animatedVideo id',
+            },
+          ],
+          responses: {
+            200: {
+              description: 'user podcasts deleted',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Todo',
+                  },
+                },
+              },
+            },
+            404: {
+              description: 'Todo is not found',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/Error',
+                    example: {
+                      message: "We can't find the todo",
+                      internal_code: 'Invalid id',
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
-
-
   },
 };

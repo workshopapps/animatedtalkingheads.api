@@ -1,6 +1,14 @@
-const Joi = require('joi');
-const { objectId } = require('../utils/JoiObjectId');
+const { Type } = require('@sinclair/typebox');
 
-exports.podcastSchema = Joi.object({
-  ext: Joi.string(),
-});
+exports.AnimatedVideoInput = Type.Required(
+  Type.Object({
+    bg_path: Type.String(),
+    avatar_map: Type.Record(Type.String(), Type.String()),
+  })
+);
+
+exports.PodcastInput = Type.Required(
+  Type.Object({
+    file_name: Type.String(),
+  })
+);

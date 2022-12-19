@@ -6,16 +6,19 @@ const podcastSchema = new Schema({
     type: String,
     required: true,
   },
+  file_name: {
+    type: String,
+  },
   file_url: {
     type: String,
     required: true,
   },
   user_id: {
-    required: true,
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-});
+},
+{timestamps:true});
 const Podcast = mongoose.model('Podcast', podcastSchema);
 module.exports = Podcast;

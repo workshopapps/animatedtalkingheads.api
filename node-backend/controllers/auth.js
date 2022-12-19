@@ -1,13 +1,7 @@
-
-const UserAuth = require('../models/UsersAuth');
-
+const User = require('../models/User');
 
 const jwt = require('jsonwebtoken');
 
-// module.exports.forgetpassword_post = async (req, res) => {
-//   console.log('forget password')
-// };
-// handle errors
 const handleErrors = (err) => {
   console.log(err.message, err.code);
   let errors = { email: '', password: '' };
@@ -40,11 +34,10 @@ const handleErrors = (err) => {
 
   return errors;
 };
-
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
-const createToken = (id) => {
-  return jwt.sign({ id }, 'net ninja secret', {
+const createToken = (email, id) => {
+  return jwt.sign({ email, id }, 'thisShouldBeMovedToDotEnvLater', {
     expiresIn: maxAge,
   });
 };
@@ -52,15 +45,20 @@ const createToken = (id) => {
 // controller actions
 module.exports.signup_post = async (req, res) => {
   const { email, password } = req.body;
+  console.log(req.body);
 
   try {
     const user = await UserAuth.create({ email, password });
-    const token = createToken(user._id);
+    const token = createToken(UserAuth._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user });
+    res.status(201).json({ user: UserAuth._id });
   } catch (err) {
-    const errors = handleErrors(err);
-    res.status(400).json({ errors });
+    if (err.code === 11000) {
+      err.message = 'Email already registered, Login';
+      // return ;
+    }
+
+    res.status(400).json({ error: err.message });
   }
 };
 
@@ -68,38 +66,36 @@ module.exports.login_post = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await UserAuth.login(email, password);
-    console.log(UserAuth.login());
-    const token = createToken(UserAuth._id);
+    const user = await User.login(email, password);
+    const token = createToken(email);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ user: UserAuth._id });
+    res.status(200).json({ user: token });
   } catch (err) {
     console.log(err);
     const errors = handleErrors(err);
-    res.status(400).json({ errors });
+    res.status(400).json({ error: err.message });
   }
 };
 
 module.exports.logout_get = (req, res) => {
   res.cookie('jwt', '', { maxAge: 1 });
-  // res.redirect('/');
   res.status(200).json({ message: 'successfully logged out' });
 };
 
-module.exports.forgetpassword_post = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await UserAuth.update(
-      { email, password },
-      {
-        $set: { password: password },
-      }
-    );
-    const token = createToken(UserAuth._id);
-    res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user: UserAuth._id });
-  } catch (err) {
-    const errors = handleErrors(err);
-    res.status(400).json({ errors });
-  }
-};
+// module.exports.forgetpassword_post = async (req, res) => {
+//   const { email, password } = req.body;
+//   try {
+//     const user = await User.update(
+//       { email, password },
+//       {
+//         $set: { password: password },
+//       }
+//     );
+//     const token = createToken(User._id);
+//     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+//     res.status(201).json({ user: User._id });
+//   } catch (err) {
+//     const errors = handleErrors(err);
+//     res.status(400).json({ errors });
+//   }
+// };

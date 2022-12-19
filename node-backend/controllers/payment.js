@@ -5,6 +5,7 @@ const _ = require('lodash');
 const {initializePayment, verifyPayment} = require('./paymentConfig')(request);
 const paymentRequest = (req, res) => {
 try{
+    req.body.email=req.decoded.email
     console.log(req.body)
     if(!req.body.amount&&!req.body.full_name&&!req.body.email){
         return res.json({message:"email, amount or name missing"})
@@ -45,7 +46,7 @@ const verifyRequest= (req,res) => {
         if(error){
             //handle errors appropriately
             console.log(error)
-            return res.redirect('/error');
+            return res.json({message:"payment verification"});
         }
         response = JSON.parse(body);        
 
@@ -56,11 +57,11 @@ const verifyRequest= (req,res) => {
         const payment = new Payment(newPayment)
         payment.save().then((payment)=>{
             if(!payment){
-                return res.redirect('/error');
+                return res.json({message:"something happened"});
             }
-            res.redirect('/receipt/'+payment._id);
+            res.status(201).json(payment);
         }).catch((e)=>{
-            res.redirect('/error');
+            res.json({message:e});
         })
     })
 }catch(error){
@@ -70,12 +71,12 @@ const verifyRequest= (req,res) => {
 const getReceipt = (req, res)=>{
     try{
     const id = req.params.id;
-    Donor.findById(id).then((donor)=>{
-        if(!donor){
-            //handle error when the donor is not found
+    Payment.findById(id).then((payment)=>{
+        if(!payment){
+            //handle error when the payment is not found
             res.redirect('/error')
         }
-        res.render('success.pug',{donor});
+        res.render('success.pug',{payment});
     }).catch((e)=>{
         res.redirect('/error')
     })
@@ -84,6 +85,28 @@ catch(error){
     res.json({error})
 }
 }
+const getPayments=async (req,res)=>{
+    try {
+        const transactions = await Payment.find({})
+        if(transactions<1){
+            return res.json({message:"no payments yet"})
+        }
+        res.json(transactions)
+    } catch (error) {
+        res.json({error})
+    }
+}
+const getUserPayment=async (req,res)=>{
+    try {
+        const transaction = await Payment.find({email:req.decoded.email})
+        if(!transaction){
+            return res.json({message:"no payments yet"})
+        }
+        res.json(transaction)
+    } catch (error) {
+        res.json({error})
+    }
+}
 
-module.exports={paymentRequest, verifyRequest, getReceipt}
+module.exports={paymentRequest, verifyRequest, getReceipt, getPayments, getUserPayment}
 

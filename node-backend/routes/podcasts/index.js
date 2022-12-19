@@ -1,35 +1,24 @@
 const express = require('express');
 const multer = require('multer');
-const checkUser = require('../../middlewares/checkUser');
 
-const schemaMiddleware = require('../../middlewares/schemaMiddleware');
+const ObjectId = require('./../../utils/objectid');
 const ApiError = require('../../utils/errors/ApiError');
-const { podcastSchema } = require('./podcast.schema');
+const { AnimatedVideoInput, PodcastInput } = require('./podcast.schema');
 const {
   podcastuploader,
   getOnePodcast,
   getAllUserUploadedPodcast,
   generateAnimatedVideos,
+  deletePodcast,
 } = require('../../controllers/podcast.controller');
-const getPodcast = require('../../controllers/podcastgetter');
-const podcastIdMiddleware = require('../../middlewares/podcastidstore');
-const deletePodcast = require('../../controllers/podcastdeleter');
+
 const {
   getOneAnimatedVideo,
   getAllUserCreatedAnimatedVideos,
 } = require('../../controllers/animatedvideo.controller');
+const auth = require('../../middlewares/authMiddleware');
+const { validateBody, validateParams } = require('typebox-express-middleware');
 const podcastRouter = express.Router();
-podcastRouter.post(
-  '/:podcastId/generate-video',
-  checkUser,
-  generateAnimatedVideos
-);
-podcastRouter.get('/', checkUser, getAllUserUploadedPodcast);
-podcastRouter.get('/getpodcasts', getPodcast);
-
-podcastRouter.get('/:podcastId', checkUser, getOnePodcast);
-
-podcastRouter.delete('/:podcastid', podcastIdMiddleware, deletePodcast);
 
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith('audio')) {
@@ -48,27 +37,32 @@ const upload = multer({
 });
 podcastRouter.post(
   '/upload',
-  checkUser,
+  auth,
   upload.single('podcast'),
-  schemaMiddleware(podcastSchema),
+  validateBody(PodcastInput),
   podcastuploader
 );
 
-podcastRouter.get('/download', (req, res) => {
-  const { file_path } = req.body;
-  res.download(file_path);
-});
+podcastRouter.post(
+  '/:podcastId/generate-video',
+  auth,
+  validateBody(AnimatedVideoInput),
+  validateParams(ObjectId),
+
+  generateAnimatedVideos
+);
+podcastRouter.get('/', auth, getAllUserUploadedPodcast);
+
+podcastRouter.get('/:podcastId', auth, getOnePodcast);
+
+podcastRouter.delete('/:podcastId', auth, deletePodcast);
 
 podcastRouter.get(
   '/animated-videos/:animatedVideoId',
-  checkUser,
+  auth,
   getOneAnimatedVideo
 );
 
-podcastRouter.get(
-  '/animated-videos',
-  checkUser,
-  getAllUserCreatedAnimatedVideos
-);
+podcastRouter.get('/animated-videos', auth, getAllUserCreatedAnimatedVideos);
 
 module.exports = podcastRouter;

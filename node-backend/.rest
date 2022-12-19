@@ -1,9 +1,38 @@
+GET http://localhost:4000/podcasts
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hdWFyYXNoZWxAZ21haWwuY29tIiwiaWF0IjoxNjcwNzg5NTk1LCJleHAiOjE2NzEwNDg3OTV9.bBww384YqATVwTdg_AhEHkGQhFGN1ZnncqHJGtjqozw
+###
+
+
+
+
+GET http://localhost:4000/settings/get
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZmF1bEBnbWFpbC5jb20iLCJpYXQiOjE2NzA0OTc5MDQsImV4cCI6MTY3MDc1NzEwNH0.gQPUwmmHuQW7f7SEXkG5p4ypYHvdT2RwqEULDRWl10k
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZmF1bHRAZ21haWwuY29tIiwiaWF0IjoxNjcwNTAzNzQ3LCJleHAiOjE2NzA3NjI5NDd9.QldCjveVH5T1ELTcO3-XWpVJYaTqWdCN5ZRGI_kRwDA
+
+{
+  "youtube": true,
+  "twitter": false,
+  "facebook": true,
+  "googleDrive": false,
+  "oneDrive": false,
+  "dropBox": false,
+  "instagram": true,
+  "linkedIn": false   
+
+}
+
+
+
+###
 GET http://localhost:4000/podcasts/animated-videos
 user_id: 6388bf04bf67dd8d1a8eedfa
+###
 
-
-POST http://localhost:4000/avatars/
+POST http://localhost:4000/settings/add
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImRlZmF1bEBnbWFpbC5jb20iLCJpYXQiOjE2NzA0OTc5MDQsImV4cCI6MTY3MDc1NzEwNH0.gQPUwmmHuQW7f7SEXkG5p4ypYHvdT2RwqEULDRWl10k
+
 
 {
     "user_id":"637747b42342eb4566c90133",
@@ -22,13 +51,12 @@ Content-Type: application/json
 ###
 POST http://localhost:4000/paystack/pay
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hdWFyYXNoZWxAZ21haWwuY29tIiwiaWQiOiI2Mzk4MTEzY2NjZTU1OWVjYjViNTI0MTkiLCJpYXQiOjE2NzA5MTAyNjksImV4cCI6MTY3MTE2OTQ2OX0.jh0M3GTuAT0NwUOL6jLSxXkqDoQUlFO8-DUsVx5R1tg
 
 {
-    "email":"laurie143pelumi@gmail.com",
-    "full_name":"Alo Odunayo",
-    "amount":700.2
+    "full_name":"Maurushel B",
+    "amount":100
 }
-
 ###
 POST http://localhost:4000/signup
 Content-Type: application/json
@@ -60,4 +88,40 @@ Content-Type: application/json
     "email":"laurie143pelumi@gmail.com",
     "amount":3400,
     "full_name":"alo odunaYO"
+}
+
+
+###
+POST http://localhost:4000/auth/signup
+Content-Type: application/json
+
+{   
+    "email":"mauahel@gmail.com",
+    "password": "rhfbdjnmdks"
+}
+
+###
+POST http://localhost:4000/auth/login
+Content-Type: application/json
+
+{   
+    "email":"mauahel@gmail.com",
+    "password": "rhfbdjnmdks"
+}
+###
+POST http://localhost:4000/rauth/contact
+Content-Type: application/json
+
+{   
+    "name" : "example",
+    "email": "example@gmail.com",
+    "message": "hi there i'm testing"    
+}
+
+###
+PATCH http://localhost:4000/rauth/resetpassword/fb1d77e3dff7c0ae734c959ce408d00b57e9f3f11803ef9e3a7e5ff95a971d2b
+Content-Type: application/json
+
+{   
+  "password": "rhfbdjnmdks34"  
 }

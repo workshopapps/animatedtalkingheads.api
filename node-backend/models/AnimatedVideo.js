@@ -5,6 +5,11 @@ const animatedVideoSchema = new Schema({
   video_url: {
     type: String,
   },
+
+  video_path: String,
+  title: {
+    type: String,
+  },
   status: {
     required: true,
     type: String,
@@ -22,6 +27,9 @@ const animatedVideoSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
+  },
+  owner: {
+    type: String,
   },
 });
 
