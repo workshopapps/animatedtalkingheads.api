@@ -19,7 +19,6 @@ const DB =
   process.env.NODE_ENV == 'development'
     ? process.env.mongo_dev_url
     : process.env.mongo_url;
-console.log(process.env.mongo_dev_url);
 mongoose.connect(DB).then(() => console.log('DB connection successful!'));
 
 mongoose.set('strict', true);

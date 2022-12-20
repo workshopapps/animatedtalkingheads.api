@@ -1,5 +1,6 @@
-var mongoose = require("mongoose");
-var UserSettings = new mongoose.Schema({
+"use strict";
+const mongoose = require('mongoose');
+const UserSettings = new mongoose.Schema({
     owner: {
         type: String
     },

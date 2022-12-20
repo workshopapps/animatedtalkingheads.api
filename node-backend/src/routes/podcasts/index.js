@@ -18,6 +18,7 @@ const {
 } = require('../../controllers/animatedvideo.controller');
 const auth = require('../../middlewares/authMiddleware');
 const { validateBody, validateParams } = require('typebox-express-middleware');
+const { default: rateLimit } = require('../../middlewares/rateLimit');
 const podcastRouter = express.Router();
 
 const multerFilter = (req, file, cb) => {
@@ -39,12 +40,13 @@ podcastRouter.post(
   '/upload',
   auth,
   upload.single('podcast'),
-  validateBody(PodcastInput),
+
   podcastuploader
 );
 
 podcastRouter.post(
   '/:podcastId/generate-video',
+  rateLimit(2, 5),
   auth,
   validateBody(AnimatedVideoInput),
   validateParams(ObjectId),

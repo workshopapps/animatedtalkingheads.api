@@ -1,13 +1,14 @@
+"use strict";
 module.exports = {
-    openapi: "3.0.1",
+    openapi: '3.0.1',
     info: {
-        version: "0.0.5",
-        title: "Podcast Animator",
-        description: "Podcast Animator API",
+        version: '0.0.5',
+        title: 'Podcast Animator',
+        description: 'Podcast Animator API',
         contact: {
-            name: "Team Clutch",
-            email: "",
-            url: ""
+            name: 'Team Clutch',
+            email: '',
+            url: ''
         },
         servers: [
             {

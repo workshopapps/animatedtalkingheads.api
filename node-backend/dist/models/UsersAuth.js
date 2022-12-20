@@ -2,21 +2,9 @@
 const mongoose = require('mongoose');
 const { isEmail  } = require('validator');
 const bcrypt = require('bcrypt');
-const crypto = require('crypto');
-const { stringify  } = require('querystring');
-const Schema = mongoose.Schema;
-const userSchema = new Schema({
-    name: {
-        type: String
-    },
-    last_time_accessed: {
-        type: Date,
-        default: Date.now()
-    },
-    isVerified: {
-        type: Boolean,
-        default: false
-    },
+//const crypto = require("crypto");
+//const { stringify } = require('querystring');
+const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [
@@ -40,12 +28,6 @@ const userSchema = new Schema({
             6,
             'Minimum password length is 6 characters'
         ]
-    },
-    //passwordResetToken: String,
-    //passwordResetExpires: Date,
-    token: {
-        type: String,
-        default: ''
     }
 });
 // fire a function before doc saved to db
@@ -64,9 +46,9 @@ userSchema.statics.login = async function(email, password) {
         if (auth) {
             return user;
         }
-        throw Error('Invalid Credentials');
+        throw Error('incorrect password');
     }
-    throw Error('Invalid Credentials');
+    throw Error('incorrect email');
 };
 userSchema.method.forgetpassword = async function(email, password) {
     const user = await this.findOne({
@@ -79,14 +61,5 @@ userSchema.method.forgetpassword = async function(email, password) {
     }
     throw Error('incorrect email');
 };
-userSchema.methods.createPasswordResetToken = function() {
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    console.log({
-        resetToken
-    }, this.passwordResetToken);
-    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-    return resetToken;
-};
-const User = mongoose.model('User', userSchema);
-module.exports = User;
+const UserAuth = mongoose.model('user', userSchema);
+module.exports = UserAuth;

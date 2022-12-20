@@ -1,9 +1,10 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-var clothTypeSchema = new Schema({
+"use strict";
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const clothTypeSchema = new Schema({
     color: {
         type: String,
-        default: "white",
+        default: 'white',
         required: true
     },
     style: {
@@ -15,4 +16,4 @@ var clothTypeSchema = new Schema({
         required: true
     }
 });
-module.exports = mongoose.model("ClothType", clothTypeSchema);
+module.exports = mongoose.model('ClothType', clothTypeSchema);
