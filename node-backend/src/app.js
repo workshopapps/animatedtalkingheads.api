@@ -2,6 +2,7 @@ const Sentry = require('@sentry/node');
 const Tracing = require('@sentry/tracing');
 const pug = require('pug');
 const auth = require('./middlewares/authMiddleware');
+import rateLimit from './middlewares/rateLimit';
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -84,7 +85,7 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/podcasts', podcastRouter);
 app.use('/animated-videos', animatedVideoRouter);
 
-app.use('/auth', authRoutes);
+app.use('/auth', rateLimit(10, 10), authRoutes);
 
 app.use('/settings', auth, userSettingsRoute);
 

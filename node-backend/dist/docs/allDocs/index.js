@@ -1,6 +1,7 @@
+"use strict";
 module.exports = {
     paths: {
-        "/podcasts": {
+        '/podcasts': {
             get: {
                 security: [
                     {
@@ -8,37 +9,37 @@ module.exports = {
                     }
                 ],
                 tags: [
-                    "Podcast"
+                    'Podcast'
                 ],
-                description: "get all podcast a user has ever uploaded",
-                operationId: "getAllPodcast",
+                description: 'get all podcast a user has ever uploaded',
+                operationId: 'getAllPodcast',
                 parameters: [
                     {
-                        name: "limit",
-                        in: "query",
-                        description: "The limits of docs to be returned froma query",
+                        name: 'limit',
+                        in: 'query',
+                        description: 'The limits of docs to be returned froma query',
                         required: false,
-                        type: "string"
+                        type: 'string'
                     },
                     {
-                        name: "page",
-                        in: "query",
-                        description: "which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned",
+                        name: 'page',
+                        in: 'query',
+                        description: 'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
                         required: false,
-                        type: "string"
+                        type: 'string'
                     }
                 ],
                 responses: {
                     200: {
-                        description: "Returns an array of all user podcasts"
+                        description: 'Returns an array of all user podcasts'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/podcasts/upload": {
+        '/podcasts/upload': {
             post: {
                 security: [
                     {
@@ -46,10 +47,10 @@ module.exports = {
                     }
                 ],
                 tags: [
-                    "Podcast"
+                    'Podcast'
                 ],
-                description: "Upload a podcast",
-                operationId: "uploadPodcast",
+                description: 'Upload a podcast',
+                operationId: 'uploadPodcast',
                 // parameters: [
                 //   {
                 //     in: 'header',
@@ -63,18 +64,18 @@ module.exports = {
                 // ],
                 requestBody: {
                     content: {
-                        "multipart/form-data": {
+                        'multipart/form-data': {
                             schema: {
-                                type: "object",
+                                type: 'object',
                                 properties: {
                                     podcast: {
-                                        type: "string",
-                                        format: "binary"
+                                        type: 'string',
+                                        format: 'binary'
                                     },
                                     file_name: {
-                                        type: "string",
-                                        example: "My podcast on Donald trump",
-                                        description: "The podcast name that would be displayed on the dashboard"
+                                        type: 'string',
+                                        example: 'My podcast on Donald trump',
+                                        description: 'The podcast name that would be displayed on the dashboard'
                                     }
                                 }
                             }
@@ -83,15 +84,15 @@ module.exports = {
                 },
                 responses: {
                     201: {
-                        description: "Podcast created successfully"
+                        description: 'Podcast created successfully'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/animated-videos/{animatedVideoId}": {
+        '/animated-videos/{animatedVideoId}': {
             get: {
                 security: [
                     {
@@ -99,79 +100,79 @@ module.exports = {
                     }
                 ],
                 tags: [
-                    "AnimatedVideo"
+                    'AnimatedVideo'
                 ],
-                description: "Get an animated video",
-                operationId: "AnimatedPodcast",
+                description: 'Get an animated video',
+                operationId: 'AnimatedPodcast',
                 parameters: [
                     {
-                        in: "path",
-                        name: "animatedVideoId",
+                        in: 'path',
+                        name: 'animatedVideoId',
                         schema: {
-                            type: "string"
+                            type: 'string'
                         },
                         required: true,
-                        description: "ID of the animated video you want to view its progress "
+                        description: 'ID of the animated video you want to view its progress '
                     }
                 ],
                 responses: {
                     201: {
-                        description: "Podcast created successfully"
+                        description: 'Podcast created successfully'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/animated-videos/": {
+        '/animated-videos/': {
             get: {
                 tags: [
-                    "AnimatedVideo"
+                    'AnimatedVideo'
                 ],
-                description: "view all animated videos ever created by a user",
-                operationId: "ViewAllAnimatedVideo",
+                description: 'view all animated videos ever created by a user',
+                operationId: 'ViewAllAnimatedVideo',
                 parameters: [
                     {
-                        name: "limit",
-                        in: "query",
-                        description: "The limits of docs to be returned froma query",
+                        name: 'limit',
+                        in: 'query',
+                        description: 'The limits of docs to be returned froma query',
                         required: false,
-                        type: "string"
+                        type: 'string'
                     },
                     {
-                        name: "status",
-                        in: "query",
-                        description: "The limits of docs to be returned froma query",
+                        name: 'status',
+                        in: 'query',
+                        description: 'The limits of docs to be returned froma query',
                         required: false,
-                        type: "string",
+                        type: 'string',
                         schema: {
                             enum: [
-                                "PENDING",
-                                "COMPLETED",
-                                "ERROR"
+                                'PENDING',
+                                'COMPLETED',
+                                'ERROR'
                             ]
                         }
                     },
                     {
-                        name: "page",
-                        in: "query",
-                        description: "which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned",
+                        name: 'page',
+                        in: 'query',
+                        description: 'which page should be returned, if we have a limit of 10 and a page of 3, from the 30th upto 39 docs will be returned',
                         required: false,
-                        type: "string"
+                        type: 'string'
                     }
                 ],
                 responses: {
                     201: {
-                        description: "Animated Video created successfully"
+                        description: 'Animated Video created successfully'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/podcasts/{podcastID}/generate-video": {
+        '/podcasts/{podcastID}/generate-video': {
             post: {
                 security: [
                     {
@@ -179,48 +180,48 @@ module.exports = {
                     }
                 ],
                 tags: [
-                    "Podcast",
-                    "AnimatedVideo"
+                    'Podcast',
+                    'AnimatedVideo'
                 ],
-                description: "Generate an animated video",
-                operationId: "GenerateVideo",
+                description: 'Generate an animated video',
+                operationId: 'GenerateVideo',
                 parameters: [
                     {
-                        in: "path",
-                        name: "podcastID",
+                        in: 'path',
+                        name: 'podcastID',
                         schema: {
-                            type: "string"
+                            type: 'string'
                         },
                         required: true,
-                        description: "ID of the podcast to use"
+                        description: 'ID of the podcast to use'
                     }
                 ],
                 requestBody: {
                     content: {
-                        "application/json": {
+                        'application/json': {
                             schema: {
-                                type: "object",
+                                type: 'object',
                                 properties: {
                                     bg_path: {
-                                        type: "string",
-                                        example: "01",
-                                        description: "background image, Use `01` for now"
+                                        type: 'string',
+                                        example: '01',
+                                        description: 'background image, Use `01` for now'
                                     },
                                     avatar_map: {
-                                        type: "object",
+                                        type: 'object',
                                         properties: {
                                             A: {
-                                                type: "string",
-                                                example: "03",
-                                                description: "id for the avatar you want to use. Use `01` for now"
+                                                type: 'string',
+                                                example: '03',
+                                                description: 'id for the avatar you want to use. Use `01` for now'
                                             },
                                             B: {
-                                                type: "string",
-                                                example: "01",
-                                                description: "id for the avatar you want to use. Use `02` for now"
+                                                type: 'string',
+                                                example: '01',
+                                                description: 'id for the avatar you want to use. Use `02` for now'
                                             }
                                         },
-                                        description: "map of the avatar object"
+                                        description: 'map of the avatar object'
                                     }
                                 }
                             }
@@ -229,15 +230,15 @@ module.exports = {
                 },
                 responses: {
                     201: {
-                        description: "Podcast created successfully"
+                        description: 'Podcast created successfully'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/settings/add": {
+        '/settings/add': {
             post: {
                 security: [
                     {
@@ -245,30 +246,30 @@ module.exports = {
                     }
                 ],
                 tags: [
-                    "UserSettings"
+                    'UserSettings'
                 ],
-                description: "Store user preferred settings",
-                operationId: "usersettings",
+                description: 'Store user preferred settings',
+                operationId: 'usersettings',
                 requestBody: {
                     content: {
-                        "application/json": {
+                        'application/json': {
                             schema: {
-                                $ref: "#/components/schemas/UserSettings"
+                                $ref: '#/components/schemas/UserSettings'
                             }
                         }
                     }
                 },
                 responses: {
                     201: {
-                        description: "User settings object returned back"
+                        description: 'User settings object returned back'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/settings/get": {
+        '/settings/get': {
             get: {
                 security: [
                     {
@@ -276,21 +277,21 @@ module.exports = {
                     }
                 ],
                 tags: [
-                    "UserSettings"
+                    'UserSettings'
                 ],
-                description: "Get user preferred settings",
-                operationId: "usersettingsget",
+                description: 'Get user preferred settings',
+                operationId: 'usersettingsget',
                 responses: {
                     200: {
-                        description: "User settings object returned back"
+                        description: 'User settings object returned back'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/subscription": {
+        '/subscription': {
             get: {
                 security: [
                     {
@@ -298,38 +299,38 @@ module.exports = {
                     }
                 ],
                 tags: [
-                    "Payment"
+                    'Payment'
                 ],
-                description: "Get a user payment",
-                operationId: "specificuserpaymentget",
+                description: 'Get a user payment',
+                operationId: 'specificuserpaymentget',
                 responses: {
                     200: {
-                        description: "An Array of User payments object returned back"
+                        description: 'An Array of User payments object returned back'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/getpayments": {
+        '/getpayments': {
             get: {
                 tags: [
-                    "Payment"
+                    'Payment'
                 ],
-                description: "Get paid users For Dev Purpose",
-                operationId: "userpaymentget",
+                description: 'Get paid users For Dev Purpose',
+                operationId: 'userpaymentget',
                 responses: {
                     200: {
-                        description: "User payments object returned back"
+                        description: 'User payments object returned back'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/paystack/pay": {
+        '/paystack/pay': {
             post: {
                 security: [
                     {
@@ -337,271 +338,271 @@ module.exports = {
                     }
                 ],
                 tags: [
-                    "Payment"
+                    'Payment'
                 ],
-                description: "pay with paystack",
-                operationId: "paystack pay",
+                description: 'pay with paystack',
+                operationId: 'paystack pay',
                 requestBody: {
                     content: {
-                        "application/json": {
+                        'application/json': {
                             schema: {
-                                $ref: "#/components/schemas/Payment"
+                                $ref: '#/components/schemas/Payment'
                             }
                         }
                     }
                 },
                 responses: {
                     201: {
-                        description: "redirecting to paystack"
+                        description: 'redirecting to paystack'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/auth/signup": {
+        '/auth/signup': {
             post: {
                 tags: [
-                    "Authentication"
+                    'Authentication'
                 ],
-                description: "create user account",
-                operationId: "createUserAccount",
+                description: 'create user account',
+                operationId: 'createUserAccount',
                 requestBody: {
                     content: {
-                        "application/json": {
+                        'application/json': {
                             schema: {
-                                $ref: "#/components/schemas/Authentication"
+                                $ref: '#/components/schemas/Authentication'
                             }
                         }
                     }
                 },
                 responses: {
                     201: {
-                        description: "User account Created Successfully"
+                        description: 'User account Created Successfully'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/auth/login": {
+        '/auth/login': {
             post: {
                 tags: [
-                    "Authentication"
+                    'Authentication'
                 ],
-                description: "Log in user",
-                operationId: "logInUser",
+                description: 'Log in user',
+                operationId: 'logInUser',
                 requestBody: {
                     content: {
-                        "application/json": {
+                        'application/json': {
                             schema: {
-                                $ref: "#/components/schemas/Authentication"
+                                $ref: '#/components/schemas/Authentication'
                             }
                         }
                     }
                 },
                 responses: {
                     201: {
-                        description: "User logged in Successfully"
+                        description: 'User logged in Successfully'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/auth/logout": {
+        '/auth/logout': {
             get: {
                 tags: [
-                    "Authentication"
+                    'Authentication'
                 ],
-                description: "Log out user",
-                operationId: "logOutUser",
+                description: 'Log out user',
+                operationId: 'logOutUser',
                 parameters: [
                     {
                         schema: {
-                            $ref: "#/components/schemas/Authentication"
+                            $ref: '#/components/schemas/Authentication'
                         }
                     }
                 ],
                 responses: {
                     201: {
-                        description: "Logged out Successfully"
+                        description: 'Logged out Successfully'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/rauth/forgotpassword": {
+        '/rauth/forgotpassword': {
             post: {
                 tags: [
-                    "Password"
+                    'Password'
                 ],
-                description: "forget password",
-                operationId: "forgetPassword",
+                description: 'forget password',
+                operationId: 'forgetPassword',
                 requestBody: {
                     content: {
-                        "application/json": {
+                        'application/json': {
                             schema: {
-                                $ref: "#/components/schemas/Password"
+                                $ref: '#/components/schemas/Password'
                             }
                         }
                     }
                 },
                 responses: {
                     200: {
-                        description: "sent successfuly"
+                        description: 'sent successfuly'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/resetpassword/{:token}": {
+        '/resetpassword/{:token}': {
             patch: {
                 tags: [
-                    "Reset"
+                    'Reset'
                 ],
-                description: "Reset Password",
-                operationId: "ResetPassword",
+                description: 'Reset Password',
+                operationId: 'ResetPassword',
                 parameters: [
                     {
-                        token: "token",
-                        in: "newPassword",
+                        token: 'token',
+                        in: 'newPassword',
                         schema: {
-                            $ref: "#/components/schemas/token"
+                            $ref: '#/components/schemas/token'
                         },
                         required: true,
-                        description: "New password"
+                        description: 'New password'
                     }
                 ],
                 responses: {
                     200: {
-                        description: "Password reset successfully"
+                        description: 'Password reset successfully'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/rauth/contact": {
+        '/rauth/contact': {
             post: {
                 tags: [
-                    "Contact"
+                    'Contact'
                 ],
-                description: "contact us",
-                operationId: "contantUs",
+                description: 'contact us',
+                operationId: 'contantUs',
                 requestBody: {
                     content: {
-                        "application/json": {
+                        'application/json': {
                             schema: {
-                                $ref: "#/components/schemas/Contact"
+                                $ref: '#/components/schemas/Contact'
                             }
                         }
                     }
                 },
                 responses: {
                     200: {
-                        description: "Successfuly contacted"
+                        description: 'Successfuly contacted'
                     },
                     500: {
-                        description: "Server error"
+                        description: 'Server error'
                     }
                 }
             }
         },
-        "/avatars": {
+        '/avatars': {
             get: {
                 tags: [
-                    "Avatars"
+                    'Avatars'
                 ],
-                description: "Get avatars",
-                operationId: "getAvatar",
+                description: 'Get avatars',
+                operationId: 'getAvatar',
                 parameters: [],
                 responses: {
                     200: {
-                        description: "avatars were obtained",
+                        description: 'avatars were obtained',
                         content: {
-                            "application/json": {
+                            'application/json': {
                                 schema: {
-                                    $ref: "#/components/schemas/Todo"
+                                    $ref: '#/components/schemas/Todo'
                                 }
                             }
                         }
                     }
                 }
             },
-            "/avatars": {
+            '/avatars': {
                 post: {
                     tags: [
-                        "Avatars"
+                        'Avatars'
                     ],
-                    description: "Create Avatar",
-                    operationId: "createAvatar",
+                    description: 'Create Avatar',
+                    operationId: 'createAvatar',
                     parameters: [],
                     requestBody: {
                         content: {
-                            "application/json": {
+                            'application/json': {
                                 schema: {
-                                    $ref: "#/components/schemas/AvatarInput"
+                                    $ref: '#/components/schemas/AvatarInput'
                                 }
                             }
                         }
                     },
                     responses: {
                         201: {
-                            description: "Avatar created successfully"
+                            description: 'Avatar created successfully'
                         },
                         500: {
-                            description: "Server error"
+                            description: 'Server error'
                         }
                     }
                 }
             },
-            "/avatars/{id}": {
+            '/avatars/{id}': {
                 get: {
                     tags: [
-                        "fetch specific avatar"
+                        'fetch specific avatar'
                     ],
                     description: "Get user's avatar",
-                    operationId: "user avatar id",
+                    operationId: 'user avatar id',
                     parameters: [
                         {
-                            name: "id",
-                            in: "path",
+                            name: 'id',
+                            in: 'path',
                             schema: {
-                                $ref: "#/components/schemas/id"
+                                $ref: '#/components/schemas/id'
                             },
                             required: true,
-                            description: "avatar id"
+                            description: 'avatar id'
                         }
                     ],
                     responses: {
                         200: {
-                            description: "user avatar fetched",
+                            description: 'user avatar fetched',
                             content: {
-                                "application/json": {
+                                'application/json': {
                                     schema: {
-                                        $ref: "#/components/schemas/Todo"
+                                        $ref: '#/components/schemas/Todo'
                                     }
                                 }
                             }
                         },
                         404: {
-                            description: "Todo is not found",
+                            description: 'Todo is not found',
                             content: {
-                                "application/json": {
+                                'application/json': {
                                     schema: {
-                                        $ref: "#/components/schemas/Error",
+                                        $ref: '#/components/schemas/Error',
                                         example: {
                                             message: "We can't find the todo",
-                                            internal_code: "Invalid id"
+                                            internal_code: 'Invalid id'
                                         }
                                     }
                                 }
@@ -611,106 +612,106 @@ module.exports = {
                 },
                 put: {
                     tags: [
-                        "Todo CRUD operations"
+                        'Todo CRUD operations'
                     ],
-                    description: "Update todo",
-                    operationId: "updateTodo",
+                    description: 'Update todo',
+                    operationId: 'updateTodo',
                     parameters: [
                         {
-                            name: "id",
-                            in: "path",
+                            name: 'id',
+                            in: 'path',
                             schema: {
-                                $ref: "#/components/schemas/id"
+                                $ref: '#/components/schemas/id'
                             },
                             required: true,
-                            description: "Id of todo to be updated"
+                            description: 'Id of todo to be updated'
                         }
                     ],
                     responses: {
                         200: {
-                            description: "Todo updated successfully"
+                            description: 'Todo updated successfully'
                         },
                         404: {
-                            description: "Todo not found"
+                            description: 'Todo not found'
                         },
                         500: {
-                            description: "Server error"
+                            description: 'Server error'
                         }
                     }
                 },
                 delete: {
                     tags: [
-                        "Todo CRUD operations"
+                        'Todo CRUD operations'
                     ],
-                    description: "Deleting a todo",
-                    operationId: "deleteTodo",
+                    description: 'Deleting a todo',
+                    operationId: 'deleteTodo',
                     parameters: [
                         {
-                            name: "id",
-                            in: "path",
+                            name: 'id',
+                            in: 'path',
                             schema: {
-                                $ref: "#/components/schemas/id"
+                                $ref: '#/components/schemas/id'
                             },
                             required: true,
-                            description: "Deleting a done todo"
+                            description: 'Deleting a done todo'
                         }
                     ],
                     responses: {
                         200: {
-                            description: "Todo deleted successfully"
+                            description: 'Todo deleted successfully'
                         },
                         404: {
-                            description: "Todo not found"
+                            description: 'Todo not found'
                         },
                         500: {
-                            description: "Server error"
+                            description: 'Server error'
                         }
                     }
                 }
             },
-            "/podcast/{userid}": {
+            '/podcast/{userid}': {
                 get: {
                     tags: [
-                        "fetch all podcasts of user"
+                        'fetch all podcasts of user'
                     ],
                     description: "Get user's podcasts",
-                    operationId: "user id",
+                    operationId: 'user id',
                     parameters: [
                         {
-                            name: "id",
-                            in: "path",
+                            name: 'id',
+                            in: 'path',
                             schema: {
-                                $ref: "#/components/schemas/id"
+                                $ref: '#/components/schemas/id'
                             },
                             required: true,
-                            description: "user id"
+                            description: 'user id'
                         }
                     ],
                     responses: {
                         200: {
-                            description: "user podcasts fetched",
+                            description: 'user podcasts fetched',
                             content: {
-                                "application/json": {
+                                'application/json': {
                                     schema: {
-                                        $ref: "#/components/schemas/Todo",
+                                        $ref: '#/components/schemas/Todo',
                                         example: {
-                                            _id: "8gfg8iu89ikjgi5",
-                                            user_id: "kdf84ur8uf485u8u",
-                                            file_path: "filepath/podcast_id/filepathname"
+                                            _id: '8gfg8iu89ikjgi5',
+                                            user_id: 'kdf84ur8uf485u8u',
+                                            file_path: 'filepath/podcast_id/filepathname'
                                         }
                                     }
                                 }
                             }
                         },
                         404: {
-                            description: "Todo is not found",
+                            description: 'Todo is not found',
                             content: {
-                                "application/json": {
+                                'application/json': {
                                     schema: {
-                                        $ref: "#/components/schemas/Error",
+                                        $ref: '#/components/schemas/Error',
                                         example: {
                                             message: "We can't find the todo",
-                                            internal_code: "Invalid id"
+                                            internal_code: 'Invalid id'
                                         }
                                     }
                                 }
@@ -719,44 +720,44 @@ module.exports = {
                     }
                 }
             },
-            "/podcasts/{podcastid}": {
+            '/podcasts/{podcastid}': {
                 delete: {
                     tags: [
-                        "delete a podcast of user"
+                        'delete a podcast of user'
                     ],
                     description: "delete user's podcast",
-                    operationId: "podcast id",
+                    operationId: 'podcast id',
                     parameters: [
                         {
-                            name: "id",
-                            in: "path",
+                            name: 'id',
+                            in: 'path',
                             schema: {
-                                $ref: "#/components/schemas/id"
+                                $ref: '#/components/schemas/id'
                             },
                             required: true,
-                            description: "podcast id"
+                            description: 'podcast id'
                         }
                     ],
                     responses: {
                         200: {
-                            description: "user podcasts deleted",
+                            description: 'user podcasts deleted',
                             content: {
-                                "application/json": {
+                                'application/json': {
                                     schema: {
-                                        $ref: "#/components/schemas/Todo"
+                                        $ref: '#/components/schemas/Todo'
                                     }
                                 }
                             }
                         },
                         404: {
-                            description: "Todo is not found",
+                            description: 'Todo is not found',
                             content: {
-                                "application/json": {
+                                'application/json': {
                                     schema: {
-                                        $ref: "#/components/schemas/Error",
+                                        $ref: '#/components/schemas/Error',
                                         example: {
                                             message: "We can't find the todo",
-                                            internal_code: "Invalid id"
+                                            internal_code: 'Invalid id'
                                         }
                                     }
                                 }
@@ -765,44 +766,44 @@ module.exports = {
                     }
                 }
             },
-            "/animated-videos/{animatedVideoId}": {
+            '/animated-videos/{animatedVideoId}': {
                 delete: {
                     tags: [
-                        "delete a animated video of user"
+                        'delete a animated video of user'
                     ],
                     description: "delete animatedVideo's podcast",
-                    operationId: "animatedVideo",
+                    operationId: 'animatedVideo',
                     parameters: [
                         {
-                            name: "animatedVideoId",
-                            in: "path",
+                            name: 'animatedVideoId',
+                            in: 'path',
                             schema: {
-                                $ref: "#/components/schemas/id"
+                                $ref: '#/components/schemas/id'
                             },
                             required: true,
-                            description: "animatedVideo id"
+                            description: 'animatedVideo id'
                         }
                     ],
                     responses: {
                         200: {
-                            description: "user podcasts deleted",
+                            description: 'user podcasts deleted',
                             content: {
-                                "application/json": {
+                                'application/json': {
                                     schema: {
-                                        $ref: "#/components/schemas/Todo"
+                                        $ref: '#/components/schemas/Todo'
                                     }
                                 }
                             }
                         },
                         404: {
-                            description: "Todo is not found",
+                            description: 'Todo is not found',
                             content: {
-                                "application/json": {
+                                'application/json': {
                                     schema: {
-                                        $ref: "#/components/schemas/Error",
+                                        $ref: '#/components/schemas/Error',
                                         example: {
                                             message: "We can't find the todo",
-                                            internal_code: "Invalid id"
+                                            internal_code: 'Invalid id'
                                         }
                                     }
                                 }

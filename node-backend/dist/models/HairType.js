@@ -1,11 +1,12 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+"use strict";
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 //i removed name of hair, coz we already have type of hair
-var hairTypeSchema = new Schema({
+const hairTypeSchema = new Schema({
     style: {
         type: String,
         required: true,
-        default: "black"
+        default: 'black'
     },
     color: {
         type: String,
@@ -16,5 +17,5 @@ var hairTypeSchema = new Schema({
         required: true
     }
 });
-var Hairtype = mongoose.model("HairType", hairTypeSchema);
+const Hairtype = mongoose.model('HairType', hairTypeSchema);
 module.exports = Hairtype;

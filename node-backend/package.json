@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "conc \" cross-env NODE_ENV=development nodemon ./dist/index.js \" \" npx swc ./src -d dist --watch\"",
+    "dev": "conc \" npx swc ./src -d dist --watch\" \" cross-env NODE_ENV=development nodemon ./dist/index.js \" ",
     "ts": "cross-env NODE_ENV=development node -r @swc-node/register ./src/index.ts",
     "start": "cross-env NODE_ENV=production node ./dist/index.js",
     "debug": "node --inspect-brk ./index.js"
@@ -34,6 +34,7 @@
     "email-templates": "^10.0.1",
     "express": "^4.18.2",
     "express-openid-connect": "^2.10.0",
+    "express-rate-limit": "^6.7.0",
     "g": "^2.0.1",
     "html-to-text": "^9.0.2",
     "ioredis": "5.2.4",
@@ -55,6 +56,7 @@
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.6.0",
     "typebox-express-middleware": "^0.0.2",
+    "uuid": "^9.0.0",
     "validator": "^13.7.0",
     "yarn": "^1.22.19"
   },

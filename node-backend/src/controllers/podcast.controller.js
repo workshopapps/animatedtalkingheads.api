@@ -1,7 +1,8 @@
 const fs = require('fs');
 const path = require('path');
-const { writeFile, readFile } = require('fs/promises');
+const { writeFile } = require('fs/promises');
 const Podcast = require('./../models/Podcast');
+import { v4 as uuidv4 } from 'uuid';
 const ApiError = require('../utils/errors/ApiError');
 const NotFound = require('../utils/errors/NotFound');
 const runPythonScript = require('./run-python');
@@ -76,7 +77,7 @@ exports.podcastuploader = async (req, res, next) => {
   //use the found user id as user_id
   let podcast = await Podcast.create({
     user_id: fetchedUser._id,
-    file_name: req.body.file_name,
+    file_name: uuidv4(),
     file_url: req.protocol + '://' + req.get('host') + save_file_directory,
     file_path: path.resolve(process.cwd(), '.' + save_file_directory),
   });

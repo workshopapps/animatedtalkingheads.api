@@ -1,5 +1,6 @@
-var mongoose = require("mongoose").mongoose;
-var paymentSchema = new mongoose.Schema({
+"use strict";
+const { mongoose  } = require('mongoose');
+const paymentSchema = new mongoose.Schema({
     full_name: {
         type: String,
         required: true
@@ -17,7 +18,7 @@ var paymentSchema = new mongoose.Schema({
         required: true
     }
 });
-var Payment = mongoose.model("Payment", paymentSchema);
+const Payment = mongoose.model('Payment', paymentSchema);
 module.exports = {
-    Payment: Payment
+    Payment
 };

@@ -1,6 +1,7 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-var podcastSchema = new Schema({
+"use strict";
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const podcastSchema = new Schema({
     file_path: {
         type: String,
         required: true
@@ -14,11 +15,11 @@ var podcastSchema = new Schema({
     },
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         required: true
     }
 }, {
     timestamps: true
 });
-var Podcast = mongoose.model("Podcast", podcastSchema);
+const Podcast = mongoose.model('Podcast', podcastSchema);
 module.exports = Podcast;

@@ -1,9 +1,10 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-var Avatar = new Schema({
+"use strict";
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const Avatar = new Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
         required: true
     },
     audio_url: {
@@ -27,4 +28,4 @@ var Avatar = new Schema({
         required: true
     }
 });
-module.exports = mongoose.model("Avatar", Avatar);
+module.exports = mongoose.model('Avatar', Avatar);

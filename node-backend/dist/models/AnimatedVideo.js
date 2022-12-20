@@ -1,19 +1,7 @@
-function _defineProperty(obj, key, value) {
-    if (key in obj) {
-        Object.defineProperty(obj, key, {
-            value: value,
-            enumerable: true,
-            configurable: true,
-            writable: true
-        });
-    } else {
-        obj[key] = value;
-    }
-    return obj;
-}
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
-var animatedVideoSchema = new Schema({
+"use strict";
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const animatedVideoSchema = new Schema({
     video_url: {
         type: String
     },
@@ -25,25 +13,26 @@ var animatedVideoSchema = new Schema({
         required: true,
         type: String,
         enum: [
-            "PENDING",
-            "COMPLETED",
-            "ERROR"
+            'PENDING',
+            'COMPLETED',
+            'ERROR'
         ],
-        default: "PENDING"
+        default: 'PENDING'
     },
     podcast_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Podcast",
+        ref: 'Podcast',
         required: true
     },
-    user_id: _defineProperty({
+    user_id: {
         required: true,
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }, "required", true),
+        ref: 'User',
+        required: true
+    },
     owner: {
         type: String
     }
 });
-var AnimatedVideo = mongoose.model("AnimatedVideo", animatedVideoSchema);
+const AnimatedVideo = mongoose.model('AnimatedVideo', animatedVideoSchema);
 module.exports = AnimatedVideo;

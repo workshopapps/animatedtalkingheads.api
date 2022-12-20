@@ -1,5 +1,6 @@
 //store podcast id
-var getId = function(req, res, next) {
+"use strict";
+const getId = (req, res, next)=>{
     req.podcastId = req.params.podcastid;
     next();
 };
