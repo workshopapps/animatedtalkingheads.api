@@ -1,3 +1,8 @@
+"""
+Combines audio and video and produces and output
+Converts output to a numpy array
+"""
+
 import cv2
 import numpy as np
 from PIL import Image
@@ -22,8 +27,6 @@ def convert_to_cv2(canvas_tuple: tuple[int:Image]) -> np.ndarray:
 
     Args:
         canvas_tuple (_type_): frame index , processed image
-
-
     """
     _, canvas = canvas_tuple
     numpy_img = np.array(canvas)
