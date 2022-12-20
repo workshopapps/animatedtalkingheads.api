@@ -1,12 +1,43 @@
 import re
-import random
-
 from g2p_en import G2p
 import textwrap
 from PIL import Image, ImageDraw, ImageFont
 
 from podcast_animator.utils.mouth_shapes import SHAPES
 from podcast_animator.config import Config
+
+
+def build_frame_schema(
+    animation_frame_length: int, speaker_labels: list[str]
+) -> dict[str, dict[str, list]]:
+    """
+    creates data structure to hold information on every frame within animation
+
+
+
+    Args:
+        animation_frame_length (int): amount of frames animation should contain
+        speaker_labels (list[str]): unique identifiers for all speakers in animation
+
+    Returns:
+        dict[str,dict[str, list]]
+    """
+    return {
+        str(frame_number): {avatar_id: [] for avatar_id in speaker_labels}
+        for frame_number in range(-3, animation_frame_length + 10)
+    }
+
+
+def strip_punctuations(str: str) -> str:
+    """function that uses regex to strip punctuations from input string
+
+    Args:
+        str (str): input string
+
+    Returns:
+        str: sting stripped of set punctuations
+    """
+    return re.sub(r"\.$|\?$|\,$", "", str)
 
 
 class WordFilter:
@@ -29,7 +60,9 @@ class WordFilter:
         self.animation_frame_length = animation_frame_length
         self.avatar_map = avatar_map
         self.font = ImageFont.load_default()
-        self.animation_frames = None
+        self.animation_frames = build_frame_schema(
+            self.animation_frame_length, self.speaker_labels
+        )
         self.animation_offset = 2
         self._compose_animation_schema()
 
@@ -59,10 +92,6 @@ class WordFilter:
         """assign words and mouth shapes to frames
         using the duration of the words in miliseconds
         """
-        self.animation_frames = {
-            str(frame_number): {avatar_id: [] for avatar_id in self.speaker_labels}
-            for frame_number in range(-3, self.animation_frame_length + 10)
-        }
 
         g2p_obj = G2p()
 
@@ -71,17 +100,14 @@ class WordFilter:
             for sentence in speech_object["sentences"]:
 
                 ## map word to timestamp
-                timestamp_tuple = tuple(
-                    zip(
-                        sentence.split(" "),
-                        speech_object["sentences"][sentence].split(";"),
-                    )
-                )
 
-                for word, time_stamp in timestamp_tuple:
+                for word, time_stamp in zip(
+                    sentence.split(" "),
+                    speech_object["sentences"][sentence].split(";"),
+                ):
                     #### PROCESS WORD  ####
                     ## strip word of punctuations
-                    word = re.sub(r"\.$|\?$|\,$", "", word)
+                    word = strip_punctuations(word)
 
                     ## calculate length in miliseconds of word
                     start_time, end_time = map(int, time_stamp.split("-"))
@@ -153,7 +179,8 @@ class WordFilter:
         frame_index, canvas = frame_data
         frame_obj = self.animation_frames[str(frame_index)]
 
-        subtitle_offset = 0.9  ## moves subtitle up a fraction for each speaker
+        ## moves subtitle up a fraction for each speaker
+        subtitle_offset = 0.9
         for speaker in frame_obj:
             if len(frame_obj[speaker]) < 1:
                 mouth_path = self.avatar_map[speaker] / "mouths/closed.png"
@@ -216,4 +243,4 @@ class WordFilter:
         )  # Using text size and offset values to calculate position on the image
         draw.text(
             (x, y), f"Speaker_{speaker}: {caption_new}", font=self.font
-        )  ##Drawing the words to the image
+        )  ## Drawing the words to the image

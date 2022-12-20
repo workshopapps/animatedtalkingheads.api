@@ -48,16 +48,10 @@ module.exports.signup_post = async (req, res) => {
   console.log(req.body);
 
   try {
-    const checkIfExists = await User.findOne({ email: req.body.email });
-    if (checkIfExists) {
-      return res.json({ message: 'Email already registered, Sign In' });
-    }
-    const user = await User.create({ email, password });
-    const getUser = await User.findOne({ email: req.body.email });
-
-    const token = createToken(email, getUser._id);
+    const user = await UserAuth.create({ email, password });
+    const token = createToken(UserAuth._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user: token });
+    res.status(201).json({ user: UserAuth._id });
   } catch (err) {
     if (err.code === 11000) {
       err.message = 'Email already registered, Login';
