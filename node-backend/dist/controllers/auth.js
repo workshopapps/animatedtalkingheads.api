@@ -46,17 +46,17 @@ module.exports.signup_post = async (req, res)=>{
     const { email , password  } = req.body;
     console.log(req.body);
     try {
-        const user = await UserAuth.create({
+        const user = await User.create({
             email,
             password
         });
-        const token = createToken(UserAuth._id);
+        const token = createToken(User._id);
         res.cookie('jwt', token, {
             httpOnly: true,
             maxAge: maxAge * 1000
         });
         res.status(201).json({
-            user: UserAuth._id
+            user: User._id
         });
     } catch (err) {
         if (err.code === 11000) {
