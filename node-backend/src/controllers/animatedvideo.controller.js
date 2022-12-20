@@ -24,7 +24,7 @@ exports.getAllUserCreatedAnimatedVideos = async (req, res, next) => {
     const status = req.query.status;
 
     const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.page) || 20;
+    const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;
     const query = {
       user_id: req.header.user_id,

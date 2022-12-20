@@ -1,17 +1,14 @@
-const express = require('express');
 const Sentry = require('@sentry/node');
 const Tracing = require('@sentry/tracing');
-const path = require('path');
 const pug = require('pug');
 const auth = require('./middlewares/authMiddleware');
-const dotenv = require('dotenv');
-dotenv.config({ path: './.env' });
-const mongoose = require('mongoose');
+const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
 const swaggerUI = require('swagger-ui-express');
 const docs = require('./docs');
-const animatedVideoRouter = require('./routes/animatedvidoes/');
+
+const animatedVideoRouter = require('./routes/animatedvidoes');
 const podcastRouter = require('./routes/podcasts');
 const paymentRoute = require('./routes/payment/index');
 const NotFound = require('./utils/errors/NotFound');
@@ -51,17 +48,17 @@ Sentry.init({
 });
 
 // The request handler must be the first middleware on the app
+
+app.set('trust proxy', true);
+
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
 // WRITE YOUR CODE AFTER THIS!!!!!!
 app.use((req, res, next) => {
   process.env.reqHost = req.protocol + '://' + req.get('host');
-
   next();
 });
-
-const DB = process.env.mongo_url;
 
 app.use(morgan('tiny'));
 process.env.NODE_ENV !== 'development' && (process.env.NODE_ENV = 'production');
@@ -72,36 +69,6 @@ app.get('/getpayments', getPayments);
 //   (process.env.ComSpec =
 //     process.env.SHELL && (process.env.COMSPEC = process.env.shell));
 // console.log(process.env.ComSpec);
-mongoose.connect(DB).then(() => console.log('DB connection successful!'));
-
-mongoose.set('strict', true);
-mongoose.set('strictPopulate', false);
-mongoose.set('toJSON', {
-  transform: function (doc, ret, options) {
-    ret.id = ret._id;
-
-    delete ret.__v;
-  },
-});
-mongoose.set('toObject', {
-  transform: function (doc, ret, options) {
-    ret.id = ret._id;
-
-    delete ret.__v;
-  },
-});
-
-const PORT = process.env.PORT || 4000;
-
-const fs = require('fs');
-
-if (!fs.existsSync('./uploads')) {
-  fs.mkdirSync('./uploads');
-}
-
-if (!fs.existsSync('./uploads/podcasts')) {
-  fs.mkdirSync('./uploads/podcasts');
-}
 
 // app configs.
 app.options('*', cors());
@@ -127,8 +94,6 @@ app.use('/uploads', express.static('./uploads'));
 
 ///// payment route
 
-app.use(express.static(path.join(__dirname, 'public/')));
-app.use(express.static(path.join(process.cwd(), '../pyhton-backend/data/')));
 app.set('view engine', pug);
 
 app.get('/error', (req, res) => {
@@ -145,8 +110,4 @@ app.use(Sentry.Handlers.errorHandler());
 app.use(errorController);
 
 //initialize the app.
-async function initialize() {
-  app.listen(PORT);
-}
-
-initialize().finally(() => console.log(`app started on port:${PORT}`));
+module.exports = app;
