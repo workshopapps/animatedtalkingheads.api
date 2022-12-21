@@ -38,6 +38,9 @@ mongoose.set('toObject', {
   },
 });
 
+app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static(path.join(process.cwd(), '../../pyhton-backend/data/')));
+
 async function initialize() {
   app.listen(PORT);
 }
