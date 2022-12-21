@@ -8,6 +8,7 @@ function _interopRequireDefault(obj) {
         default: obj
     };
 }
+const path = require('path');
 const Sentry = require('@sentry/node');
 const Tracing = require('@sentry/tracing');
 const pug = require('pug');
@@ -53,6 +54,8 @@ app.set('trust proxy', true);
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 // WRITE YOUR CODE AFTER THIS!!!!!!
+app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static(path.join(process.cwd(), '../../pyhton-backend/data/')));
 app.use((req, res, next)=>{
     process.env.reqHost = req.protocol + '://' + req.get('host');
     next();

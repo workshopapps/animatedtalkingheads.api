@@ -1,7 +1,6 @@
 const app = require('./app');
 const mongoose = require('mongoose');
 const express = require('express');
-const path = require('path');
 
 const fs = require('fs');
 
@@ -37,9 +36,6 @@ mongoose.set('toObject', {
     delete ret.__v;
   },
 });
-
-app.use(express.static(path.join(__dirname, 'public/')));
-app.use(express.static(path.join(process.cwd(), '../../pyhton-backend/data/')));
 
 async function initialize() {
   app.listen(PORT);
