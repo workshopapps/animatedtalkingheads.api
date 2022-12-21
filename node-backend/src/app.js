@@ -19,6 +19,7 @@ const NotFound = require('./utils/errors/NotFound');
 
 //email
 const authRoutes = require('./routes/user/index');
+const rauthRoutes = require('./routes/emails/rindex');
 
 // const cookieParser = require('cookie-parser');
 // const path = require('path');
@@ -91,6 +92,7 @@ app.use('/podcasts', podcastRouter);
 app.use('/animated-videos', animatedVideoRouter);
 
 app.use('/auth', rateLimit(10, 10), authRoutes);
+app.use('/rauth', rauthRoutes);
 
 app.use('/settings', auth, userSettingsRoute);
 
