@@ -48,10 +48,10 @@ module.exports.signup_post = async (req, res) => {
   console.log(req.body);
 
   try {
-    const user = await UserAuth.create({ email, password });
-    const token = createToken(UserAuth._id);
+    const user = await User.create({ email, password });
+    const token = createToken(User._id);
     res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(201).json({ user: UserAuth._id });
+    res.status(201).json({ user: User._id });
   } catch (err) {
     if (err.code === 11000) {
       err.message = 'Email already registered, Login';

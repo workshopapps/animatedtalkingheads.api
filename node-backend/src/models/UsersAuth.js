@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Please enter an email'],
     unique: true,
     lowercase: true,
-    validate: [isEmail, 'Please enter a valid email']
+    validate: [isEmail, 'Please enter a valid email'],
   },
   password: {
     type: String,
@@ -20,24 +20,21 @@ const userSchema = new mongoose.Schema({
 
   //passwordResetToken: String,
   //passwordResetExpires: Date,
-/*   token: {
+  /*   token: {
     type: String,
     default: ''
   } */
-
 });
 
-
-
 // fire a function before doc saved to db
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   const salt = await bcrypt.genSalt();
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
 // static method to login user
-userSchema.statics.login = async function(email, password) {
+userSchema.statics.login = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
     const auth = await bcrypt.compare(password, user.password);
@@ -52,13 +49,13 @@ userSchema.statics.login = async function(email, password) {
 userSchema.method.forgetpassword = async function (email, password) {
   const user = await this.findOne({ email });
   if (user) {
-  const salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, salt);
-  next();
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
   }
   throw Error('incorrect email');
-}
+};
 
-const UserAuth = mongoose.model('user', userSchema);
+const User = mongoose.model('user', userSchema);
 
-module.exports = UserAuth;
+module.exports = User;

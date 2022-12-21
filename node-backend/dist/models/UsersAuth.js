@@ -61,5 +61,5 @@ userSchema.method.forgetpassword = async function(email, password) {
     }
     throw Error('incorrect email');
 };
-const UserAuth = mongoose.model('user', userSchema);
-module.exports = UserAuth;
+const User = mongoose.model('user', userSchema);
+module.exports = User;
