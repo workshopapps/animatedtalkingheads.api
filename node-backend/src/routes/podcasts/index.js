@@ -49,7 +49,6 @@ podcastRouter.post(
   rateLimit(2, 5),
   auth,
   validateBody(AnimatedVideoInput),
-  validateParams(ObjectId),
 
   generateAnimatedVideos
 );
