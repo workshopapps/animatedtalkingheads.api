@@ -4,3 +4,4 @@ uploads/
 .env
 env
 ./backend-node/.env
+yarn.lock
