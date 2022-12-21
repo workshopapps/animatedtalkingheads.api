@@ -56,7 +56,7 @@ app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
 app.use(express.static(path.join(__dirname, 'public/')));
-app.use(express.static(path.join(process.cwd(), '../pyhton-backend/data/')));
+app.use(express.static(path.join(process.cwd(), '.././pyhton-backend/data/')));
 
 // WRITE YOUR CODE AFTER THIS!!!!!!
 app.use((req, res, next) => {
