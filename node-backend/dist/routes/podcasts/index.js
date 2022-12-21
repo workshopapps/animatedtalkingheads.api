@@ -26,7 +26,7 @@ const upload = multer({
     }
 });
 podcastRouter.post('/upload', auth, upload.single('podcast'), podcastuploader);
-podcastRouter.post('/:podcastId/generate-video', rateLimit(2, 5), auth, validateBody(AnimatedVideoInput), validateParams(ObjectId), generateAnimatedVideos);
+podcastRouter.post('/:podcastId/generate-video', rateLimit(2, 5), auth, validateBody(AnimatedVideoInput), generateAnimatedVideos);
 podcastRouter.get('/', auth, getAllUserUploadedPodcast);
 podcastRouter.get('/:podcastId', auth, getOnePodcast);
 podcastRouter.delete('/:podcastId', auth, deletePodcast);
