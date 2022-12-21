@@ -55,6 +55,9 @@ app.set('trust proxy', true);
 app.use(Sentry.Handlers.requestHandler());
 app.use(Sentry.Handlers.tracingHandler());
 
+app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static(path.join(process.cwd(), '../pyhton-backend/data/')));
+
 // WRITE YOUR CODE AFTER THIS!!!!!!
 app.use((req, res, next) => {
   process.env.reqHost = req.protocol + '://' + req.get('host');
