@@ -2,39 +2,41 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
-const randomstring = require("randomstring");
+//const randomstring = require("randomstring");
 const res = require("express/lib/response");
-const sendResetPasswordMail = async (email, token)=>{
-    try {
-        const transporter = nodemailer.createTransport({
-            host: process.env.EMAIL_HOST,
-            port: process.env.EMAIL_PORT,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
-        const mailOptions = {
-            from: 'name <tivicky98@gmail.com>',
-            to: email,
-            subject: 'For Reset Password',
-            html: '<p> Hii ' + email + ', Please copy the link and <a href="http://127.0.0.1:4000/auth/resetPassword?token=' + token + '"> reset your password</a>'
-        };
-        await transporter.sendMail(mailOptions, (error, info)=>{
-            if (error) {
-                return res.send("Error in sending mail", error);
-            } else {
-                res.send('Email sent: ' + info.response);
-            }
-        });
-    } catch (error) {
-        res.status(400).send({
-            success: false,
-            msg: "ch"
-        });
+const Email = require('../utils/email');
+/*
+const sendResetPasswordMail = async(email, token) => {
+
+  try {
+    const transporter = nodemailer.createTransport({  
+        host: process.env.EMAIL_HOST,
+        port: process.env.EMAIL_PORT,
+        auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASSWORD,
+        }
+    });
+    const mailOptions = {
+      from: 'name <tivicky98@gmail.com>',
+      to: email,
+      subject: 'For Reset Password',
+      html:'<p> Hii '+email+', Please copy the link and <a href="http://127.0.0.1:4000/auth/resetPassword?token='+token+'"> reset your password</a>'
     }
-};
-// module.exports.forgetpassword_post = async (req, res) => {
+    await transporter.sendMail(mailOptions, (error, info)=> {
+      if(error){
+        return res.send("Error in sending mail", error)
+      }
+      else{
+          res.send('Email sent: ' + info.response)
+      } 
+  });
+    } catch (error) {
+      res.status(400).send({success:false,msg:"ch"});
+    }
+
+}
+*/ // module.exports.forgetpassword_post = async (req, res) => {
 //   console.log('forget password')
 // };
 // handle errors

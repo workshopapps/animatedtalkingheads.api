@@ -25,6 +25,7 @@ const NotFound = require('./utils/errors/NotFound');
 // sten-add auth0 router dir
 //email
 const authRoutes = require('./routes/user/index');
+const rauthRoutes = require('./routes/emails/rindex');
 // const cookieParser = require('cookie-parser');
 // const path = require('path');
 const errorController = require('./controllers/error.controller');
@@ -80,6 +81,7 @@ app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/podcasts', podcastRouter);
 app.use('/animated-videos', animatedVideoRouter);
 app.use('/auth', (0, _rateLimit.default)(10, 10), authRoutes);
+app.use('/rauth', rauthRoutes);
 app.use('/settings', auth, userSettingsRoute);
 app.use('/uploads', express.static('./uploads'));
 // app.use('/uploads', express.static('./uploads'));
