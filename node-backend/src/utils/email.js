@@ -3,6 +3,8 @@ const nodemailer = require('nodemailer');
 const pug = require('pug');
 const { convert } = require('html-to-text');
 require('dotenv').config();
+const path = require('path');
+const resolve = require('path');
 
 module.exports = class Email {
   constructor(user, url) {
@@ -26,7 +28,7 @@ module.exports = class Email {
   async send(template, subject) {
     // 1) Render HTML based on a pug template
     console.log(this.url);
-    const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
+    const html = pug.renderFile(`C:\\Users\\oluwa\\Desktop\\final\\final\\animatedtalkingheads.api\\node-backend\\src\\views\\email\\${template}.pug`,{
       email: this.email,
       url: this.url,
       subject,

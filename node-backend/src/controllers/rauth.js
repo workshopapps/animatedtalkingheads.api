@@ -1,9 +1,11 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const nodemailer = require("nodemailer");
-const randomstring = require("randomstring");
-const res = require("express/lib/response")
+//const randomstring = require("randomstring");
+const res = require("express/lib/response");
+const Email = require('../utils/email');
 
+/*
 const sendResetPasswordMail = async(email, token) => {
 
   try {
@@ -34,6 +36,7 @@ const sendResetPasswordMail = async(email, token) => {
     }
 
 }
+*/
 // module.exports.forgetpassword_post = async (req, res) => {
 //   console.log('forget password')
 // };

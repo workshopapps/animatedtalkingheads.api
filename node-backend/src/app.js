@@ -19,6 +19,7 @@ const NotFound = require('./utils/errors/NotFound');
 
 //email
 const authRoutes = require('./routes/user/index');
+const rauthRoutes = require('./routes/emails/rindex');
 
 // const cookieParser = require('cookie-parser');
 // const path = require('path');
@@ -91,6 +92,7 @@ app.use('/podcasts', podcastRouter);
 app.use('/animated-videos', animatedVideoRouter);
 
 app.use('/auth', rateLimit(10, 10), authRoutes);
+app.use('/rauth', rauthRoutes);
 
 app.use('/settings', auth, userSettingsRoute);
 
@@ -106,6 +108,9 @@ app.get('/error', (req, res) => {
   res.render('error.pug');
 });
 app.use('/', paymentRoute);
+//use the dashboard
+const {router} = require('./controllers/run-python/index')
+app.use('/admin/queues',router)
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
