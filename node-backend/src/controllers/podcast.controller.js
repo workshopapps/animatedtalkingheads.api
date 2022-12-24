@@ -5,7 +5,7 @@ const Podcast = require('./../models/Podcast');
 import { v4 as uuidv4 } from 'uuid';
 const ApiError = require('../utils/errors/ApiError');
 const NotFound = require('../utils/errors/NotFound');
-const runPythonScript = require('./run-python');
+const {runPythonScript} = require('./run-python');
 const AnimatedVideo = require('../models/AnimatedVideo');
 const User = require('../models/User');
 
