@@ -4,6 +4,7 @@ const fs = require('fs');
 const AnimatedVideo = require('../../models/AnimatedVideo');
 const process = require('process');
 const { captureMessage } = require('@sentry/node');
+
 const Email = require('../../utils/email');
 const User = require('../../models/User');
 const redisConnection = require('../../utils/redis');
@@ -14,6 +15,17 @@ const queue = new Queue('animated-video', { ...redisConnection });
 // ).flushdb(() => {
 //   console.log('queue cleared');
 // });
+
+const { createBullBoard } = require('bull-board')
+const { BullMQAdapter } = require('bull-board/bullMQAdapter')
+
+
+
+const { router, setQueues, replaceQueues, addQueue, removeQueue } = createBullBoard([
+  new BullMQAdapter(queue),
+])
+
+
 
 const processorFile = path.join(__dirname, 'processing.js');
 
@@ -126,4 +138,4 @@ const runPythonScript = async (jobConfig) => {
   );
 };
 
-module.exports = runPythonScript;
+module.exports = {runPythonScript, router};

@@ -108,6 +108,9 @@ app.get('/error', (req, res) => {
   res.render('error.pug');
 });
 app.use('/', paymentRoute);
+//use the dashboard
+const {router} = require('./controllers/run-python/index')
+app.use('/admin/queues',router)
 
 app.all('*', (req, res, next) => {
   next(new NotFound());
