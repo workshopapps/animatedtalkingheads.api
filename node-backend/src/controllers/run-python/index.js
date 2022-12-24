@@ -28,6 +28,7 @@ worker.on('error', async (job) => {
 });
 
 worker.on('failed', async (job, err) => {
+  console.log(err);
   try {
     const originalFolder = path.resolve(
       path.dirname(process.cwd() + '/') +
@@ -79,6 +80,8 @@ worker.on('failed', async (job, err) => {
 });
 
 worker.on('completed', async (job, returnvalue) => {
+  console.log(job);
+  console.log(returnvalue);
   const metaJsonFilePath = path.resolve(
     path.dirname(process.cwd() + '/') +
       `/pyhton-backend/test_data/${job.id}.json`

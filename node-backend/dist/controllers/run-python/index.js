@@ -26,6 +26,7 @@ worker.on('error', async (job)=>{
     captureMessage(job);
 });
 worker.on('failed', async (job, err)=>{
+    console.log(err);
     try {
         const originalFolder = path.resolve(path.dirname(process.cwd() + '/') + `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`);
         const metaJsonFilePath = path.resolve(path.dirname(process.cwd() + '/') + `/pyhton-backend/test_data/${job.id}.json`);
@@ -63,6 +64,8 @@ worker.on('failed', async (job, err)=>{
     }
 });
 worker.on('completed', async (job, returnvalue)=>{
+    console.log(job);
+    console.log(returnvalue);
     const metaJsonFilePath = path.resolve(path.dirname(process.cwd() + '/') + `/pyhton-backend/test_data/${job.id}.json`);
     const originalFolder = path.resolve(path.dirname(process.cwd() + '/') + `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`);
     if (!fs.existsSync(originalFolder)) {

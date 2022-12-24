@@ -9,6 +9,9 @@ if (!fs.existsSync('./uploads')) {
 if (!fs.existsSync('./uploads/podcasts')) {
     fs.mkdirSync('./uploads/podcasts');
 }
+if (!fs.existsSync('./uploads/profile_pic')) {
+    fs.mkdirSync('./uploads/profile_pic');
+}
 const PORT = process.env.PORT || 4000;
 const DB = process.env.NODE_ENV == 'development' ? process.env.mongo_dev_url : process.env.mongo_url;
 mongoose.connect(DB).then(()=>console.log('DB connection successful!'));

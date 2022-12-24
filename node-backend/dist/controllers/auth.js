@@ -88,6 +88,23 @@ module.exports.login_post = async (req, res)=>{
         });
     }
 };
+module.exports.updateUserProfile = async (req, res)=>{
+    const user_file_path = ('/uploads/profile_pic/' + '/').replaceAll(' ', '');
+    const fileExt = req.file.originalname ? req.file.originalname : req.file.ext;
+    let save_file_directory = user_file_path + req.headers.user_id + '-' + Date.now() + fileExt;
+    save_file_directory = save_file_directory.replaceAll(' ', '');
+    try {
+        await writeFile('.' + save_file_directory, req.file.buffer);
+        let user = await User.findOneAndUpdate({
+            id: req.req.headers.user_id
+        }, {
+            profile_pic: user_file_path
+        });
+    } catch (err) {
+        console.error(err);
+        return next(new ApiError('Podcast wasnt uploaded successfully', 400), false);
+    }
+};
 module.exports.logout_get = (req, res)=>{
     res.cookie('jwt', '', {
         maxAge: 1

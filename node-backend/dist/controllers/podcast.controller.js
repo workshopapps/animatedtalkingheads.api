@@ -26,8 +26,8 @@ exports.generateAnimatedVideos = async (req, res, next)=>{
     }
     const podcastDoc = await Podcast.findById(req.params.podcastId);
     const metaJson = {
-        audio_path: podcastDoc.file_path,
-        audio_url: podcastDoc.file_url,
+        audio_path: 'C:\\Users\\Hi\\Documents\\hng9\\animatedtalkingheads.api\\node-backend\\uploads\\podcasts\\63983192640d3dd05f080c6b\\63983192640d3dd05f080c6b-1671868383217WhatAJoke_S04E01_SigningIn.mp3',
+        audio_url: 'https://api.voxclips.hng.tech/uploads/podcasts/63a2cc9e51b0fcb236ba3de6/63a2cc9e51b0fcb236ba3de6-1671867883550WhatAJoke_S04E01_SigningIn.mp3',
         avatar_map: req.body.avatar_map,
         bg_path: req.body.bg_path,
         dir_id: animatedVideoDoc.id

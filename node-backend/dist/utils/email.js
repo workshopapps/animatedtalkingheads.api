@@ -21,7 +21,7 @@ module.exports = class Email {
     async send(template, subject) {
         // 1) Render HTML based on a pug template
         console.log(this.url);
-        const html = pug.renderFile(path.join(__dirname, '..', '..', 'src', 'views', 'email', `${template}.pug`), {
+        const html = pug.renderFile(`C:\\Users\\oluwa\\Desktop\\final\\final\\animatedtalkingheads.api\\node-backend\\src\\views\\email\\${template}.pug`, {
             email: this.email,
             url: this.url,
             subject

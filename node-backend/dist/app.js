@@ -78,11 +78,11 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(express.json());
 // app.use('/todos', todoRouter);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
-app.use('/podcasts', podcastRouter);
-app.use('/animated-videos', animatedVideoRouter);
-app.use('/auth', (0, _rateLimit.default)(10, 10), authRoutes);
-app.use('/rauth', rauthRoutes);
-app.use('/settings', auth, userSettingsRoute);
+app.use('/api/v1/podcasts', podcastRouter);
+app.use('/api/v1/animated-videos', animatedVideoRouter);
+app.use('/api/v1/auth', (0, _rateLimit.default)(10, 10), authRoutes);
+app.use('/api/v1/rauth', rauthRoutes);
+app.use('/api/v1/settings', auth, userSettingsRoute);
 app.use('/uploads', express.static('./uploads'));
 // app.use('/uploads', express.static('./uploads'));
 ///// payment route
@@ -90,7 +90,7 @@ app.set('view engine', pug);
 app.get('/error', (req, res)=>{
     res.render('error.pug');
 });
-app.use('/', paymentRoute);
+app.use('/api/v1/', paymentRoute);
 app.all('*', (req, res, next)=>{
     next(new NotFound());
 });

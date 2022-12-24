@@ -1,6 +1,6 @@
 module.exports = {
   paths: {
-    '/podcasts': {
+    '/api/v1/podcasts': {
       get: {
         security: [
           {
@@ -37,7 +37,7 @@ module.exports = {
         },
       },
     },
-    '/podcasts/upload': {
+    '/api/v1/podcasts/upload': {
       post: {
         security: [
           {
@@ -89,7 +89,7 @@ module.exports = {
         },
       },
     },
-    '/animated-videos/{animatedVideoId}': {
+    '/api/v1/animated-videos/{animatedVideoId}': {
       get: {
         security: [
           {
@@ -121,7 +121,7 @@ module.exports = {
         },
       },
     },
-    '/animated-videos/': {
+    '/api/v1/animated-videos/': {
       get: {
         tags: ['AnimatedVideo'],
 
@@ -164,7 +164,7 @@ module.exports = {
         },
       },
     },
-    '/podcasts/{podcastID}/generate-video': {
+    '/api/v1/podcasts/{podcastID}/generate-video': {
       post: {
         security: [
           {
@@ -238,7 +238,7 @@ module.exports = {
         },
       },
     },
-    '/settings/add': {
+    '/api/v1/settings/add': {
       post: {
         security: [
           {
@@ -268,7 +268,7 @@ module.exports = {
         },
       },
     },
-    '/settings/get': {
+    '/api/v1/settings/get': {
       get: {
         security: [
           {
@@ -289,7 +289,7 @@ module.exports = {
         },
       },
     },
-    '/subscription': {
+    '/api/v1/subscription': {
       get: {
         security: [
           {
@@ -310,7 +310,7 @@ module.exports = {
         },
       },
     },
-    '/getpayments': {
+    '/api/v1/getpayments': {
       get: {
         tags: ['Payment'],
         description: 'Get paid users For Dev Purpose',
@@ -326,7 +326,7 @@ module.exports = {
         },
       },
     },
-    '/paystack/pay': {
+    '/api/v1/paystack/pay': {
       post: {
         security: [
           {
@@ -356,7 +356,7 @@ module.exports = {
         },
       },
     },
-    '/auth/signup': {
+    '/api/v1/auth/signup': {
       post: {
         tags: ['Authentication'],
         description: 'create user account',
@@ -381,7 +381,7 @@ module.exports = {
       },
     },
 
-    '/auth/login': {
+    '/api/v1/auth/login': {
       post: {
         tags: ['Authentication'],
         description: 'Log in user',
@@ -406,7 +406,7 @@ module.exports = {
       },
     },
 
-    '/auth/logout': {
+    '/api/v1/auth/logout': {
       get: {
         tags: ['Authentication'],
         description: 'Log out user',
@@ -429,7 +429,7 @@ module.exports = {
       },
     },
 
-    '/rauth/forgotpassword': {
+    '/api/v1/rauth/forgotpassword': {
       post: {
         tags: ['Password'],
         description: 'forget password',
@@ -454,7 +454,7 @@ module.exports = {
       },
     },
 
-    '/resetpassword/{:token}': {
+    '/api/v1/resetpassword/{:token}': {
       patch: {
         tags: ['Reset'],
         description: 'Reset Password',
@@ -481,7 +481,7 @@ module.exports = {
       },
     },
 
-    '/rauth/contact': {
+    '/api/v1/rauth/contact': {
       post: {
         tags: ['Contact'],
         description: 'contact us',
@@ -506,7 +506,7 @@ module.exports = {
       },
     },
 
-    '/avatars': {
+    '/api/v1/avatars': {
       get: {
         tags: ['Avatars'],
         description: 'Get avatars',
