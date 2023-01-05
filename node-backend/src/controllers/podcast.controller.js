@@ -25,6 +25,8 @@ exports.generateAnimatedVideos = async (req, res, next) => {
   }
 
   const podcastDoc = await Podcast.findById(req.params.podcastId);
+  //   audio_path: podcastDoc.file_path,
+  // audio_url: podcastDoc.file_url,
   const metaJson = {
     audio_path:
       'C:\\Users\\Hi\\Documents\\hng9\\animatedtalkingheads.api\\node-backend\\uploads\\podcasts\\63983192640d3dd05f080c6b\\63983192640d3dd05f080c6b-1671868383217WhatAJoke_S04E01_SigningIn.mp3',
