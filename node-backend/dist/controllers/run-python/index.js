@@ -16,6 +16,11 @@ const queue = new Queue('animated-video', {
 // ).flushdb(() => {
 //   console.log('queue cleared');
 // });
+const { createBullBoard  } = require('bull-board');
+const { BullMQAdapter  } = require('bull-board/bullMQAdapter');
+const { router , setQueues , replaceQueues , addQueue , removeQueue  } = createBullBoard([
+    new BullMQAdapter(queue)
+]);
 const processorFile = path.join(__dirname, 'processing.js');
 const worker = new Worker(queue.name, processorFile, {
     ...redisConnection,
@@ -100,4 +105,7 @@ const runPythonScript = async (jobConfig)=>{
         jobId: jobConfig.animated_video_id
     });
 };
-module.exports = runPythonScript;
+module.exports = {
+    runPythonScript,
+    router
+};

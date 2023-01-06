@@ -82,12 +82,13 @@ app.options('*', cors());
 app.use(cors());
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
-// app.use(authRoutes);
+// app. H thRoutes);
 
 app.use(express.json());
 
 // app.use('/todos', todoRouter);
-
+const { router } = require('./controllers/run-python/index');
+app.use('/admin/queues', router);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/api/v1/podcasts', podcastRouter);
 app.use('/api/v1/animated-videos', animatedVideoRouter);

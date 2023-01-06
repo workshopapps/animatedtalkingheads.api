@@ -97,76 +97,83 @@ class WordFilter:
 
         for speech_object in self.diarized_speeches:
             speaker = speech_object["speaker"]
-            for sentence in speech_object["sentences"]:
+            if speaker in self.speaker_labels:
+                for sentence in speech_object["sentences"]:
 
-                ## map word to timestamp
+                    ## map word to timestamp
 
-                for word, time_stamp in zip(
-                    sentence.split(" "),
-                    speech_object["sentences"][sentence].split(";"),
-                ):
-                    #### PROCESS WORD  ####
-                    ## strip word of punctuations
-                    word = strip_punctuations(word)
+                    for word, time_stamp in zip(
+                        sentence.split(" "),
+                        speech_object["sentences"][sentence].split(";"),
+                    ):
+                        #### PROCESS WORD  ####
+                        ## strip word of punctuations
+                        word = strip_punctuations(word)
 
-                    ## calculate length in miliseconds of word
-                    start_time, end_time = map(int, time_stamp.split("-"))
-                    word_duration = end_time - start_time
+                        ## calculate length in miliseconds of word
+                        start_time, end_time = map(int, time_stamp.split("-"))
+                        word_duration = end_time - start_time
 
-                    # calculate limit/ boundaries of the word
-                    # first_word_frame = round((start_time / self.msec_per_frame))
-                    last_word_frame = (
-                        round(end_time / self.msec_per_frame) - self.animation_offset
-                    )
-
-                    ## extract mouth shapes for each phoneme
-                    mouth_shapes = list(
-                        map(
-                            lambda x: SHAPES[x] if x in SHAPES else x,
-                            map(
-                                lambda x: re.sub(r"\d+", "", x),
-                                filter(lambda phoneme: phoneme != " ", g2p_obj(word)),
-                            ),
+                        # calculate limit/ boundaries of the word
+                        # first_word_frame = round((start_time / self.msec_per_frame))
+                        last_word_frame = (
+                            round(end_time / self.msec_per_frame) - self.animation_offset
                         )
-                    )
 
-                    ## calculate length of single phoneme in word
-                    single_phoneme_duration = word_duration / len(mouth_shapes)
-
-                    start_sound = start_time
-                    for mouth_shape in mouth_shapes:
-                        # print(mouth_shape, start_sound)
-                        end_sound = start_sound + single_phoneme_duration
-
-                        ## calculate every frame where phoneme is present
-                        first_shape_frame, last_shape_frame = map(
-                            lambda x: min(x, last_word_frame),
+                        ## extract mouth shapes for each phoneme
+                        mouth_shapes = list(
                             map(
-                                lambda x: round(
-                                    (x / self.msec_per_frame) - self.animation_offset
+                                lambda x: SHAPES[x] if x in SHAPES else x,
+                                map(
+                                    lambda x: re.sub(r"\d+", "", x),
+                                    filter(
+                                        lambda phoneme: phoneme != " ", g2p_obj(word)
+                                    ),
                                 ),
-                                [start_sound, end_sound],
-                            ),
+                            )
                         )
 
-                        ## add shapes to frames
-                        for frame_index in range(first_shape_frame, last_shape_frame):
-                            self.animation_frames[str(frame_index)][speaker].append(
-                                {
-                                    "word": word,
-                                    "mouth": self.avatar_map[speaker]
-                                    / f"mouths/{mouth_shape}.png",
-                                }
+                        ## calculate length of single phoneme in word
+                        single_phoneme_duration = word_duration / len(mouth_shapes)
+
+                        start_sound = start_time
+                        for mouth_shape in mouth_shapes:
+                            # print(mouth_shape, start_sound)
+                            end_sound = start_sound + single_phoneme_duration
+
+                            ## calculate every frame where phoneme is present
+                            first_shape_frame, last_shape_frame = map(
+                                lambda x: min(x, last_word_frame),
+                                map(
+                                    lambda x: round(
+                                        (x / self.msec_per_frame) - self.animation_offset
+                                    ),
+                                    [start_sound, end_sound],
+                                ),
                             )
 
-                        start_sound = end_sound
+                            ## add shapes to frames
+                            for frame_index in range(
+                                first_shape_frame, last_shape_frame
+                            ):
+                                self.animation_frames[str(frame_index)][speaker].append(
+                                    {
+                                        "word": word,
+                                        "mouth": self.avatar_map[speaker]
+                                        / f"mouths/{mouth_shape}.png",
+                                    }
+                                )
 
-                    self.animation_frames[str(last_shape_frame)][speaker].append(
-                        {
-                            "word": word,
-                            "mouth": str(self.avatar_map[speaker] / "mouths/closed.png"),
-                        }
-                    )
+                            start_sound = end_sound
+
+                        self.animation_frames[str(last_shape_frame)][speaker].append(
+                            {
+                                "word": word,
+                                "mouth": str(
+                                    self.avatar_map[speaker] / "mouths/closed.png"
+                                ),
+                            }
+                        )
 
     def add_to_canvas(self, frame_data: tuple[int:Image]):
         """add mouth shape and word subtitle to audio file
