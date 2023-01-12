@@ -447,6 +447,8 @@ module.exports = {
                   profile_pic: {
                     type: 'string',
                     format: 'binary',
+                     description:
+              'access like api.voxclips.com/uploads/profile_pic/63983192640d3dd05f080c6b.jpeg',
                   },
                 },
               },
