@@ -27,7 +27,7 @@ exports.getAllUserCreatedAnimatedVideos = async (req, res, next) => {
     const limit = Number(req.query.limit) || 20;
     const skip = (page - 1) * limit;
     const query = {
-      user_id: req.header.user_id,
+      user_id: req.headers.user_id,
     };
 
     status && (query['status'] = status);
@@ -37,7 +37,7 @@ exports.getAllUserCreatedAnimatedVideos = async (req, res, next) => {
     if (!animatedVideoDocs.length) {
       return next(new NotFound());
     }
-    res.json('animatedVideoDocs');
+    res.json(animatedVideoDocs);
   } catch (err) {
     console.log('err');
     next(err);
@@ -56,13 +56,29 @@ exports.deleteAnimatedVideo = async (req, res, next) => {
         '/' +
         `/pyhton-backend/data/user_data/${animatedVideoDoc.id}`
     );
-    fs.rmdir(animatedVideoFolder, { recursive: true, force: true }, (err) => {
-      throw err;
-    });
+    fs.rmdir(
+      animatedVideoDoc.video_path,
+      { recursive: true, force: true },
+      (err) => {
+        throw err;
+      }
+    );
     await animatedVideoDoc.remove();
     res.status(204).send();
   } catch (err) {
     console.error(err);
     next(err);
   }
+};
+
+exports.updateAnimatedVideo = async (req, res, next) => {
+  let animatedVideoDoc = await AnimatedVideo.findOne({
+    _id: req.params.animatedVideoId,
+    user_id: req.headers.user_id,
+  });
+  console.log(req.params.animatedVideoId, animatedVideoDoc);
+  if (!animatedVideoDoc) return next(new NotFound());
+  animatedVideoDoc.public = req.body.public;
+  await animatedVideoDoc.save();
+  return res.json(animatedVideoDoc);
 };

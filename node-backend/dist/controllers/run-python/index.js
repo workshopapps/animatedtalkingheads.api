@@ -16,6 +16,11 @@ const queue = new Queue('animated-video', {
 // ).flushdb(() => {
 //   console.log('queue cleared');
 // });
+const { createBullBoard  } = require('bull-board');
+const { BullMQAdapter  } = require('bull-board/bullMQAdapter');
+const { router , setQueues , replaceQueues , addQueue , removeQueue  } = createBullBoard([
+    new BullMQAdapter(queue)
+]);
 const processorFile = path.join(__dirname, 'processing.js');
 const worker = new Worker(queue.name, processorFile, {
     ...redisConnection,
@@ -26,6 +31,7 @@ worker.on('error', async (job)=>{
     captureMessage(job);
 });
 worker.on('failed', async (job, err)=>{
+    console.log(err);
     try {
         const originalFolder = path.resolve(path.dirname(process.cwd() + '/') + `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`);
         const metaJsonFilePath = path.resolve(path.dirname(process.cwd() + '/') + `/pyhton-backend/test_data/${job.id}.json`);
@@ -63,6 +69,8 @@ worker.on('failed', async (job, err)=>{
     }
 });
 worker.on('completed', async (job, returnvalue)=>{
+    console.log(job);
+    console.log(returnvalue);
     const metaJsonFilePath = path.resolve(path.dirname(process.cwd() + '/') + `/pyhton-backend/test_data/${job.id}.json`);
     const originalFolder = path.resolve(path.dirname(process.cwd() + '/') + `/pyhton-backend/data/user_data/${job.id}/animation_sound.mp4`);
     if (!fs.existsSync(originalFolder)) {
@@ -97,4 +105,7 @@ const runPythonScript = async (jobConfig)=>{
         jobId: jobConfig.animated_video_id
     });
 };
-module.exports = runPythonScript;
+module.exports = {
+    runPythonScript,
+    router
+};

@@ -3,6 +3,7 @@ const User = require('../models/User');
 
 const auth = async (req, res, next) => {
   try {
+    console.log(req.headers.authorization);
     // console.log('auth start');
     const { authorization } = req.headers;
     if (!authorization || !authorization.startsWith('Bearer')) {
@@ -21,7 +22,6 @@ const auth = async (req, res, next) => {
     // console.log('auth end, calling next...');
     next();
   } catch (error) {
-    console.log('auth error');
     const { message } = error;
     res.status(401).json({ message });
     console.log(message);
