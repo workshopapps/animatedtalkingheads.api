@@ -428,6 +428,41 @@ module.exports = {
         },
       },
     },
+    '/api/v1/auth/update-user': {
+      patch: {
+        security: [
+          {
+            bearerAuth: [],
+          },
+        ],
+        tags: ['Authentication'],
+        description: 'update user details',
+        operationId: 'Updateuser',
+        requestBody: {
+          content: {
+            'multipart/form-data': {
+              schema: {
+                type: 'object',
+                properties: {
+                  profile_pic: {
+                    type: 'string',
+                    format: 'binary',
+                  },
+                },
+              },
+            },
+          },
+        },
+        responses: {
+          201: {
+            description: 'uploaded successfully',
+          },
+          500: {
+            description: 'Server error',
+          },
+        },
+      },
+    },
 
     '/api/v1/rauth/forgotpassword': {
       post: {

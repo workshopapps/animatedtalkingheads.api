@@ -21,7 +21,11 @@ const animatedVideoSchema = new Schema({
     ref: 'Podcast',
     required: true,
   },
-
+  public: {
+    required: true,
+    type: Boolean,
+    default: true,
+  },
   user_id: {
     required: true,
     type: mongoose.Schema.Types.ObjectId,

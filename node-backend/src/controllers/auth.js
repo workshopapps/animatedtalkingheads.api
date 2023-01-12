@@ -1,6 +1,11 @@
 const User = require('../models/User');
-
+const { writeFile } = require('fs/promises');
+const fs = require('fs');
+const process = require('process');
 const jwt = require('jsonwebtoken');
+const InvalidFile = require('../utils/errors/InvalidFile');
+const ApiError = require('../utils/errors/ApiError');
+const path = require('path');
 
 const handleErrors = (err) => {
   console.log(err.message, err.code);
@@ -35,7 +40,7 @@ const handleErrors = (err) => {
   return errors;
 };
 // create json web token
-const maxAge = 3 * 24 * 60 * 60;
+const maxAge = 20 * 24 * 60 * 60;
 const createToken = (email, id) => {
   return jwt.sign({ email, id }, 'thisShouldBeMovedToDotEnvLater', {
     expiresIn: maxAge,
@@ -77,26 +82,34 @@ module.exports.login_post = async (req, res) => {
   }
 };
 
-module.exports.updateUserProfile = async (req, res) => {
-  const user_file_path = ('/uploads/profile_pic/' + '/').replaceAll(' ', '');
+module.exports.updateUserProfile = async (req, res, next) => {
+  if (!req.file) {
+    return next(new InvalidFile());
+  }
+  const user_file_path = ('/profile_pic' + '/').replaceAll(' ', '');
 
-  const fileExt = req.file.originalname ? req.file.originalname : req.file.ext;
   let save_file_directory =
-    user_file_path + req.headers.user_id + '-' + Date.now() + fileExt;
-
-  save_file_directory = save_file_directory.replaceAll(' ', '');
-
+    user_file_path +
+    req.headers.user_id +
+    '.' +
+    req.file.mimetype.split('/')[1];
   try {
-    await writeFile('.' + save_file_directory, req.file.buffer);
+    await writeFile(
+      path.resolve(process.cwd() + '/uploads/' + save_file_directory),
+      req.file.buffer
+    );
 
     let user = await User.findOneAndUpdate(
-      { id: req.req.headers.user_id },
-      { profile_pic: user_file_path }
+      { id: req.headers.user_id },
+      { profile_pic: save_file_directory }
     );
+
+    return res.status(200).json(user);
   } catch (err) {
-    console.error(err);
+    console.log(err);
+
     return next(
-      new ApiError('Podcast wasnt uploaded successfully', 400),
+      new ApiError('Profile picture wasnt uploaded successfully', 400),
       false
     );
   }

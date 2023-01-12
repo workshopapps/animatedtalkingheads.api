@@ -4,6 +4,8 @@ const Tracing = require('@sentry/tracing');
 const pug = require('pug');
 const auth = require('./middlewares/authMiddleware');
 import rateLimit from './middlewares/rateLimit';
+import AnimatedVideo from './models/AnimatedVideo';
+import User from './models/User';
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -61,6 +63,8 @@ app.use(Sentry.Handlers.tracingHandler());
 
 app.use(express.static(path.join(__dirname, 'public/')));
 app.use(express.static(path.join(process.cwd(), '.././pyhton-backend/data/')));
+app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static(path.join(process.cwd(), '')));
 
 app.use((req, res, next) => {
   process.env.reqHost = req.protocol + '://' + req.get('host');
@@ -92,6 +96,26 @@ app.use('/admin/queues', router);
 app.use('/docs', swaggerUI.serve, swaggerUI.setup(docs));
 app.use('/api/v1/podcasts', podcastRouter);
 app.use('/api/v1/animated-videos', animatedVideoRouter);
+app.get(
+  '/user_data/:animatedVideoId/animation_sound.mp4',
+  auth,
+  async (req, res) => {
+    const user = await User.findById(req.headers.userId);
+    if (!user) {
+      return next(new NotFound());
+    }
+    const animatedVidDoc = await AnimatedVideo.findOne({
+      user: user.id,
+      id: req.params.animatedVideoId,
+    });
+
+    if (animatedVidDoc.status == 'COMPLETED' && animatedVidDoc.public) {
+      return res.sendFile(animatedVidDoc.file_path);
+    }
+
+    return next(new NotFound());
+  }
+);
 app.use('/api/v1/auth', rateLimit(10, 10), authRoutes);
 app.use('/api/v1/rauth', rauthRoutes);
 app.use('/api/v1/settings', auth, userSettingsRoute);

@@ -1,7 +1,6 @@
 const express = require('express');
 const checkUser = require('../../middlewares/checkUser');
 const AnimatedVideo = require('./../../models/AnimatedVideo');
-const ApiError = require('../../utils/errors/ApiError');
 const NotFound = require('../../utils/errors/NotFound');
 // const {
 //   generateAnimatedVideos,
@@ -9,9 +8,12 @@ const NotFound = require('../../utils/errors/NotFound');
 const {
   getOneAnimatedVideo,
   getAllUserCreatedAnimatedVideos,
+  updateAnimatedVideo,
   deleteAnimatedVideo,
 } = require('../../controllers/animatedvideo.controller');
 const auth = require('../../middlewares/authMiddleware');
+const { validateBody } = require('typebox-express-middleware');
+const { AnimatedVideoUpdate } = require('./animatedvideo.schema');
 const animatedVideoRouter = express.Router();
 
 animatedVideoRouter.get('/:animatedVideoId', auth, async (req, res, next) => {
@@ -54,22 +56,14 @@ animatedVideoRouter.get('/:animatedVideoId', auth, async (req, res, next) => {
 //   }
 // );
 
-animatedVideoRouter.get('/', auth, async (req, res, next) => {
-  try {
-    const animatedVideoDocs = await AnimatedVideo.find({
-      user_id: req.headers.user_id,
-    });
+animatedVideoRouter.get('/', auth, getAllUserCreatedAnimatedVideos);
 
-    if (!animatedVideoDocs.length) {
-      return next(new NotFound());
-    }
-    res.json(animatedVideoDocs);
-  } catch (err) {
-    console.log('err');
-    next(err);
-  }
-});
-
+animatedVideoRouter.patch(
+  '/:animatedVideoId',
+  validateBody(AnimatedVideoUpdate),
+  auth,
+  updateAnimatedVideo
+);
 animatedVideoRouter.delete('/:animatedVideoId', auth, deleteAnimatedVideo);
 
 module.exports = animatedVideoRouter;

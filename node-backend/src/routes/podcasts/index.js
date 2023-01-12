@@ -1,7 +1,6 @@
 const express = require('express');
 const multer = require('multer');
 
-const ObjectId = require('./../../utils/objectid');
 const ApiError = require('../../utils/errors/ApiError');
 const { AnimatedVideoInput, PodcastInput } = require('./podcast.schema');
 const {
@@ -40,6 +39,7 @@ podcastRouter.post(
   '/upload',
   auth,
   upload.single('podcast'),
+  validateBody(PodcastInput),
 
   podcastuploader
 );
@@ -48,7 +48,6 @@ podcastRouter.post(
   '/:podcastId/generate-video',
   rateLimit(2, 5),
   auth,
-  validateBody(AnimatedVideoInput),
 
   generateAnimatedVideos
 );

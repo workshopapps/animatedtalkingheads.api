@@ -58,11 +58,11 @@ module.exports = (err, req, res, next) => {
   else if (error.name === 'TokenExpiredError') error = handleJWTExpiredError();
   else if (error instanceof ValidationError)
     error = error.details.map((err) => err.message);
-  else if (error.type === 'NotFound') error = error;
   else if (err.name == 'TypeboxError') {
     error.message = error.errors;
     error = error;
-  } else {
+  } else if (error.isOperational) error = error;
+  else {
     error.message = 'Internal Server Error';
     captureMessage(error);
   }
